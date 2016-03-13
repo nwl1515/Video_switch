@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:24:36 MDT 2013
+# Start of session at: Wed Feb 10 21:59:15 2016
+# Process ID: 4152
+# Log file: /home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/planAhead_run_1/planAhead.log
+# Journal file: /home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source {/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/pa.fromNetlist.tcl}
+startgroup
+set_property package_pin L15 [get_ports clk]
+endgroup
+startgroup
+set_property package_pin C13 [get_ports sclk_raw]
+endgroup
+startgroup
+set_property package_pin M16 [get_ports sclk_raw]
+endgroup
+startgroup
+set_property package_pin M18 [get_ports sdat_raw]
+endgroup
+save_constraints

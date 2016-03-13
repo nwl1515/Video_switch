@@ -1,0 +1,14 @@
+
+# PlanAhead Generated physical constraints 
+
+CONFIG VCCAUX = 3.3;
+NET "clk" LOC = L15;
+NET "clk" IOSTANDARD = LVCMOS33;
+NET "clk" PERIOD = 100000 kHz;
+NET "sclk_raw" LOC = M16;
+NET "sclk_raw" IOSTANDARD = LVCMOS33;
+NET "sdat_raw" LOC = M18;
+NET "sclk_raw" IOSTANDARD = LVCMOS33;
+
+NET "edid_debug[0]" LOC = U18;
+NET "edid_debug[1]" LOC = M14;

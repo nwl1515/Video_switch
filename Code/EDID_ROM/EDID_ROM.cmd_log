@@ -1,0 +1,40 @@
+xst -intstyle ise -ifn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.xst" -ofn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+map -intstyle ise -p xc6slx45-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o EDID_ROM_map.ncd EDID_ROM.ngd EDID_ROM.pcf 
+par -w -intstyle ise -ol high -mt off EDID_ROM_map.ncd EDID_ROM.ncd EDID_ROM.pcf 
+bitgen -intstyle ise -f EDID_ROM.ut EDID_ROM.ncd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+map -intstyle ise -p xc6slx45-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o EDID_ROM_map.ncd EDID_ROM.ngd EDID_ROM.pcf 
+par -w -intstyle ise -ol high -mt off EDID_ROM_map.ncd EDID_ROM.ncd EDID_ROM.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml EDID_ROM.twx EDID_ROM.ncd -o EDID_ROM.twr EDID_ROM.pcf -ucf EDID_ROM.ucf 
+bitgen -intstyle ise -f EDID_ROM.ut EDID_ROM.ncd 
+xst -intstyle ise -ifn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.xst" -ofn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+map -intstyle ise -p xc6slx45-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o EDID_ROM_map.ncd EDID_ROM.ngd EDID_ROM.pcf 
+par -w -intstyle ise -ol high -mt off EDID_ROM_map.ncd EDID_ROM.ncd EDID_ROM.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml EDID_ROM.twx EDID_ROM.ncd -o EDID_ROM.twr EDID_ROM.pcf -ucf EDID_ROM.ucf 
+bitgen -intstyle ise -f EDID_ROM.ut EDID_ROM.ncd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+map -intstyle ise -p xc6slx45-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o EDID_ROM_map.ncd EDID_ROM.ngd EDID_ROM.pcf 
+par -w -intstyle ise -ol high -mt off EDID_ROM_map.ncd EDID_ROM.ncd EDID_ROM.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml EDID_ROM.twx EDID_ROM.ncd -o EDID_ROM.twr EDID_ROM.pcf -ucf EDID_ROM.ucf 
+bitgen -intstyle ise -f EDID_ROM.ut EDID_ROM.ncd 
+xst -intstyle ise -ifn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.xst" -ofn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+map -intstyle ise -p xc6slx45-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o EDID_ROM_map.ncd EDID_ROM.ngd EDID_ROM.pcf 
+par -w -intstyle ise -ol high -mt off EDID_ROM_map.ncd EDID_ROM.ncd EDID_ROM.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml EDID_ROM.twx EDID_ROM.ncd -o EDID_ROM.twr EDID_ROM.pcf -ucf EDID_ROM.ucf 
+bitgen -intstyle ise -f EDID_ROM.ut EDID_ROM.ncd 
+xst -intstyle ise -ifn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.xst" -ofn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+map -intstyle ise -p xc6slx45-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o EDID_ROM_map.ncd EDID_ROM.ngd EDID_ROM.pcf 
+par -w -intstyle ise -ol high -mt off EDID_ROM_map.ncd EDID_ROM.ncd EDID_ROM.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml EDID_ROM.twx EDID_ROM.ncd -o EDID_ROM.twr EDID_ROM.pcf -ucf EDID_ROM.ucf 
+bitgen -intstyle ise -f EDID_ROM.ut EDID_ROM.ncd 
+xst -intstyle ise -ifn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.xst" -ofn "/home/nikolaj/Dropbox/Mine ting/6. Semester/Bachelor/Code/EDID_ROM/EDID_ROM.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc EDID_ROM.ucf -p xc6slx45-csg324-3 "EDID_ROM.ngc" EDID_ROM.ngd  
+map -intstyle ise -p xc6slx45-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o EDID_ROM_map.ncd EDID_ROM.ngd EDID_ROM.pcf 
+par -w -intstyle ise -ol high -mt off EDID_ROM_map.ncd EDID_ROM.ncd EDID_ROM.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml EDID_ROM.twx EDID_ROM.ncd -o EDID_ROM.twr EDID_ROM.pcf -ucf EDID_ROM.ucf 
+bitgen -intstyle ise -f EDID_ROM.ut EDID_ROM.ncd 
