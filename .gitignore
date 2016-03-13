@@ -1,6 +1,4 @@
 *.gise
-*.lso
-*.prj
 *.stx
 *.xst
 *.tcl
@@ -33,7 +31,6 @@
 *.xrpt
 *.csv
 *.txt
-*.xml
 *.pdf
 *.sh
 *.out
@@ -49,7 +46,6 @@
 *.lst
 *.projectmgr
 *.xreport
-*.edif
 *.psg
 *.wpc
 *.ppr
@@ -58,7 +54,6 @@
 *~
 *.vho
 *.xco
-*.vh
 *.do
 *.sdc
 *.xbcd

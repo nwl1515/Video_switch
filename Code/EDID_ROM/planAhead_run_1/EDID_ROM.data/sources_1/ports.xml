@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Interface Version="1" Minor="1">
+	<Ifc Id="ROOT" Top="1">
+		<Bus Id="edid_debug">
+			<Port Id="2" Dir="OUT"/>
+			<Port Id="1" Dir="OUT"/>
+			<Port Id="0" Dir="OUT"/>
+		</Bus>
+		<Port Id="clk" Dir="IN"/>
+		<Port Id="sclk_raw" Dir="IN"/>
+		<Port Id="sdat_raw" Dir="INOUT"/>
+	</Ifc>
+</Interface>
+

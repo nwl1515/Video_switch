@@ -54,41 +54,41 @@
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="99"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="6"/>
     </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/DDR_Memory_Interface_2.vhd" xil_pn:type="FILE_VHDL">
-      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="41"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="14"/>
-    </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/memc3_wrapper.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/memc3_wrapper.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="42"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="9"/>
     </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/memc3_infrastructure.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/memc3_infrastructure.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="43"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="10"/>
     </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/mcb_raw_wrapper.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/mcb_raw_wrapper.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="44"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="5"/>
     </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/mcb_soft_calibration_top.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/mcb_soft_calibration_top.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="45"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="4"/>
     </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/mcb_soft_calibration.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/mcb_soft_calibration.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="46"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="3"/>
     </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/iodrp_controller.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/iodrp_controller.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="47"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="2"/>
     </file>
-    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface_2/user_design/rtl/iodrp_mcb_controller.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/iodrp_mcb_controller.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="48"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="1"/>
     </file>
     <file xil_pn:name="BRAM_interface.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="80"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="80"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="ipcore_dir/DDR_Memory_Interface/user_design/rtl/DDR_Memory_Interface.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="85"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="14"/>
     </file>
   </files>
 
@@ -228,7 +228,7 @@
     <property xil_pn:name="Last Applied Strategy" xil_pn:value="Xilinx Default (unlocked)" xil_pn:valueState="default"/>
     <property xil_pn:name="Last Unlock Status" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Launch SDK after Export" xil_pn:value="true" xil_pn:valueState="default"/>
-    <property xil_pn:name="Library Search Order" xil_pn:value="ipcore_dir/DDR_Memory_Interface_2/user_design/synth/DDR_Memory_Interface_2.lso" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Library Search Order" xil_pn:value="ipcore_dir/DDR_Memory_Interface/user_design/synth/DDR_Memory_Interface.lso" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Library for Verilog Sources" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Load glbl" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Manual Implementation Compile Order" xil_pn:value="false" xil_pn:valueState="default"/>
@@ -385,7 +385,7 @@
     <property xil_pn:name="Use DSP Block spartan6" xil_pn:value="Auto" xil_pn:valueState="default"/>
     <property xil_pn:name="Use LOC Constraints" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Use RLOC Constraints" xil_pn:value="Yes" xil_pn:valueState="default"/>
-    <property xil_pn:name="Use Smart Guide" xil_pn:value="false" xil_pn:valueState="default"/>
+    <property xil_pn:name="Use Smart Guide" xil_pn:value="true" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use Synchronous Reset" xil_pn:value="Yes" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use Synchronous Set" xil_pn:value="Yes" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use Synthesis Constraints File" xil_pn:value="true" xil_pn:valueState="default"/>

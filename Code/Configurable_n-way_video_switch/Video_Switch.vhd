@@ -203,7 +203,7 @@ architecture Structural of Video_Switch is
 		serdes_strobe	: out STD_LOGIC);
 	END COMPONENT;
 	
-	component DDR_Memory_Interface_2
+	component DDR_Memory_Interface
  generic(
     C3_P0_MASK_SIZE           : integer := 4;
     C3_P0_DATA_PORT_SIZE      : integer := 32;
@@ -244,6 +244,54 @@ architecture Structural of Video_Switch is
    mcb3_dram_dqs_n                         : inout  std_logic;
    mcb3_dram_ck                            : out std_logic;
    mcb3_dram_ck_n                          : out std_logic;
+	c3_p0_cmd_clk                           : in std_logic;
+   c3_p0_cmd_en                            : in std_logic;
+   c3_p0_cmd_instr                         : in std_logic_vector(2 downto 0);
+   c3_p0_cmd_bl                            : in std_logic_vector(5 downto 0);
+   c3_p0_cmd_byte_addr                     : in std_logic_vector(29 downto 0);
+   c3_p0_cmd_empty                         : out std_logic;
+   c3_p0_cmd_full                          : out std_logic;
+   c3_p0_wr_clk                            : in std_logic;
+   c3_p0_wr_en                             : in std_logic;
+   c3_p0_wr_mask                           : in std_logic_vector(C3_P0_MASK_SIZE - 1 downto 0);
+   c3_p0_wr_data                           : in std_logic_vector(C3_P0_DATA_PORT_SIZE - 1 downto 0);
+   c3_p0_wr_full                           : out std_logic;
+   c3_p0_wr_empty                          : out std_logic;
+   c3_p0_wr_count                          : out std_logic_vector(6 downto 0);
+   c3_p0_wr_underrun                       : out std_logic;
+   c3_p0_wr_error                          : out std_logic;
+   c3_p0_rd_clk                            : in std_logic;
+   c3_p0_rd_en                             : in std_logic;
+   c3_p0_rd_data                           : out std_logic_vector(C3_P0_DATA_PORT_SIZE - 1 downto 0);
+   c3_p0_rd_full                           : out std_logic;
+   c3_p0_rd_empty                          : out std_logic;
+   c3_p0_rd_count                          : out std_logic_vector(6 downto 0);
+   c3_p0_rd_overflow                       : out std_logic;
+   c3_p0_rd_error                          : out std_logic;
+   c3_p1_cmd_clk                           : in std_logic;
+   c3_p1_cmd_en                            : in std_logic;
+   c3_p1_cmd_instr                         : in std_logic_vector(2 downto 0);
+   c3_p1_cmd_bl                            : in std_logic_vector(5 downto 0);
+   c3_p1_cmd_byte_addr                     : in std_logic_vector(29 downto 0);
+   c3_p1_cmd_empty                         : out std_logic;
+   c3_p1_cmd_full                          : out std_logic;
+   c3_p1_wr_clk                            : in std_logic;
+   c3_p1_wr_en                             : in std_logic;
+   c3_p1_wr_mask                           : in std_logic_vector(C3_P1_MASK_SIZE - 1 downto 0);
+   c3_p1_wr_data                           : in std_logic_vector(C3_P1_DATA_PORT_SIZE - 1 downto 0);
+   c3_p1_wr_full                           : out std_logic;
+   c3_p1_wr_empty                          : out std_logic;
+   c3_p1_wr_count                          : out std_logic_vector(6 downto 0);
+   c3_p1_wr_underrun                       : out std_logic;
+   c3_p1_wr_error                          : out std_logic;
+   c3_p1_rd_clk                            : in std_logic;
+   c3_p1_rd_en                             : in std_logic;
+   c3_p1_rd_data                           : out std_logic_vector(C3_P1_DATA_PORT_SIZE - 1 downto 0);
+   c3_p1_rd_full                           : out std_logic;
+   c3_p1_rd_empty                          : out std_logic;
+   c3_p1_rd_count                          : out std_logic_vector(6 downto 0);
+   c3_p1_rd_overflow                       : out std_logic;
+   c3_p1_rd_error                          : out std_logic;
    c3_p2_cmd_clk                           : in std_logic;
    c3_p2_cmd_en                            : in std_logic;
    c3_p2_cmd_instr                         : in std_logic_vector(2 downto 0);
@@ -422,7 +470,7 @@ hdmi_output_0 : HDMI_OUT
 -------------------------------
 -- DDR Memory Controller
 -------------------------------
-    u_DDR_Memory_Interface_2 : DDR_Memory_Interface_2
+    u_DDR_Memory_Interface : DDR_Memory_Interface
     generic map (
     C3_P0_MASK_SIZE => C3_P0_MASK_SIZE,
     C3_P0_DATA_PORT_SIZE => C3_P0_DATA_PORT_SIZE,
@@ -468,6 +516,58 @@ hdmi_output_0 : HDMI_OUT
 		c3_clk0				 =>	        	Open,
 		c3_rst0				 =>        		Open,
 		c3_calib_done      =>    			ddr_calibration,
+		
+		-- BIPORT 0 control signals
+		c3_p0_cmd_clk                    		 => '0',
+		c3_p0_cmd_en                            => '0',
+		c3_p0_cmd_instr                         => "000",
+		c3_p0_cmd_bl                            => "000000",
+		c3_p0_cmd_byte_addr                     => (others => '0'),
+		c3_p0_cmd_empty                         => open,
+		c3_p0_cmd_full                          => open,
+		c3_p0_wr_clk                            => '0',
+		c3_p0_wr_en                             => '0',
+		c3_p0_wr_mask                           => (others => '0'),
+		c3_p0_wr_data                           => (others => '0'),
+		c3_p0_wr_full                           => open,
+		c3_p0_wr_empty                          => open,
+		c3_p0_wr_count                          => open,
+		c3_p0_wr_underrun                       => open,
+		c3_p0_wr_error                          => open,
+		c3_p0_rd_clk                            => '0',
+		c3_p0_rd_en                             => '0',
+		c3_p0_rd_data                           => open,
+		c3_p0_rd_full                           => open, 
+		c3_p0_rd_empty                          => open,
+		c3_p0_rd_count                          => open,
+		c3_p0_rd_overflow                       => open,
+		c3_p0_rd_error                          => open,
+		
+		-- BIPORT 1 control signals
+		c3_p1_cmd_clk                           => '0',
+		c3_p1_cmd_en                            => '0',
+		c3_p1_cmd_instr                         => "000",
+		c3_p1_cmd_bl                            => "000000",
+		c3_p1_cmd_byte_addr                     => (others => '0'),
+		c3_p1_cmd_empty                         => open,
+		c3_p1_cmd_full                          => open, 
+		c3_p1_wr_clk                            => '0',
+		c3_p1_wr_en                             => '0',
+		c3_p1_wr_mask                           => (others => '0'),
+		c3_p1_wr_data                           => (others => '0'),
+		c3_p1_wr_full                           => open,
+		c3_p1_wr_empty                          => open,
+		c3_p1_wr_count                          => open,
+		c3_p1_wr_underrun                       => open, 
+		c3_p1_wr_error                          => open,
+		c3_p1_rd_clk                            => '0',
+		c3_p1_rd_en                             => '0',
+		c3_p1_rd_data                           => open,
+		c3_p1_rd_full                           => open, 
+		c3_p1_rd_empty                          => open, 
+		c3_p1_rd_count                          => open, 
+		c3_p1_rd_overflow                       => open,
+		c3_p1_rd_error                          => open,
      
 		-- Output port 2 control signals
 		c3_p2_cmd_clk                           =>  read_write_clock,
