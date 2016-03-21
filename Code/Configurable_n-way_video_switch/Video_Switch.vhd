@@ -48,16 +48,16 @@ entity Video_Switch is
 			-- Outputs TMDS
 			hdmi_port_0_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_0_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_1_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_1_out_n		: out STD_LOGIC_VECTOR(3 downto 0)
-			--hdmi_port_2_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_2_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_3_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_3_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_4_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_4_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_5_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_5_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_1_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_1_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_2_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_2_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_3_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_3_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_4_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_4_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_5_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_5_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
 			
 			
 			-- Memory
@@ -91,15 +91,21 @@ end Video_Switch;
 
 architecture Structural of Video_Switch is
 
-	signal global_pixel_clock				: std_logic;
-	signal global_pixel_clock_x1			: std_logic;
-	signal global_pixel_clock_x2			: std_logic;
-	signal global_pixel_clock_x10			: std_logic;
-	signal global_output_h_sync 			: std_logic;
-	signal global_output_v_sync 			: std_logic;
-	signal global_output_active_video 	: std_logic;
-	signal global_pll_locked				: std_logic;
-	signal global_serdes_strobe			: std_logic;
+	signal global_pixel_clock					: std_logic;
+	signal global_pixel_clock_x1_b0			: std_logic;
+	signal global_pixel_clock_x2_b0			: std_logic;
+	signal global_pixel_clock_x10_b0			: std_logic;
+	signal global_pixel_clock_x1_b1			: std_logic;
+	signal global_pixel_clock_x2_b1			: std_logic;
+	signal global_pixel_clock_x10_b1			: std_logic;
+	signal global_output_h_sync 				: std_logic;
+	signal global_output_v_sync 				: std_logic;
+	signal global_output_active_video 		: std_logic;
+	signal global_pll_locked					: std_logic := '0';
+	signal global_pll_locked_b0				: std_logic;
+	signal global_serdes_strobe_b0			: std_logic;
+	signal global_pll_locked_b1				: std_logic;
+	signal global_serdes_strobe_b1			: std_logic;
 	signal pixel_h_count_i					: std_logic_vector(11 downto 0);
 	signal pixel_v_count_i					: std_logic_vector(10 downto 0);
 	
@@ -416,10 +422,10 @@ leds_out(7 downto 0) <= in_data(7 downto 0);
 hdmi_output_0 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1,
-			clk_x2			=> global_pixel_clock_x2,
-			clk_x10			=> global_pixel_clock_x10,
-			serdes_strobe 	=> global_serdes_strobe,
+			clk_x1			=> global_pixel_clock_x1_b0,
+			clk_x2			=> global_pixel_clock_x2_b0,
+			clk_x10			=> global_pixel_clock_x10_b0,
+			serdes_strobe 	=> global_serdes_strobe_b0,
 			red_p      => g_color_red,
 			green_p    => g_color_green,
 			blue_p     => g_color_blue,
@@ -430,6 +436,90 @@ hdmi_output_0 : HDMI_OUT
 			tmds_out_n => hdmi_port_0_out_n
 		);
 		
+hdmi_output_1 : HDMI_OUT
+		PORT MAP(
+			Pixel_clock => global_pixel_clock,
+			clk_x1			=> global_pixel_clock_x1_b1,
+			clk_x2			=> global_pixel_clock_x2_b1,
+			clk_x10			=> global_pixel_clock_x10_b1,
+			serdes_strobe 	=> global_serdes_strobe_b1,
+			red_p      => g_color_red,
+			green_p    => g_color_green,
+			blue_p     => g_color_blue,
+			active_video      => global_output_active_video,
+			hsync      => global_output_h_sync,
+			vsync      => global_output_v_sync,
+			tmds_out_p => hdmi_port_1_out_p,
+			tmds_out_n => hdmi_port_1_out_n
+		);
+		
+hdmi_output_2 : HDMI_OUT
+		PORT MAP(
+			Pixel_clock => global_pixel_clock,
+			clk_x1			=> global_pixel_clock_x1_b1,
+			clk_x2			=> global_pixel_clock_x2_b1,
+			clk_x10			=> global_pixel_clock_x10_b1,
+			serdes_strobe 	=> global_serdes_strobe_b1,
+			red_p      => g_color_red,
+			green_p    => g_color_green,
+			blue_p     => g_color_blue,
+			active_video      => global_output_active_video,
+			hsync      => global_output_h_sync,
+			vsync      => global_output_v_sync,
+			tmds_out_p => hdmi_port_2_out_p,
+			tmds_out_n => hdmi_port_2_out_n
+		);
+		
+hdmi_output_3 : HDMI_OUT
+		PORT MAP(
+			Pixel_clock => global_pixel_clock,
+			clk_x1			=> global_pixel_clock_x1_b1,
+			clk_x2			=> global_pixel_clock_x2_b1,
+			clk_x10			=> global_pixel_clock_x10_b1,
+			serdes_strobe 	=> global_serdes_strobe_b1,
+			red_p      => g_color_red,
+			green_p    => g_color_green,
+			blue_p     => g_color_blue,
+			active_video      => global_output_active_video,
+			hsync      => global_output_h_sync,
+			vsync      => global_output_v_sync,
+			tmds_out_p => hdmi_port_3_out_p,
+			tmds_out_n => hdmi_port_3_out_n
+		);
+		
+hdmi_output_4 : HDMI_OUT
+		PORT MAP(
+			Pixel_clock => global_pixel_clock,
+			clk_x1			=> global_pixel_clock_x1_b1,
+			clk_x2			=> global_pixel_clock_x2_b1,
+			clk_x10			=> global_pixel_clock_x10_b1,
+			serdes_strobe 	=> global_serdes_strobe_b1,
+			red_p      => g_color_red,
+			green_p    => g_color_green,
+			blue_p     => g_color_blue,
+			active_video      => global_output_active_video,
+			hsync      => global_output_h_sync,
+			vsync      => global_output_v_sync,
+			tmds_out_p => hdmi_port_4_out_p,
+			tmds_out_n => hdmi_port_4_out_n
+		);
+		
+hdmi_output_5 : HDMI_OUT
+		PORT MAP(
+			Pixel_clock => global_pixel_clock,
+			clk_x1			=> global_pixel_clock_x1_b1,
+			clk_x2			=> global_pixel_clock_x2_b1,
+			clk_x10			=> global_pixel_clock_x10_b1,
+			serdes_strobe 	=> global_serdes_strobe_b1,
+			red_p      => g_color_red,
+			green_p    => g_color_green,
+			blue_p     => g_color_blue,
+			active_video      => global_output_active_video,
+			hsync      => global_output_h_sync,
+			vsync      => global_output_v_sync,
+			tmds_out_p => hdmi_port_5_out_p,
+			tmds_out_n => hdmi_port_5_out_n
+		);
 
 
 ------------------------------
@@ -452,19 +542,30 @@ hdmi_output_0 : HDMI_OUT
 			  Pll_locked 		=> global_pll_locked
 	);
 
+global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1; 
 ------------------------------
 -- Global output clock multiplier
 -- Input: 	Pixel Clock
 -- Output: 	Multiplied clocks, x1, x2 and x10
 ------------------------------	
-	global_clock_multiplier : Pixel_clock_multiplier
+	global_clock_multiplier_b0 : Pixel_clock_multiplier
 	PORT map(
 		pclk_in				=> global_pixel_clock,
-		pclk_o_x1			=> global_pixel_clock_x1,
-		pclk_o_x2			=> global_pixel_clock_x2,
-		pclk_o_x10			=> global_pixel_clock_x10,
-		pll_locked			=> global_pll_locked,
-		serdes_strobe		=> global_serdes_strobe
+		pclk_o_x1			=> global_pixel_clock_x1_b0,
+		pclk_o_x2			=> global_pixel_clock_x2_b0,
+		pclk_o_x10			=> global_pixel_clock_x10_b0,
+		pll_locked			=> global_pll_locked_b0,
+		serdes_strobe		=> global_serdes_strobe_b0
+	);
+	
+	global_clock_multiplier_b1 : Pixel_clock_multiplier
+	PORT map(
+		pclk_in				=> global_pixel_clock,
+		pclk_o_x1			=> global_pixel_clock_x1_b1,
+		pclk_o_x2			=> global_pixel_clock_x2_b1,
+		pclk_o_x10			=> global_pixel_clock_x10_b1,
+		pll_locked			=> global_pll_locked_b1,
+		serdes_strobe		=> global_serdes_strobe_b1
 	);
 	
 -------------------------------

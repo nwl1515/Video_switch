@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Sun Mar 13 22:56:50 2016
+Mon Mar 21 01:27:32 2016
 
   SmartGuide Results
   ------------------
@@ -9,19 +9,20 @@ Sun Mar 13 22:56:50 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |    512
-    Number of guided Components               |    512 out of    512 100.0%
-    Number of re-implemented Components       |      0 out of    512   0.0%
-    Number of new/changed Components          |      0 out of    512   0.0%
-  Number of Nets in the input design          |   1543
-    Number of guided Nets                     |   1543 out of   1543 100.0%
-    Number of partially guided Nets           |      0 out of   1543   0.0%
-    Number of re-routed Nets                  |      0 out of   1543   0.0%
-    Number of new/changed Nets                |      0 out of   1543   0.0%
+  Number of Components in the input design    |   1127
+    Number of guided Components               |   1126 out of   1127  99.9%
+    Number of re-implemented Components       |      1 out of   1127   0.1%
+    Number of new/changed Components          |      0 out of   1127   0.0%
+  Number of Nets in the input design          |   3060
+    Number of guided Nets                     |   3051 out of   3060  99.7%
+    Number of partially guided Nets           |      4 out of   3060   0.1%
+    Number of re-routed Nets                  |      5 out of   3060   0.2%
+    Number of new/changed Nets                |      0 out of   3060   0.0%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
+ global_clock_multiplier_b1/buffer_pclk_x10_PLL_buff : BUFPLL_X1Y0.
 
 
 The following Components are new/changed.
@@ -30,6 +31,11 @@ The following Components are new/changed.
 
 The following Nets were re-routed.
 ----------------------------------
+ hdmi_output_1/ser_in_blue<2>.
+ hdmi_output_2/ser_in_green<4>.
+ global_pixel_clock_x10_b1.
+ global_serdes_strobe_b1.
+ global_clock_multiplier_b1/pclk_x10.
 
 
 The following Nets are new/changed.
@@ -38,3 +44,7 @@ The following Nets are new/changed.
 
 The following Nets were partially guided.
 -----------------------------------------
+ global_pixel_clock_x1_b1.
+ global_pixel_clock_x1_b0.
+ global_pixel_clock_x2_b1.
+ global_pll_locked_b1.

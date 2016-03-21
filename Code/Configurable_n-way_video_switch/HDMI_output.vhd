@@ -43,18 +43,6 @@ end HDMI_OUT;
 
 architecture Structural of HDMI_OUT is
 
-
-	
-	COMPONENT Pixel_clock_multiplier is
-	PORT(
-		pclk_in			: in STD_LOGIC;
-		pclk_o_x1		: out STD_LOGIC;
-		pclk_o_x2		: out STD_LOGIC;
-		pclk_o_x10		: out STD_LOGIC;
-		pll_locked		: out STD_LOGIC;
-		serdes_strobe	: out STD_LOGIC);
-	END COMPONENT;
-
 	
 	COMPONENT TMDS_encoder is
     Port ( Pixel_clock : in  STD_LOGIC;
