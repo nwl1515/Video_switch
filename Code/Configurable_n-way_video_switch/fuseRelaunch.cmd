@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "/home/nikolaj/Desktop/Video_switch/Video_switch/Code/Configurable_n-way_video_switch/tb_resolution_isim_beh.exe" -prj "/home/nikolaj/Desktop/Video_switch/Video_switch/Code/Configurable_n-way_video_switch/tb_resolution_beh.prj" "work.tb_resolution" 

@@ -83,6 +83,7 @@ entity Video_Switch is
 			
 			);
 			
+	
 			
 			
 			
@@ -99,15 +100,18 @@ architecture Structural of Video_Switch is
 	signal global_pixel_clock_x2_b1			: std_logic;
 	signal global_pixel_clock_x10_b1			: std_logic;
 	signal global_output_h_sync 				: std_logic;
+	signal global_output_h_sync_controller : std_logic;
 	signal global_output_v_sync 				: std_logic;
+	signal global_output_v_sync_controller : std_logic;
 	signal global_output_active_video 		: std_logic;
+	signal global_output_active_video_controller : std_logic;
 	signal global_pll_locked					: std_logic := '0';
 	signal global_pll_locked_b0				: std_logic;
 	signal global_serdes_strobe_b0			: std_logic;
 	signal global_pll_locked_b1				: std_logic;
 	signal global_serdes_strobe_b1			: std_logic;
-	signal pixel_h_count_i					: std_logic_vector(11 downto 0);
-	signal pixel_v_count_i					: std_logic_vector(10 downto 0);
+	signal global_h_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '1');
+	signal global_v_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '1');
 	
 	signal color_red, color_blue, color_green : std_logic_vector(7 downto 0) := (others => '0');
 	signal g_color_red, g_color_green, g_color_blue : std_logic_vector(7 downto 0);
@@ -139,6 +143,101 @@ architecture Structural of Video_Switch is
 	 signal 	 leds_out						: STD_LOGIC_VECTOR (7 downto 0) := "10101010";
 	 signal 	 out_data						: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 	 signal	 in_data							: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+
+	COMPONENT BRAM_interface
+    Port (
+		BRAM_enable 		: in STD_LOGIC;
+		clk_out				: in STD_LOGIC;
+		clk_in				: in STD_LOGIC;
+		clk_out_enable    : in STD_LOGIC;
+		P0_enable			: in STD_LOGIC;
+		P0_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P0_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P0_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P0_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P0_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P0_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P0_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P0_I_select_out	: in STD_LOGIC;
+		P0_S_select			: in STD_LOGIC;
+		P1_enable			: in STD_LOGIC;
+		P1_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P1_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P1_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P1_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P1_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P1_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P1_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P1_I_select_out	: in STD_LOGIC;
+		P1_S_select			: in STD_LOGIC;
+		P2_enable			: in STD_LOGIC;
+		P2_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P2_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P2_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P2_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P2_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P2_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P2_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P2_I_select_out	: in STD_LOGIC;
+		P2_S_select			: in STD_LOGIC;
+		P3_enable			: in STD_LOGIC;
+		P3_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P3_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P3_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P3_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P3_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P3_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P3_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P3_I_select_out	: in STD_LOGIC;
+		P3_S_select			: in STD_LOGIC;
+		P4_enable			: in STD_LOGIC;
+		P4_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P4_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P4_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P4_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P4_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P4_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P4_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P4_I_select_out	: in STD_LOGIC;
+		P4_S_select			: in STD_LOGIC;
+		P5_enable			: in STD_LOGIC;
+		P5_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P5_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P5_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P5_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P5_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P5_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P5_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P5_I_select_out	: in STD_LOGIC;
+		P5_S_select			: in STD_LOGIC
+	 );
+	END COMPONENT;
+
+	COMPONENT Output_Controller
+    Port ( 
+		clk_in 				: in  STD_LOGIC; --- OBS x1 pixel clock
+		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0);
+		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
+		global_h_sync		: in STD_LOGIC;
+		global_v_sync		: in STD_LOGIC;
+		global_output_h	: out STD_LOGIC := '0';
+		global_output_v	: out STD_LOGIC := '0';
+		global_active_v	: in STD_LOGIC;
+		global_output_av	: out STD_LOGIC := '0';
+		BRAM_clock_out_e	: out STD_LOGIC := '0';
+		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0);
+		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P0_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P0_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P0_h_count_out 	: out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P0_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		P0_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P0_I_selector		: out STD_LOGIC := '0';
+		P0_S_selector		: out STD_LOGIC := '0';
+		P0_enable			: out STD_LOGIC := '0'		
+		);
+		END COMPONENT;	
 
 	COMPONENT HDMI_IN
 	PORT(
@@ -172,18 +271,7 @@ architecture Structural of Video_Switch is
 		);
 	END COMPONENT;
 	
-	COMPONENT vga_gen
-	PORT(
-		clk50           : IN std_logic;          
-		pixel_clock     : in std_logic;
-		red_p           : OUT std_logic_vector(7 downto 0);
-		green_p         : OUT std_logic_vector(7 downto 0);
-		blue_p          : OUT std_logic_vector(7 downto 0);
-		blank           : OUT std_logic;
-		hsync           : OUT std_logic;
-		vsync           : OUT std_logic
-		);
-	END COMPONENT;
+
 	
 	COMPONENT Resolution_output_timing
     Port ( 
@@ -191,9 +279,11 @@ architecture Structural of Video_Switch is
 			  red_p				: out std_logic_Vector(7 downto 0);
 			  green_p			: out std_logic_Vector(7 downto 0);
 			  blue_p 			: out std_logic_vector(7 downto 0);
-           active_video   : out STD_LOGIC;
+           active_video   : inout STD_LOGIC;
            hsync   : out STD_LOGIC;
            vsync   : out STD_LOGIC;
+			  h_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
+			  v_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
 			  Pll_locked : in  std_logic);
 	END COMPONENT;
 	
@@ -429,9 +519,9 @@ hdmi_output_0 : HDMI_OUT
 			red_p      => g_color_red,
 			green_p    => g_color_green,
 			blue_p     => g_color_blue,
-			active_video      => global_output_active_video,
-			hsync      => global_output_h_sync,
-			vsync      => global_output_v_sync,
+			active_video      => global_output_active_video_controller,
+			hsync      => global_output_h_sync_controller,
+			vsync      => global_output_v_sync_controller,
 			tmds_out_p => hdmi_port_0_out_p,
 			tmds_out_n => hdmi_port_0_out_n
 		);
@@ -446,9 +536,9 @@ hdmi_output_1 : HDMI_OUT
 			red_p      => g_color_red,
 			green_p    => g_color_green,
 			blue_p     => g_color_blue,
-			active_video      => global_output_active_video,
-			hsync      => global_output_h_sync,
-			vsync      => global_output_v_sync,
+			active_video      => global_output_active_video_controller,
+			hsync      => global_output_h_sync_controller,
+			vsync      => global_output_v_sync_controller,
 			tmds_out_p => hdmi_port_1_out_p,
 			tmds_out_n => hdmi_port_1_out_n
 		);
@@ -539,6 +629,8 @@ hdmi_output_5 : HDMI_OUT
            active_video 	=> global_output_active_video,
            hsync   			=> global_output_h_sync,
            vsync   			=> global_output_v_sync,
+			  h_count_out 		=> global_h_count_pixel_out,
+			  v_count_out 		=> global_v_count_pixel_out,
 			  Pll_locked 		=> global_pll_locked
 	);
 
@@ -740,6 +832,101 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1;
 		c3_p5_rd_overflow                       =>  Open,
 		c3_p5_rd_error                          =>  Open
 );
+
+	u_BRAM_interface : BRAM_interface
+    Port map(
+		BRAM_enable 		=> '1',
+		clk_out				=> global_pixel_clock,
+		clk_in				=> global_pixel_clock_x2_b1,
+		clk_out_enable    => '0',
+		P0_enable			=> '0',
+		P0_data_in_I0		=> (others => '0'),
+		P0_data_in_I1		=> (others => '0'),
+		P0_data_out			=> open,
+		P0_h_count_in_I0	=> (others => '0'),
+		P0_h_count_in_I1	=> (others => '0'),
+		P0_h_count_out		=> (others => '0'),
+		P0_data_select_in => (others => '0'),
+		P0_I_select_out	=> '0',
+		P0_S_select			=> '0',
+		P1_enable			=> '0',
+		P1_data_in_I0		=> (others => '0'),
+		P1_data_in_I1		=> (others => '0'),
+		P1_data_out			=> open,
+		P1_h_count_in_I0	=> (others => '0'),
+		P1_h_count_in_I1	=> (others => '0'),
+		P1_h_count_out		=> (others => '0'),
+		P1_data_select_in => (others => '0'),
+		P1_I_select_out	=> '0',
+		P1_S_select			=> '0',
+		P2_enable			=> '0',
+		P2_data_in_I0		=> (others => '0'),
+		P2_data_in_I1		=> (others => '0'),
+		P2_data_out			=> open,
+		P2_h_count_in_I0	=> (others => '0'),
+		P2_h_count_in_I1	=> (others => '0'),
+		P2_h_count_out		=> (others => '0'),
+		P2_data_select_in => (others => '0'),
+		P2_I_select_out	=> '0',
+		P2_S_select			=> '0',
+		P3_enable			=> '0',
+		P3_data_in_I0		=> (others => '0'),
+		P3_data_in_I1		=> (others => '0'),
+		P3_data_out			=> open,
+		P3_h_count_in_I0	=> (others => '0'),
+		P3_h_count_in_I1	=> (others => '0'),
+		P3_h_count_out		=> (others => '0'),
+		P3_data_select_in => (others => '0'),
+		P3_I_select_out	=> '0',
+		P3_S_select			=> '0',
+		P4_enable			=> '0',
+		P4_data_in_I0		=> (others => '0'),
+		P4_data_in_I1		=> (others => '0'),
+		P4_data_out			=> open,
+		P4_h_count_in_I0	=> (others => '0'),
+		P4_h_count_in_I1	=> (others => '0'),
+		P4_h_count_out		=> (others => '0'),
+		P4_data_select_in => (others => '0'),
+		P4_I_select_out	=> '0',
+		P4_S_select			=> '0',
+		P5_enable			=> '0',
+		P5_data_in_I0		=> (others => '0'),
+		P5_data_in_I1		=> (others => '0'),
+		P5_data_out			=>  Open,
+		P5_h_count_in_I0	=> (others => '0'),
+		P5_h_count_in_I1	=> (others => '0'),
+		P5_h_count_out		=> (others => '0'),
+		P5_data_select_in => (others => '0'),
+		P5_I_select_out	=> '0',
+		P5_S_select			=> '0'
+	 );
+	 
+	 
+	 
+	 u_output_controller : Output_Controller
+    Port map ( 
+		clk_in 				=> global_pixel_clock, --- OBS x1 pixel clock
+		global_h_count		=> (others => '0'),
+		global_v_count		=> (others => '0'),
+		global_h_sync		=> global_output_h_sync,
+		global_v_sync		=> global_output_v_sync,
+		global_output_h	=> global_output_h_sync_controller,
+		global_output_v	=> global_output_v_sync_controller,
+		global_active_v	=> global_output_active_video,
+		global_output_av	=> global_output_active_video_controller,
+		BRAM_clock_out_e	=> open,
+		P0_conf				=> (others => '0'),
+		P0_set_1 			=> (others => '0'),
+		P0_set_2 			=> (others => '0'),
+		P0_set_3 			=> (others => '0'),
+		P0_set_4 			=> (others => '0'),
+		P0_h_count_out 	=> open,
+		P0_BRAM_in			=> (others => '0'),
+		P0_video_out		=> open,
+		P0_I_selector		=> open,
+		P0_S_selector		=> open,
+		P0_enable			=> open	
+		);
 		
 	slow_clock_proc : PROCESS(GCLK_i)
 	BEGIN

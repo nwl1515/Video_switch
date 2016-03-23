@@ -1,2 +1,1 @@
-work	"BRAM_port.vhd"
-work	"ipcore_dir/BRAM_5x9kb.vhd"
+work	"Resolution_output_timing.vhd"

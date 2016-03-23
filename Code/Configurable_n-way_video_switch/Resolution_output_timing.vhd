@@ -14,9 +14,11 @@ entity Resolution_output_timing is
            red_p   : out STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
            green_p : out STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
            blue_p  : out STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
-           active_video   : out STD_LOGIC := '0';
+           active_video   : inout STD_LOGIC := '0';
            hsync   : out STD_LOGIC := '0';
            vsync   : out STD_LOGIC := '0';
+			  h_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
+			  v_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
 			  Pll_locked : in  std_logic);
 end Resolution_output_timing;
 
@@ -40,8 +42,11 @@ architecture Structural of Resolution_output_timing is
    constant v_max        : natural := 750;
    signal   v_count      : unsigned(11 downto 0) := (others => '0');
    signal   v_offset     : unsigned(7 downto 0) := (others => '0');
+
 begin
-  
+
+
+
 process(pixel_clock)
    begin
       if rising_edge(pixel_clock) then
@@ -51,11 +56,15 @@ process(pixel_clock)
             green_p <= std_logic_vector(v_count(7 downto 0)+v_offset);
             blue_p  <= std_logic_vector(h_count(7 downto 0)+v_count(7 downto 0));
             active_video   <= '1';
+				h_count_out <= std_logic_vector(h_count - h_blanking);
+				v_count_out <= std_logic_vector(v_count - v_blanking);
          else
-            red_p   <= (others => '0');
-            green_p <= (others => '0');
-            blue_p  <= (others => '0');
+            red_p   <= (others => '1');
+            green_p <= (others => '1');
+            blue_p  <= (others => '1');
             active_video   <= '0';
+				h_count_out <= (others => '1');
+				v_count_out <= (others => '1');
          end if;
 
          if h_count >= h_sync_start and h_count < h_sync_end then

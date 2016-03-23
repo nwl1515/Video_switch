@@ -33,235 +33,202 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity BRAM_interface is
     Port (
-		BRAM_enable 		: STD_LOGIC;
-		Clk_out				: STD_LOGIC;
-		Clk_in_I0			: STD_LOGIC;
-		Clk_in_I0_h			: STD_LOGIC;
-		Clk_in_I1			: STD_LOGIC;
-		Clk_in_I1_h			: STD_LOGIC;
-		S_selector			: STD_LOGIC;
-		H_count_in_I0		: STD_LOGIC_VECTOR(10 downto 0);
-		H_count_in_I0_h	: STD_LOGIC_VECTOR(10 downto 0);
-		H_count_in_I1		: STD_LOGIC_VECTOR(10 downto 0);
-		H_count_in_I1_h	: STD_LOGIC_VECTOR(10 downto 0);
-		P0_enable			: STD_LOGIC;
-		P0_I_select_out	: STD_LOGIC;
-		P0_Ih_select		: STD_LOGIC;
-		P0_H_count_out		: STD_LOGIC_VECTOR(10 downto 0);
-		P0_data_in_I0		: STD_LOGIC_VECTOR(23 downto 0);
-		P0_data_in_I1		: STD_LOGIC_VECTOR(23 downto 0);
-		P0_data_out			: STD_LOGIC_VECTOR(23 downto 0);
-		P1_enable			: STD_LOGIC;
-		P1_I_select_out	: STD_LOGIC;
-		P1_Ih_select		: STD_LOGIC;
-		P1_H_count_out		: STD_LOGIC_VECTOR(10 downto 0);
-		P1_data_in_I0		: STD_LOGIC_VECTOR(23 downto 0);
-		P1_data_in_I1		: STD_LOGIC_VECTOR(23 downto 0);
-		P1_data_out			: STD_LOGIC_VECTOR(23 downto 0);
-		P2_enable			: STD_LOGIC;
-		P2_I_select_out	: STD_LOGIC;
-		P2_Ih_select		: STD_LOGIC;
-		P2_H_count_out		: STD_LOGIC_VECTOR(10 downto 0);
-		P2_data_in_I0		: STD_LOGIC_VECTOR(23 downto 0);
-		P2_data_in_I1		: STD_LOGIC_VECTOR(23 downto 0);
-		P2_data_out			: STD_LOGIC_VECTOR(23 downto 0);
-		P3_enable			: STD_LOGIC;
-		P3_I_select_out	: STD_LOGIC;
-		P3_Ih_select		: STD_LOGIC;
-		P3_H_count_out		: STD_LOGIC_VECTOR(10 downto 0);
-		P3_data_in_I0		: STD_LOGIC_VECTOR(23 downto 0);
-		P3_data_in_I1		: STD_LOGIC_VECTOR(23 downto 0);
-		P3_data_out			: STD_LOGIC_VECTOR(23 downto 0);
-		P4_enable			: STD_LOGIC;
-		P4_I_select_out	: STD_LOGIC;
-		P4_Ih_select		: STD_LOGIC;
-		P4_H_count_out		: STD_LOGIC_VECTOR(10 downto 0);
-		P4_data_in_I0		: STD_LOGIC_VECTOR(23 downto 0);
-		P4_data_in_I1		: STD_LOGIC_VECTOR(23 downto 0);
-		P4_data_out			: STD_LOGIC_VECTOR(23 downto 0);
-		P5_enable			: STD_LOGIC;
-		P5_I_select_out	: STD_LOGIC;
-		P5_Ih_select		: STD_LOGIC;
-		P5_H_count_out		: STD_LOGIC_VECTOR(10 downto 0);
-		P5_data_in_I0		: STD_LOGIC_VECTOR(23 downto 0);
-		P5_data_in_I1		: STD_LOGIC_VECTOR(23 downto 0);
-		P5_data_out			: STD_LOGIC_VECTOR(23 downto 0)
+		BRAM_enable 		: in STD_LOGIC;
+		clk_out				: in STD_LOGIC;
+		clk_in				: in STD_LOGIC;
+		clk_out_enable    : in STD_LOGIC;
+		P0_enable			: in STD_LOGIC;
+		P0_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P0_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P0_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P0_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P0_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P0_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P0_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P0_I_select_out	: in STD_LOGIC;
+		P0_S_select			: in STD_LOGIC;
+		P1_enable			: in STD_LOGIC;
+		P1_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P1_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P1_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P1_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P1_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P1_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P1_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P1_I_select_out	: in STD_LOGIC;
+		P1_S_select			: in STD_LOGIC;
+		P2_enable			: in STD_LOGIC;
+		P2_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P2_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P2_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P2_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P2_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P2_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P2_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P2_I_select_out	: in STD_LOGIC;
+		P2_S_select			: in STD_LOGIC;
+		P3_enable			: in STD_LOGIC;
+		P3_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P3_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P3_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P3_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P3_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P3_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P3_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P3_I_select_out	: in STD_LOGIC;
+		P3_S_select			: in STD_LOGIC;
+		P4_enable			: in STD_LOGIC;
+		P4_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P4_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P4_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P4_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P4_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P4_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P4_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P4_I_select_out	: in STD_LOGIC;
+		P4_S_select			: in STD_LOGIC;
+		P5_enable			: in STD_LOGIC;
+		P5_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		P5_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		P5_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		P5_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		P5_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		P5_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		P5_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		P5_I_select_out	: in STD_LOGIC;
+		P5_S_select			: in STD_LOGIC
 	 );
 end BRAM_interface;
 
 architecture Structural of BRAM_interface is
 
 	COMPONENT BRAM_port
-	PORT(
-		Clk_out_i : IN std_logic;
-		Clk_in_I0_i : IN std_logic;
-		Clk_in_I1_i : IN std_logic;
-		Clk_in_I0_h_i : IN std_logic;
-		Clk_in_I1_h_i : IN std_logic;
-		S_selector_i : IN std_logic;
-		S_selector_i_n : IN std_logic;
-		H_count_I0 : IN std_logic_vector(10 downto 0);
-		H_count_I0_h : IN std_logic_vector(10 downto 0);
-		H_count_I1 : IN std_logic_vector(10 downto 0);
-		H_count_I1_h : IN std_logic_vector(10 downto 0);
-		Px_enable : IN std_logic;
-		Px_Ih_select : IN std_logic;
-		PX_I_select_out : IN std_logic;
-		Px_H_count_out : IN std_logic_vector(10 downto 0);
-		Px_data_in_I0 : IN std_logic_vector(23 downto 0);
-		Px_data_in_I1 : IN std_logic_vector(23 downto 0);
-		Px_data_out : IN std_logic_vector(23 downto 0)       
+	Port ( 
+		clk_out_i 			: in STD_LOGIC;
+		clk_in_i 			: in STD_LOGIC;
+		Px_enable			: in STD_LOGIC;
+		Px_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
+		Px_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
+		Px_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
+		Px_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
+		Px_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
+		Px_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
+		Px_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
+		Px_I_select_out	: in STD_LOGIC;
+		Px_S_select			: in STD_LOGIC       
 		);
 	END COMPONENT;
 
 	-- Signals
 	
 	signal Clk_out_i				: std_logic := '0';
-	signal Clk_in_I0_i			: std_logic := '0';
-	signal Clk_in_I1_i			: std_logic := '0';
-	signal Clk_in_I0_h_i			: std_logic := '0';
-	signal Clk_in_I1_h_i			: std_logic := '0';
-	signal S_selector_i			: std_logic := '0';
-	signal S_selector_i_n		: std_logic := '0';
+	signal Clk_in_i				: std_logic := '0';
+
 	
 begin
 	
 	-- LOGIC
 	
-	Clk_out_i 		<= Clk_out when BRAM_enable = '1' else '0';
-	Clk_in_I0_i 	<= Clk_in_I0 when BRAM_enable = '1' else '0';
-	Clk_in_I1_i		<= Clk_in_I1 when BRAM_enable = '1' else '0';
-	Clk_in_I0_h_i	<= Clk_in_I0_h when BRAM_enable = '1' else '0';
-	Clk_in_I1_h_i 	<= Clk_in_I1_h when BRAM_enable = '1' else '0';
-	
-	S_selector_i	<= S_selector when BRAM_enable = '1' else '0';
-	S_selector_i_n <= not S_selector when BRAM_enable = '1' else '0';
-	
-	Port0 : BRAM_port PORT MAP(
-		Clk_out_i 			=> Clk_out_i,
-		Clk_in_I0_i 		=> Clk_in_I0_i,
-		Clk_in_I1_i 		=> Clk_in_I1_i,
-		Clk_in_I0_h_i 		=> Clk_in_I0_h_i,
-		Clk_in_I1_h_i 		=> Clk_in_I1_h_i,
-		S_selector_i 		=> S_selector_i,
-		S_selector_i_n 	=> S_selector_i_n,
-		H_count_I0 			=> H_count_I0,
-		H_count_I0_h 		=> H_count_I0_h,
-		H_count_I1 			=> H_count_I1,
-		H_count_I1_h 		=> H_count_I1_h,
-		Px_enable 			=> P0_enable,
-		Px_Ih_select 		=> P0_Ih_select,
-		PX_I_select_out 	=> P0_I_select_out,
-		Px_H_count_out 	=> P0_H_count_out,
-		Px_data_in_I0 		=> P0_data_in_I0,
-		Px_data_in_I1 		=> P0_data_in_I1,
-		Px_data_out 		=> P0_data_out
+	clk_out_i 		<= clk_out when BRAM_enable = '1' and clk_out_enable = '1' else '0';
+	clk_in_i 		<= clk_in when BRAM_enable = '1' else '0';
+
+	Port0 : BRAM_port 
+	PORT MAP(
+		clk_out_i			=> clk_out_i,
+		clk_in_i 			=> clk_in_i,
+		Px_enable			=> P0_enable,
+		Px_data_in_I0		=> P0_data_in_I0,
+		Px_data_in_I1		=> P0_data_in_I1,
+		Px_data_out			=> P0_data_out,
+		Px_h_count_in_I0	=> P0_h_count_in_I0,
+		Px_h_count_in_I1	=> P0_h_count_in_I1,
+		Px_h_count_out		=> P0_h_count_out,
+		Px_data_select_in => P0_data_select_in,
+		Px_I_select_out	=> P0_I_select_out,
+		Px_S_select			=> P0_S_select 
 	);
 	
-		Port1 : BRAM_port PORT MAP(
-		Clk_out_i 			=> Clk_out_i,
-		Clk_in_I0_i 		=> Clk_in_I0_i,
-		Clk_in_I1_i 		=> Clk_in_I1_i,
-		Clk_in_I0_h_i 		=> Clk_in_I0_h_i,
-		Clk_in_I1_h_i 		=> Clk_in_I1_h_i,
-		S_selector_i 		=> S_selector_i,
-		S_selector_i_n 	=> S_selector_i_n,
-		H_count_I0 			=> H_count_I0,
-		H_count_I0_h 		=> H_count_I0_h,
-		H_count_I1 			=> H_count_I1,
-		H_count_I1_h 		=> H_count_I1_h,
-		Px_enable 			=> P1_enable,
-		Px_Ih_select 		=> P1_Ih_select,
-		PX_I_select_out 	=> P1_I_select_out,
-		Px_H_count_out 	=> P1_H_count_out,
-		Px_data_in_I0 		=> P1_data_in_I0,
-		Px_data_in_I1 		=> P1_data_in_I1,
-		Px_data_out 		=> P1_data_out
+	Port1 : BRAM_port 
+	PORT MAP(
+		clk_out_i			=> clk_out_i,
+		clk_in_i 			=> clk_in_i,
+		Px_enable			=> P1_enable,
+		Px_data_in_I0		=> P1_data_in_I0,
+		Px_data_in_I1		=> P1_data_in_I1,
+		Px_data_out			=> P1_data_out,
+		Px_h_count_in_I0	=> P1_h_count_in_I0,
+		Px_h_count_in_I1	=> P1_h_count_in_I1,
+		Px_h_count_out		=> P1_h_count_out,
+		Px_data_select_in => P1_data_select_in,
+		Px_I_select_out	=> P1_I_select_out,
+		Px_S_select			=> P1_S_select 
 	);
+	
+	Port2 : BRAM_port 
+	PORT MAP(
+		clk_out_i			=> clk_out_i,
+		clk_in_i 			=> clk_in_i,
+		Px_enable			=> P2_enable,
+		Px_data_in_I0		=> P2_data_in_I0,
+		Px_data_in_I1		=> P2_data_in_I1,
+		Px_data_out			=> P2_data_out,
+		Px_h_count_in_I0	=> P2_h_count_in_I0,
+		Px_h_count_in_I1	=> P2_h_count_in_I1,
+		Px_h_count_out		=> P2_h_count_out,
+		Px_data_select_in => P2_data_select_in,
+		Px_I_select_out	=> P2_I_select_out,
+		Px_S_select			=> P2_S_select 
+	);
+	
+	Port3 : BRAM_port 
+	PORT MAP(
+		clk_out_i			=> clk_out_i,
+		clk_in_i 			=> clk_in_i,
+		Px_enable			=> P3_enable,
+		Px_data_in_I0		=> P3_data_in_I0,
+		Px_data_in_I1		=> P3_data_in_I1,
+		Px_data_out			=> P3_data_out,
+		Px_h_count_in_I0	=> P3_h_count_in_I0,
+		Px_h_count_in_I1	=> P3_h_count_in_I1,
+		Px_h_count_out		=> P3_h_count_out,
+		Px_data_select_in => P3_data_select_in,
+		Px_I_select_out	=> P3_I_select_out,
+		Px_S_select			=> P3_S_select 
+	);
+	
+	Port4 : BRAM_port 
+	PORT MAP(
+		clk_out_i			=> clk_out_i,
+		clk_in_i 			=> clk_in_i,
+		Px_enable			=> P4_enable,
+		Px_data_in_I0		=> P4_data_in_I0,
+		Px_data_in_I1		=> P4_data_in_I1,
+		Px_data_out			=> P4_data_out,
+		Px_h_count_in_I0	=> P4_h_count_in_I0,
+		Px_h_count_in_I1	=> P4_h_count_in_I1,
+		Px_h_count_out		=> P4_h_count_out,
+		Px_data_select_in => P4_data_select_in,
+		Px_I_select_out	=> P4_I_select_out,
+		Px_S_select			=> P4_S_select 
+	);
+	
+	Port5 : BRAM_port 
+	PORT MAP(
+		clk_out_i			=> clk_out_i,
+		clk_in_i 			=> clk_in_i,
+		Px_enable			=> P5_enable,
+		Px_data_in_I0		=> P5_data_in_I0,
+		Px_data_in_I1		=> P5_data_in_I1,
+		Px_data_out			=> P5_data_out,
+		Px_h_count_in_I0	=> P5_h_count_in_I0,
+		Px_h_count_in_I1	=> P5_h_count_in_I1,
+		Px_h_count_out		=> P5_h_count_out,
+		Px_data_select_in => P5_data_select_in,
+		Px_I_select_out	=> P5_I_select_out,
+		Px_S_select			=> P5_S_select 
+	);
+	
 
-	Port2 : BRAM_port PORT MAP(
-		Clk_out_i 			=> Clk_out_i,
-		Clk_in_I0_i 		=> Clk_in_I0_i,
-		Clk_in_I1_i 		=> Clk_in_I1_i,
-		Clk_in_I0_h_i 		=> Clk_in_I0_h_i,
-		Clk_in_I1_h_i 		=> Clk_in_I1_h_i,
-		S_selector_i 		=> S_selector_i,
-		S_selector_i_n 	=> S_selector_i_n,
-		H_count_I0 			=> H_count_I0,
-		H_count_I0_h 		=> H_count_I0_h,
-		H_count_I1 			=> H_count_I1,
-		H_count_I1_h 		=> H_count_I1_h,
-		Px_enable 			=> P2_enable,
-		Px_Ih_select 		=> P2_Ih_select,
-		PX_I_select_out 	=> P2_I_select_out,
-		Px_H_count_out 	=> P2_H_count_out,
-		Px_data_in_I0 		=> P2_data_in_I0,
-		Px_data_in_I1 		=> P2_data_in_I1,
-		Px_data_out 		=> P2_data_out
-	);
-
-	Port3 : BRAM_port PORT MAP(
-		Clk_out_i 			=> Clk_out_i,
-		Clk_in_I0_i 		=> Clk_in_I0_i,
-		Clk_in_I1_i 		=> Clk_in_I1_i,
-		Clk_in_I0_h_i 		=> Clk_in_I0_h_i,
-		Clk_in_I1_h_i 		=> Clk_in_I1_h_i,
-		S_selector_i 		=> S_selector_i,
-		S_selector_i_n 	=> S_selector_i_n,
-		H_count_I0 			=> H_count_I0,
-		H_count_I0_h 		=> H_count_I0_h,
-		H_count_I1 			=> H_count_I1,
-		H_count_I1_h 		=> H_count_I1_h,
-		Px_enable 			=> P0_enable,
-		Px_Ih_select 		=> P3_Ih_select,
-		PX_I_select_out 	=> P3_I_select_out,
-		Px_H_count_out 	=> P3_H_count_out,
-		Px_data_in_I0 		=> P3_data_in_I0,
-		Px_data_in_I1 		=> P3_data_in_I1,
-		Px_data_out 		=> P3_data_out
-	);
-
-	Port4 : BRAM_port PORT MAP(
-		Clk_out_i 			=> Clk_out_i,
-		Clk_in_I0_i 		=> Clk_in_I0_i,
-		Clk_in_I1_i 		=> Clk_in_I1_i,
-		Clk_in_I0_h_i 		=> Clk_in_I0_h_i,
-		Clk_in_I1_h_i 		=> Clk_in_I1_h_i,
-		S_selector_i 		=> S_selector_i,
-		S_selector_i_n 	=> S_selector_i_n,
-		H_count_I0 			=> H_count_I0,
-		H_count_I0_h 		=> H_count_I0_h,
-		H_count_I1 			=> H_count_I1,
-		H_count_I1_h 		=> H_count_I1_h,
-		Px_enable 			=> P4_enable,
-		Px_Ih_select 		=> P4_Ih_select,
-		PX_I_select_out 	=> P4_I_select_out,
-		Px_H_count_out 	=> P4_H_count_out,
-		Px_data_in_I0 		=> P4_data_in_I0,
-		Px_data_in_I1 		=> P4_data_in_I1,
-		Px_data_out 		=> P4_data_out
-	);
-
-	Port5 : BRAM_port PORT MAP(
-		Clk_out_i 			=> Clk_out_i,
-		Clk_in_I0_i 		=> Clk_in_I0_i,
-		Clk_in_I1_i 		=> Clk_in_I1_i,
-		Clk_in_I0_h_i 		=> Clk_in_I0_h_i,
-		Clk_in_I1_h_i 		=> Clk_in_I1_h_i,
-		S_selector_i 		=> S_selector_i,
-		S_selector_i_n 	=> S_selector_i_n,
-		H_count_I0 			=> H_count_I0,
-		H_count_I0_h 		=> H_count_I0_h,
-		H_count_I1 			=> H_count_I1,
-		H_count_I1_h 		=> H_count_I1_h,
-		Px_enable 			=> P5_enable,
-		Px_Ih_select 		=> P5_Ih_select,
-		PX_I_select_out 	=> P5_I_select_out,
-		Px_H_count_out 	=> P5_H_count_out,
-		Px_data_in_I0 		=> P5_data_in_I0,
-		Px_data_in_I1 		=> P5_data_in_I1,
-		Px_data_out 		=> P5_data_out
-	);
 
 	
 	
