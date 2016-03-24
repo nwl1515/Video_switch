@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Thu Mar 24 02:11:19 2016
+Thu Mar 24 13:27:49 2016
 
   SmartGuide Results
   ------------------
@@ -9,73 +9,84 @@ Thu Mar 24 02:11:19 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |   1256
-    Number of guided Components               |   1250 out of   1256  99.5%
-    Number of re-implemented Components       |      4 out of   1256   0.3%
-    Number of new/changed Components          |      2 out of   1256   0.2%
-  Number of Nets in the input design          |   3757
-    Number of guided Nets                     |   3722 out of   3757  99.1%
-    Number of partially guided Nets           |     15 out of   3757   0.4%
-    Number of re-routed Nets                  |     14 out of   3757   0.4%
-    Number of new/changed Nets                |      6 out of   3757   0.2%
+  Number of Components in the input design    |   1259
+    Number of guided Components               |   1255 out of   1259  99.7%
+    Number of re-implemented Components       |      3 out of   1259   0.2%
+    Number of new/changed Components          |      1 out of   1259   0.1%
+  Number of Nets in the input design          |   3761
+    Number of guided Nets                     |   3713 out of   3761  98.7%
+    Number of partially guided Nets           |     13 out of   3761   0.3%
+    Number of re-routed Nets                  |     28 out of   3761   0.7%
+    Number of new/changed Nets                |      7 out of   3761   0.2%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
- DDR_p3_cmd_byte_addr<11> : SLICE_X7Y67.
- u_input_to_ddr_controller/bank_col_I1_12 : SLICE_X8Y67.
- u_input_to_ddr_controller/bank_col_I1_9 : SLICE_X18Y67.
- u_input_to_ddr_controller/bank_col_I1_4 : SLICE_X19Y67.
+ u_input_to_ddr_controller/cmd_en_I1_p1 : SLICE_X4Y72.
+ u_input_to_ddr_controller/count_num_I1<3> : SLICE_X4Y73.
+ DDR_p3_cmd_byte_addr<17> : SLICE_X4Y77.
 
 
 The following Components are new/changed.
 -----------------------------------------
- u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o : SLICE_X27Y68.
- u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o11 : SLICE_X28Y68.
+ u_input_to_ddr_controller/_n0161 : SLICE_X5Y51.
 
 
 The following Nets were re-routed.
 ----------------------------------
- u_input_to_ddr_controller/bank_col_I1_4.
- u_input_to_ddr_controller/bank_col_I1_7.
- u_input_to_ddr_controller/bank_col_I1_11.
- u_input_to_ddr_controller/bank_col_I1_12.
- DDR_p3_cmd_byte_addr<10>.
- DDR_p3_cmd_byte_addr<11>.
- global_h_count_pixel_out<11>.
- u_input_to_ddr_controller/bank_col_I1_5.
+ DDR_p3_cmd_empty.
+ u_input_to_ddr_controller/count_num_I1<2>.
+ u_input_to_ddr_controller/count_num_I1<0>.
+ u_input_to_ddr_controller/count_num_I1<1>.
+ u_input_to_ddr_controller/count_num_I1<3>.
+ reset.
+ global_v_count_pixel_out<0>.
+ DDR_p3_cmd_byte_addr<16>.
+ global_v_count_pixel_out<1>.
+ DDR_p3_cmd_byte_addr<17>.
+ DDR_p3_cmd_byte_addr<13>.
+ DDR_p3_wr_en.
+ global_output_timing/Reset_OR_DriverANDClockEnable.
+ global_pll_locked.
+ u_input_to_ddr_controller/wr_en_I1_p1.
+ global_v_count_pixel_out<8>.
+ global_v_count_pixel_out<7>.
+ global_v_count_pixel_out<10>.
+ global_output_timing/N2.
  u_input_to_ddr_controller/bank_col_I1_3.
  u_input_to_ddr_controller/bank_col_I1_2.
+ u_input_to_ddr_controller/bank_col_I1_4.
  u_input_to_ddr_controller/bank_col_I1_10.
- u_input_to_ddr_controller/bank_col_I1_9.
- u_input_to_ddr_controller/bank_col_I1_6.
- u_input_to_ddr_controller/bank_col_I1_8.
+ u_input_to_ddr_controller/cmd_en_I1_p1.
+ global_v_count_pixel_out<2>.
+ global_v_count_pixel_out<5>.
+ u_input_to_ddr_controller/bank_col_I1_12.
+ u_input_to_ddr_controller/Mmux_DDR_p3_cmd_byte_addr[29]_DDR_p3_cmd_byte_addr[29]_mux_9_OUT110.
 
 
 The following Nets are new/changed.
 -----------------------------------
- u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o.
- u_input_to_ddr_controller/Msub_GND_1571_o_GND_1571_o_sub_3_OUT<10:0>_xor<10>11.
- u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o11.
- u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o_inv.
- u_input_to_ddr_controller/Msub_GND_1571_o_GND_1571_o_sub_3_OUT<10:0>_xor<7>11.
- u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o1.
+ u_input_to_ddr_controller/_n0322_inv.
+ u_input_to_ddr_controller/_n0164.
+ u_input_to_ddr_controller/Mcount_count_num_I1_xor<4>11.
+ u_input_to_ddr_controller/_n0175_inv.
+ u_input_to_ddr_controller/_n0168.
+ u_input_to_ddr_controller/_n0161.
+ u_input_to_ddr_controller/_n0180_inv.
 
 
 The following Nets were partially guided.
 -----------------------------------------
  global_pixel_clock.
- u_input_to_ddr_controller/_n0167_inv.
- global_h_count_pixel_out<8>.
- global_h_count_pixel_out<7>.
- global_h_count_pixel_out<4>.
- global_h_count_pixel_out<5>.
- global_h_count_pixel_out<6>.
- global_h_count_pixel_out<2>.
- global_h_count_pixel_out<3>.
- global_h_count_pixel_out<0>.
- global_h_count_pixel_out<1>.
- global_h_count_pixel_out<9>.
- global_h_count_pixel_out<10>.
- reset.
- u_input_to_ddr_controller/_n0162_inv.
+ global_output_active_video.
+ leds_3_OBUF.
+ global_pll_locked_b0.
+ global_pll_locked_b1.
+ global_output_timing/h_count[11]_GND_42_o_equal_17_o.
+ global_output_timing/v_count<2>.
+ global_output_timing/v_count<3>.
+ global_output_timing/Reset_OR_DriverANDClockEnable12.
+ global_output_timing/Reset_OR_DriverANDClockEnable11.
+ global_output_timing/h_count<6>.
+ global_output_timing/GND_42_o_h_count[11]_LessThan_13_o2.
+ u_input_to_ddr_controller/reset_inv.

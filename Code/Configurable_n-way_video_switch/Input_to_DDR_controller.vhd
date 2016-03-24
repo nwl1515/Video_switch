@@ -49,6 +49,7 @@ entity Input_to_DDR_controller is
 				DDR_p2_cmd_en                            : out std_logic;
 				DDR_p2_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
 				DDR_p2_cmd_full                          : in std_logic;
+				DDR_p2_cmd_empty									: in std_logic;
 				
 				DDR_p2_wr_en                             : out std_logic;
 				DDR_p2_wr_data                           : out std_logic_vector(31 downto 0);
@@ -58,6 +59,7 @@ entity Input_to_DDR_controller is
 				DDR_p3_cmd_en                            : out std_logic;
 				DDR_p3_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
 				DDR_p3_cmd_full                          : in std_logic;
+				DDR_p3_cmd_empty									: in std_logic;
 				
 				DDR_p3_wr_en                             : out std_logic;
 				DDR_p3_wr_data                           : out std_logic_vector(31 downto 0);
@@ -115,6 +117,10 @@ begin
 				if count_num_I1 = 15 then
 					cmd_en_I1_p1 <= '1';		
 					DDR_p3_cmd_byte_addr <= "001" & v_count_I1 & bank_col_I1;
+					count_num_I1 <= (others => '0');
+				elsif active_video_I1 = '0' and DDR_p3_cmd_empty = '1' and DDR_p3_wr_empty = '0' then
+					cmd_en_I1_p1 <= '1';
+					DDR_p3_cmd_byte_addr <= error_addr;
 					count_num_I1 <= (others => '0');
 				else
 					cmd_en_I1_p1 <= '0';				

@@ -132,6 +132,7 @@ architecture Structural of Video_Switch is
 	signal DDR_p3_cmd_en							: STD_LOGIC := '0';
 	signal DDR_p3_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
 	signal DDR_p3_cmd_full						: STD_LOGIC := '0';
+	signal DDR_p3_cmd_empty						: STD_LOGIC := '0';
 	signal DDR_p3_wr_en							: STD_LOGIC := '0';
 	signal DDR_p3_wr_data						: STD_LOGIC_VECTOR(31 downto 0);
 	signal DDR_p3_wr_full						: STD_LOGIC := '0';
@@ -179,14 +180,16 @@ architecture Structural of Video_Switch is
 				reset													: in  STD_LOGIC;
 				DDR_p2_cmd_en                            : out std_logic;
 				DDR_p2_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-				DDR_p2_cmd_full                          : in std_logic;				
+				DDR_p2_cmd_full                          : in std_logic;
+				DDR_p2_cmd_empty									: in STD_LOGIC;
 				DDR_p2_wr_en                             : out std_logic;
 				DDR_p2_wr_data                           : out std_logic_vector(31 downto 0);
 				DDR_p2_wr_full                           : in std_logic;
 				DDR_p2_wr_empty                          : in std_logic;				
 				DDR_p3_cmd_en                            : out std_logic;
 				DDR_p3_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-				DDR_p3_cmd_full                          : in std_logic;				
+				DDR_p3_cmd_full                          : in std_logic;	
+				DDR_p3_cmd_empty									: in std_logic;
 				DDR_p3_wr_en                             : out std_logic;
 				DDR_p3_wr_data                           : out std_logic_vector(31 downto 0);
 				DDR_p3_wr_full                           : in std_logic;
@@ -849,7 +852,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1;
 		c3_p3_cmd_instr                         =>  "000",
 		c3_p3_cmd_bl                            =>  "001111",		-- 15 means 16
 		c3_p3_cmd_byte_addr                     =>  DDR_p3_cmd_byte_addr,
-		c3_p3_cmd_empty                         =>  open,
+		c3_p3_cmd_empty                         =>  DDR_p3_cmd_empty,
 		c3_p3_cmd_full                          =>  DDR_p3_cmd_full,
 		c3_p3_wr_clk                            =>  global_pixel_clock,
 		c3_p3_wr_en                             =>  DDR_p3_wr_en,
@@ -1008,14 +1011,16 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 				reset													=> reset,
 				DDR_p2_cmd_en                            	=> open,
 				DDR_p2_cmd_byte_addr                     	=> open,
-				DDR_p2_cmd_full                          	=> '0',			
+				DDR_p2_cmd_full                          	=> '0',
+				DDR_p2_cmd_empty									=> '0',
 				DDR_p2_wr_en                            	=> open,
 				DDR_p2_wr_data                           	=> open,
 				DDR_p2_wr_full                           	=> '0',
 				DDR_p2_wr_empty                        	=> '0',			
 				DDR_p3_cmd_en                            	=> DDR_p3_cmd_en,
 				DDR_p3_cmd_byte_addr                     	=> DDR_p3_cmd_byte_addr,
-				DDR_p3_cmd_full                         	=> DDR_p3_cmd_full,				
+				DDR_p3_cmd_full                         	=> DDR_p3_cmd_full,
+				DDR_p3_cmd_empty									=> DDR_p3_cmd_empty,
 				DDR_p3_wr_en                             	=> DDR_p3_wr_en,
 				DDR_p3_wr_data                           	=> DDR_p3_wr_data,
 				DDR_p3_wr_full                           	=> DDR_p3_wr_full,
