@@ -69,29 +69,76 @@ begin
 										Px_S_selector <= not Px_S_selector;
 										Px_unload_done <= '0';
 									end if;
-									Px_h_count_out <= global_h_count(10 downto 0);
-									if Px_h_count_out = 1279 then
+									if global_h_count < "11111111111" then
+										Px_video_out <= Px_BRAM_in;
+										Px_h_count_out <= global_h_count(10 downto 0);
+									else
+										Px_h_count_out <= (others => '0');
+									end if;
+									if Px_h_count_out >= 1279 then
 										Px_unload_done <= '1';
 									end if;
-									if Px_h_count_out < "1111111111" then
-										Px_video_out <= Px_BRAM_in;
-									end if;
 									
-									
-									
+																	
 				when "0001" =>
 									Px_I_selector <= '1';
 									if Px_inload_done = '1' and Px_unload_done = '1' then
 										Px_S_selector <= not Px_S_selector;
 										Px_unload_done <= '0';
 									end if;
-									Px_h_count_out <= global_h_count(10 downto 0);
-									if Px_h_count_out = 1279 then
+									if global_h_count < "11111111111" then
+										Px_video_out <= Px_BRAM_in;
+										Px_h_count_out <= global_h_count(10 downto 0);
+									else
+										Px_h_count_out <= (others => '0');
+									end if;
+									if Px_h_count_out >= 1279 then
 										Px_unload_done <= '1';
 									end if;
-									if Px_h_count_out < "1111111111" then
-										Px_video_out <= Px_BRAM_in;
+									
+				when "0100" =>
+									if Px_h_count_out < Px_set_1 then
+										Px_I_selector <= '0';
+									else
+										Px_I_selector <= '1';
 									end if;
+									if Px_inload_done = '1' and Px_unload_done = '1' then
+										Px_S_selector <= not Px_S_selector;
+										Px_unload_done <= '0';
+									end if;
+									if global_h_count < "11111111111" then
+										Px_video_out <= Px_BRAM_in;
+										Px_h_count_out <= global_h_count(10 downto 0);
+									else
+										Px_h_count_out <= (others => '0');
+									end if;
+									if Px_h_count_out >= 1279 then
+										Px_unload_done <= '1';
+									end if;
+									
+				when "0101" =>
+									if Px_h_count_out < Px_set_1 then
+										Px_I_selector <= '1';
+									else
+										Px_I_selector <= '0';
+									end if;
+									if Px_inload_done = '1' and Px_unload_done = '1' then
+										Px_S_selector <= not Px_S_selector;
+										Px_unload_done <= '0';
+									end if;
+									if global_h_count < "11111111111" then
+										Px_video_out <= Px_BRAM_in;
+										Px_h_count_out <= global_h_count(10 downto 0);
+									else
+										Px_h_count_out <= (others => '0');
+									end if;
+									if Px_h_count_out >= 1279 then
+										Px_unload_done <= '1';
+									end if;
+									
+								
+									
+				when others =>
 									
 			end case;
 		end if;

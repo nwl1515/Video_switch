@@ -128,14 +128,14 @@ architecture Structural of Output_Controller is
 	 );
 	 END COMPONENT;
 
-	signal active_video_p1, active_video_p2  : STD_LOGIC := '0';
+	signal active_video_p1, active_video_p2, active_video_p3  : STD_LOGIC := '0';
 	signal h_sync_p1, h_sync_p2, h_sync_p3	 	: STD_LOGIC := '0';
 	signal v_sync_p1, v_sync_p2, v_sync_p3	 	: STD_LOGIC := '0';
 	
 
 begin
 
- BRAM_clock_out_e <= '1' when active_video_p1 = '1' or active_video_p2 = '1' else '0';
+ BRAM_clock_out_e <= '1' when active_video_p2 = '1' or active_video_p3 = '1' else '0';
 
 ----------------------
 -- Pipeline signals for synchonization
@@ -146,15 +146,18 @@ begin
 	if rising_edge(clk_in) then
 		active_video_p1 <= global_active_v;
 		active_video_p2 <= active_video_p1;
-		global_output_av <= active_video_p2;
+		active_video_p3 <= active_video_p2;
+		global_output_av <= active_video_p3;
 		
 		h_sync_p1 <= global_h_sync;
 		h_sync_p2 <= h_sync_p1;
-		global_output_h <= h_sync_p2;
+		h_sync_p3 <= h_sync_p2;
+		global_output_h <= h_sync_p3;
 		
 		v_sync_p1 <= global_v_sync;
 		v_sync_p2 <= v_sync_p1;
-		global_output_v <= v_sync_p2;
+		v_sync_p3 <= v_sync_p2;
+		global_output_v <= v_sync_p3;
 	end if;
  end process video_active;
 

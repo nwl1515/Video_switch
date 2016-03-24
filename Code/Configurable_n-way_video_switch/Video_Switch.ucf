@@ -5,6 +5,8 @@
 
 CONFIG VCCAUX = 3.3;
 
+PIN "hdmi_input_1/p_clk_buffer.O" CLOCK_DEDICATED_ROUTE = FALSE;
+
 # LEDS
 NET "leds[0]" LOC = U18;
 NET "leds[0]" IOSTANDARD = LVCMOS33;

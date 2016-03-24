@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Wed Mar 23 18:15:08 2016
+Thu Mar 24 02:11:19 2016
 
   SmartGuide Results
   ------------------
@@ -9,194 +9,73 @@ Wed Mar 23 18:15:08 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |   1130
-    Number of guided Components               |   1116 out of   1130  98.8%
-    Number of re-implemented Components       |      8 out of   1130   0.7%
-    Number of new/changed Components          |      6 out of   1130   0.5%
-  Number of Nets in the input design          |   3063
-    Number of guided Nets                     |   2915 out of   3063  95.2%
-    Number of partially guided Nets           |     72 out of   3063   2.4%
-    Number of re-routed Nets                  |     67 out of   3063   2.2%
-    Number of new/changed Nets                |      9 out of   3063   0.3%
+  Number of Components in the input design    |   1256
+    Number of guided Components               |   1250 out of   1256  99.5%
+    Number of re-implemented Components       |      4 out of   1256   0.3%
+    Number of new/changed Components          |      2 out of   1256   0.2%
+  Number of Nets in the input design          |   3757
+    Number of guided Nets                     |   3722 out of   3757  99.1%
+    Number of partially guided Nets           |     15 out of   3757   0.4%
+    Number of re-routed Nets                  |     14 out of   3757   0.4%
+    Number of new/changed Nets                |      6 out of   3757   0.2%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
- hdmi_output_0/green_encoder/q_m<3> : SLICE_X19Y69.
- global_output_timing/N2 : SLICE_X23Y89.
- global_output_timing/N01 : SLICE_X24Y90.
- g_color_blue<3> : SLICE_X25Y91.
- global_output_h_sync : SLICE_X25Y93.
- global_output_timing/Reset_OR_DriverANDClockEnable : SLICE_X25Y95.
- g_color_red<3> : SLICE_X29Y101.
- g_color_red<7> : SLICE_X29Y102.
+ DDR_p3_cmd_byte_addr<11> : SLICE_X7Y67.
+ u_input_to_ddr_controller/bank_col_I1_12 : SLICE_X8Y67.
+ u_input_to_ddr_controller/bank_col_I1_9 : SLICE_X18Y67.
+ u_input_to_ddr_controller/bank_col_I1_4 : SLICE_X19Y67.
 
 
 The following Components are new/changed.
 -----------------------------------------
- g_color_green<6> : SLICE_X13Y99.
- global_output_active_video : SLICE_X24Y89.
- global_output_timing/GND_42_o_h_count[11]_LessThan_13_o1 : SLICE_X24Y94.
- global_output_timing/Msub_GND_42_o_GND_42_o_sub_6_OUT<11:0>_xor<7>11 : SLICE_X25Y92.
- global_output_timing/h_count[11]_GND_42_o_equal_17_o : SLICE_X25Y94.
- g_color_green<2> : SLICE_X25Y96.
+ u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o : SLICE_X27Y68.
+ u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o11 : SLICE_X28Y68.
 
 
 The following Nets were re-routed.
 ----------------------------------
- g_color_blue<4>.
- g_color_blue<6>.
- g_color_blue<5>.
- g_color_blue<7>.
- g_color_blue<0>.
- g_color_blue<1>.
- g_color_blue<2>.
- g_color_blue<3>.
- g_color_green<4>.
- g_color_green<6>.
- g_color_green<5>.
- g_color_green<7>.
- hdmi_output_5/green_encoder/ADDERTREE_INTERNAL_Madd2_lut<2>.
- g_color_green<0>.
- g_color_green<1>.
- g_color_green<2>.
- g_color_green<3>.
- g_color_red<4>.
- g_color_red<6>.
- g_color_red<5>.
- g_color_red<7>.
- g_color_red<0>.
- g_color_red<1>.
- g_color_red<2>.
- g_color_red<3>.
- hdmi_output_4/red_encoder/ADDERTREE_INTERNAL_Madd2_lut<2>.
- hdmi_output_0/green_encoder/ADDERTREE_INTERNAL_Madd2_lut<1>.
- global_output_active_video.
- hdmi_output_0/green_encoder/q_m<3>.
- global_output_timing/N01.
- global_output_timing/N4.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<0>.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<1>.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<2>.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<3>.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<4>.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<5>.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<6>.
- global_output_timing/h_count[7]_v_count[7]_add_4_OUT<7>.
- global_output_timing/Reset_OR_DriverANDClockEnable1.
- global_output_timing/h_count[11]_GND_42_o_equal_17_o_0.
- global_output_timing/h_count[11]_GND_42_o_equal_17_o.
- global_output_timing/Reset_OR_DriverANDClockEnable.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<0>.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<1>.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<2>.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<3>.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<4>.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<5>.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<6>.
- global_output_timing/v_count[7]_v_offset[7]_add_3_OUT<7>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<0>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<1>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<2>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<3>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<4>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<5>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<6>.
- global_output_timing/h_count[7]_h_offset[7]_add_2_OUT<7>.
- global_output_h_sync.
- hdmi_output_4/blue_encoder/q_m<7>.
- hdmi_output_4/blue_encoder/xored<5>.
- global_output_timing/Reset_OR_DriverANDClockEnable11.
- hdmi_output_3/blue_encoder/N39.
- global_pll_locked.
- global_output_timing/N2.
- global_output_timing/GND_42_o_h_count[11]_LessThan_13_o_0.
+ u_input_to_ddr_controller/bank_col_I1_4.
+ u_input_to_ddr_controller/bank_col_I1_7.
+ u_input_to_ddr_controller/bank_col_I1_11.
+ u_input_to_ddr_controller/bank_col_I1_12.
+ DDR_p3_cmd_byte_addr<10>.
+ DDR_p3_cmd_byte_addr<11>.
+ global_h_count_pixel_out<11>.
+ u_input_to_ddr_controller/bank_col_I1_5.
+ u_input_to_ddr_controller/bank_col_I1_3.
+ u_input_to_ddr_controller/bank_col_I1_2.
+ u_input_to_ddr_controller/bank_col_I1_10.
+ u_input_to_ddr_controller/bank_col_I1_9.
+ u_input_to_ddr_controller/bank_col_I1_6.
+ u_input_to_ddr_controller/bank_col_I1_8.
 
 
 The following Nets are new/changed.
 -----------------------------------
- global_output_timing/Msub_GND_42_o_GND_42_o_sub_7_OUT<11:0>_xor<10>12.
- global_output_timing/GND_42_o_GND_42_o_AND_19_o_inv1.
- global_output_timing/GND_42_o_GND_42_o_AND_19_o1.
- global_output_timing/Msub_GND_42_o_GND_42_o_sub_6_OUT<11:0>_xor<7>11.
- global_output_timing/h_count[11]_GND_42_o_equal_17_o<11>.
- global_output_timing/h_count[11]_GND_42_o_equal_17_o<11>1.
- global_output_timing/GND_42_o_h_count[11]_LessThan_13_o1.
- global_output_timing/h_count[11]_GND_42_o_LessThan_14_o1.
- global_output_timing/GND_42_o_h_count[11]_LessThan_13_o.
+ u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o.
+ u_input_to_ddr_controller/Msub_GND_1571_o_GND_1571_o_sub_3_OUT<10:0>_xor<10>11.
+ u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o11.
+ u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o_inv.
+ u_input_to_ddr_controller/Msub_GND_1571_o_GND_1571_o_sub_3_OUT<10:0>_xor<7>11.
+ u_output_controller/Port_0_controller/global_h_count[11]_GND_1520_o_LessThan_16_o1.
 
 
 The following Nets were partially guided.
 -----------------------------------------
  global_pixel_clock.
- hdmi_output_5/green_encoder/ADDERTREE_INTERNAL_Madd_0.
- hdmi_output_5/green_encoder/ADDERTREE_INTERNAL_Madd2_lut<0>.
- hdmi_output_5/red_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_4/blue_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_4/green_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_4/red_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_3/blue_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_3/green_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_3/red_encoder/ADDERTREE_INTERNAL_Madd2_lut<0>.
- hdmi_output_2/blue_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_2/red_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_1/blue_encoder/ADDERTREE_INTERNAL_Madd_1.
- hdmi_output_1/red_encoder/ADDERTREE_INTERNAL_Madd_0.
- hdmi_output_0/blue_encoder/ADDERTREE_INTERNAL_Madd_0.
- hdmi_output_0/red_encoder/ADDERTREE_INTERNAL_Madd2_lut<1>.
- hdmi_output_4/blue_encoder/GND_15_o_GND_15_o_OR_12_o.
- hdmi_output_4/blue_encoder/Madd_GND_15_o_q_m_disparity[3]_add_38_OUT_lut<0>31.
- hdmi_output_4/blue_encoder/GND_15_o_GND_15_o_OR_14_o.
- hdmi_output_3/blue_encoder/GND_15_o_GND_15_o_OR_12_o.
- hdmi_output_3/blue_encoder/GND_15_o_GND_15_o_OR_14_o.
- hdmi_output_3/blue_encoder/Madd_GND_15_o_q_m_disparity[3]_add_38_OUT_lut<0>31.
- hdmi_output_0/green_encoder/GND_15_o_GND_15_o_OR_12_o.
- hdmi_output_2/blue_encoder/GND_15_o_GND_15_o_OR_12_o.
- hdmi_output_3/green_encoder/GND_15_o_GND_15_o_OR_12_o.
- hdmi_output_3/green_encoder/GND_15_o_GND_15_o_OR_14_o.
- global_output_timing_active_video_1.
- hdmi_output_3/green_encoder/Madd_GND_15_o_q_m_disparity[3]_add_38_OUT_lut<0>31.
- hdmi_output_0/green_encoder/data_pipeline<0>.
- hdmi_output_0/green_encoder/data_pipeline<1>.
- global_output_timing/v_count<3>.
- global_output_timing/v_count<6>.
- global_output_timing/v_count<5>.
- global_output_timing/v_count<9>.
- global_output_timing/v_count<7>.
- global_output_timing/h_count<0>.
- global_output_timing/v_count<0>.
- global_output_timing/h_count<1>.
- global_output_timing/v_count<1>.
- global_output_timing/h_count<2>.
- global_output_timing/v_count<2>.
- global_output_timing/h_count<3>.
- global_output_timing/h_count<4>.
- global_output_timing/v_count<4>.
- global_output_timing/h_count<5>.
- global_output_timing/h_count<6>.
- global_output_timing/h_count<7>.
- global_output_timing/Pll_locked_inv.
- global_output_timing/h_offset<5>.
- global_output_timing/h_offset<6>.
- global_output_timing/h_count<8>.
- global_output_timing/h_count<9>.
- global_output_timing/h_count<10>.
- global_output_timing/h_count<11>.
- global_output_timing/v_count<8>.
- global_output_timing/v_count<10>.
- global_output_timing/v_count<11>.
- hdmi_output_0/green_encoder/data_pipeline<3>.
- hdmi_output_0/green_encoder/data_pipeline<2>.
- hdmi_output_0/green_encoder/q_m<6>.
- hdmi_output_2/blue_encoder/data_pipeline<0>.
- hdmi_output_2/blue_encoder/q_m<6>.
- hdmi_output_4/blue_encoder/n0011.
- global_output_v_sync.
- hdmi_output_0/green_encoder/ADDERTREE_INTERNAL_Madd3_cy<0>.
- hdmi_output_5/blue_encoder/Madd_GND_15_o_q_m_disparity[3]_add_38_OUT_lut<0>31.
- hdmi_output_5/blue_encoder/GND_15_o_GND_15_o_OR_14_o.
- hdmi_output_5/blue_encoder/q_m<7>.
- hdmi_output_2/blue_encoder/Madd_GND_15_o_q_m_disparity[3]_add_38_OUT_lut<0>31.
- hdmi_output_2/blue_encoder/GND_15_o_GND_15_o_OR_14_o.
- global_pll_locked_b0.
- global_pll_locked_b1.
+ u_input_to_ddr_controller/_n0167_inv.
+ global_h_count_pixel_out<8>.
+ global_h_count_pixel_out<7>.
+ global_h_count_pixel_out<4>.
+ global_h_count_pixel_out<5>.
+ global_h_count_pixel_out<6>.
+ global_h_count_pixel_out<2>.
+ global_h_count_pixel_out<3>.
+ global_h_count_pixel_out<0>.
+ global_h_count_pixel_out<1>.
+ global_h_count_pixel_out<9>.
+ global_h_count_pixel_out<10>.
+ reset.
+ u_input_to_ddr_controller/_n0162_inv.

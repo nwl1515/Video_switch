@@ -64,7 +64,7 @@ process(pixel_clock)
             blue_p  <= (others => '1');
             active_video   <= '0';
 				h_count_out <= (others => '1');
-				v_count_out <= (others => '1');
+				--v_count_out <= (others => '1');
          end if;
 
          if h_count >= h_sync_start and h_count < h_sync_end then

@@ -3,10 +3,10 @@
 <!--The data in this file is primarily intended for consumption by Xilinx tools.
 The structure and the elements are likely to change over the next few releases.
 This means code written to parse this file will need to be revisited each subsequent release.-->
-<application name="pn" timeStamp="Wed Mar 23 18:13:33 2016">
+<application name="pn" timeStamp="Thu Mar 24 02:11:04 2016">
 <section name="Project Information" visible="false">
 <property name="ProjectID" value="7948ED37187BD256FA9F7EB4B05491B5" type="project"/>
-<property name="ProjectIteration" value="6" type="project"/>
+<property name="ProjectIteration" value="30" type="project"/>
 <property name="ProjectFile" value="/home/nikolaj/Desktop/Video_switch/Video_switch/Code/Configurable_n-way_video_switch/Configurable_n-way_video_switch.xise" type="project"/>
 <property name="ProjectCreationTimestamp" value="2016-03-22T15:25:11" type="project"/>
 </section>
@@ -28,7 +28,7 @@ This means code written to parse this file will need to be revisited each subseq
 <property name="PROP_UserConstraintEditorPreference" value="Text Editor" type="process"/>
 <property name="PROP_intProjectCreationTimestamp" value="2016-03-22T15:25:11" type="design"/>
 <property name="PROP_intWbtProjectID" value="7948ED37187BD256FA9F7EB4B05491B5" type="design"/>
-<property name="PROP_intWbtProjectIteration" value="6" type="process"/>
+<property name="PROP_intWbtProjectIteration" value="30" type="process"/>
 <property name="PROP_intWorkingDirLocWRTProjDir" value="Same" type="design"/>
 <property name="PROP_intWorkingDirUsed" value="No" type="design"/>
 <property name="PROP_lockPinsUcfFile" value="changed" type="process"/>
@@ -52,7 +52,7 @@ This means code written to parse this file will need to be revisited each subseq
 <property name="PROP_PreferredLanguage" value="VHDL" type="design"/>
 <property name="FILE_COREGEN" value="1" type="source"/>
 <property name="FILE_UCF" value="1" type="source"/>
-<property name="FILE_VHDL" value="21" type="source"/>
+<property name="FILE_VHDL" value="23" type="source"/>
 </section>
 </application>
 </document>
