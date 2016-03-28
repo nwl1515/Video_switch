@@ -6,6 +6,8 @@
 CONFIG VCCAUX = 3.3;
 
 PIN "hdmi_input_1/p_clk_buffer.O" CLOCK_DEDICATED_ROUTE = FALSE;
+#PIN "u_output_controller/Port_0_controller/Px_unload_done_BUFG.O" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "leds<5>" CLOCK_DEDICATED_ROUTE = FALSE;
 
 # LEDS
 NET "leds[0]" LOC = U18;

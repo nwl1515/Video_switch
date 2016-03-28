@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Thu Mar 24 13:27:49 2016
+Mon Mar 28 23:47:51 2016
 
   SmartGuide Results
   ------------------
@@ -9,84 +9,207 @@ Thu Mar 24 13:27:49 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |   1259
-    Number of guided Components               |   1255 out of   1259  99.7%
-    Number of re-implemented Components       |      3 out of   1259   0.2%
-    Number of new/changed Components          |      1 out of   1259   0.1%
-  Number of Nets in the input design          |   3761
-    Number of guided Nets                     |   3713 out of   3761  98.7%
-    Number of partially guided Nets           |     13 out of   3761   0.3%
-    Number of re-routed Nets                  |     28 out of   3761   0.7%
-    Number of new/changed Nets                |      7 out of   3761   0.2%
+  Number of Components in the input design    |   1258
+    Number of guided Components               |   1238 out of   1258  98.4%
+    Number of re-implemented Components       |      2 out of   1258   0.2%
+    Number of new/changed Components          |     18 out of   1258   1.4%
+  Number of Nets in the input design          |   4125
+    Number of guided Nets                     |   3970 out of   4125  96.2%
+    Number of partially guided Nets           |     55 out of   4125   1.3%
+    Number of re-routed Nets                  |     18 out of   4125   0.4%
+    Number of new/changed Nets                |     82 out of   4125   2.0%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
- u_input_to_ddr_controller/cmd_en_I1_p1 : SLICE_X4Y72.
- u_input_to_ddr_controller/count_num_I1<3> : SLICE_X4Y73.
- DDR_p3_cmd_byte_addr<17> : SLICE_X4Y77.
+ DDR_p3_cmd_byte_addr<25> : SLICE_X3Y77.
+ DDR_p3_cmd_byte_addr<17> : SLICE_X5Y75.
 
 
 The following Components are new/changed.
 -----------------------------------------
- u_input_to_ddr_controller/_n0161 : SLICE_X5Y51.
+ u_ddr_to_bram_controller/Mcompar_GND_1571_o_I1_proc.out_count_I1[31]_LessThan_14_o_cy<3> : SLICE_X24Y59.
+ u_ddr_to_bram_controller/Mcompar_GND_1571_o_I1_proc.out_count_I1[31]_LessThan_14_o_cy<6>_l1 : SLICE_X24Y60.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<7> : SLICE_X28Y57.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<11> : SLICE_X28Y58.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<15> : SLICE_X28Y59.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<19> : SLICE_X28Y60.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<23> : SLICE_X28Y61.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<27> : SLICE_X28Y62.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<31> : SLICE_X28Y63.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<3> : SLICE_X26Y56.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<7> : SLICE_X26Y57.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<11> : SLICE_X26Y58.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<15> : SLICE_X26Y59.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<19> : SLICE_X26Y60.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<23> : SLICE_X26Y61.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<27> : SLICE_X26Y62.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31> : SLICE_X26Y63.
+ u_input_to_ddr_controller/_n0162 : SLICE_X5Y51.
 
 
 The following Nets were re-routed.
 ----------------------------------
- DDR_p3_cmd_empty.
+ u_ddr_to_bram_controller/N151.
+ u_ddr_to_bram_controller/N152.
  u_input_to_ddr_controller/count_num_I1<2>.
- u_input_to_ddr_controller/count_num_I1<0>.
- u_input_to_ddr_controller/count_num_I1<1>.
- u_input_to_ddr_controller/count_num_I1<3>.
- reset.
- global_v_count_pixel_out<0>.
- DDR_p3_cmd_byte_addr<16>.
- global_v_count_pixel_out<1>.
- DDR_p3_cmd_byte_addr<17>.
- DDR_p3_cmd_byte_addr<13>.
- DDR_p3_wr_en.
- global_output_timing/Reset_OR_DriverANDClockEnable.
- global_pll_locked.
- u_input_to_ddr_controller/wr_en_I1_p1.
- global_v_count_pixel_out<8>.
- global_v_count_pixel_out<7>.
- global_v_count_pixel_out<10>.
- global_output_timing/N2.
- u_input_to_ddr_controller/bank_col_I1_3.
- u_input_to_ddr_controller/bank_col_I1_2.
- u_input_to_ddr_controller/bank_col_I1_4.
+ u_input_to_ddr_controller/Mcount_count_num_I1_xor<4>11.
+ u_input_to_ddr_controller/bank_col_I1_6.
+ u_input_to_ddr_controller/bank_col_I1_7.
  u_input_to_ddr_controller/bank_col_I1_10.
- u_input_to_ddr_controller/cmd_en_I1_p1.
- global_v_count_pixel_out<2>.
- global_v_count_pixel_out<5>.
+ u_input_to_ddr_controller/bank_col_I1_9.
+ u_input_to_ddr_controller/bank_col_I1_2.
+ DDR_p3_cmd_byte_addr<13>.
  u_input_to_ddr_controller/bank_col_I1_12.
+ DDR_p3_cmd_byte_addr<22>.
+ DDR_p3_cmd_byte_addr<23>.
+ DDR_p3_cmd_byte_addr<24>.
+ DDR_p3_cmd_byte_addr<25>.
+ DDR_p3_cmd_byte_addr<16>.
+ DDR_p3_cmd_byte_addr<17>.
  u_input_to_ddr_controller/Mmux_DDR_p3_cmd_byte_addr[29]_DDR_p3_cmd_byte_addr[29]_mux_9_OUT110.
 
 
 The following Nets are new/changed.
 -----------------------------------
- u_input_to_ddr_controller/_n0322_inv.
- u_input_to_ddr_controller/_n0164.
- u_input_to_ddr_controller/Mcount_count_num_I1_xor<4>11.
- u_input_to_ddr_controller/_n0175_inv.
- u_input_to_ddr_controller/_n0168.
- u_input_to_ddr_controller/_n0161.
- u_input_to_ddr_controller/_n0180_inv.
+ u_ddr_to_bram_controller/Mcompar_GND_1571_o_I1_proc.out_count_I1[31]_LessThan_14_o_cy<6>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<26>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<18>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<12>.
+ u_input_to_ddr_controller/_n0162.
+ u_input_to_ddr_controller/_n0213_inv.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<8>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<14>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<13>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<19>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<20>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<16>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<17>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<6>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<27>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<10>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<28>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<21>.
+ u_input_to_ddr_controller/_n0201.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<29>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<30>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<9>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<5>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<1>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<4>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<11>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<0>.
+ u_input_to_ddr_controller/_n0259_inv.
+ u_input_to_ddr_controller/_n0197.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<2>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<7>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<15>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<3>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<25>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<22>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<24>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<23>.
+ u_input_to_ddr_controller/_n0208_inv.
+ u_ddr_to_bram_controller/Mcompar_GND_1571_o_I1_proc.out_count_I1[31]_LessThan_14_o_cy<3>.
+ u_ddr_to_bram_controller/Mcompar_GND_1571_o_I1_proc.out_count_I1[31]_LessThan_14_o_cy<6>_l1.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<4>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<5>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<6>.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<7>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<7>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<8>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<9>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<10>.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<11>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<11>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<12>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<13>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<14>.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<15>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<15>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<16>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<17>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<18>.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<19>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<19>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<20>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<21>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<22>.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<23>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<23>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<24>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<25>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<26>.
+ u_ddr_to_bram_controller/Madd_I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT_cy<27>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<27>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<28>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<29>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<30>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1[31]_GND_1571_o_add_14_OUT<31>.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<3>.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<7>.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<11>.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<15>.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<19>.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<23>.
+ u_ddr_to_bram_controller/Msub_I1_proc.out_count_I1[31]_GND_1571_o_sub_9_OUT<31:0>_cy<27>.
 
 
 The following Nets were partially guided.
 -----------------------------------------
+ DDR_p5_rd_empty.
+ reset.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<14>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<15>.
+ change_S.
  global_pixel_clock.
+ g_color_green<1>.
+ g_color_green<0>.
+ g_color_green<3>.
+ g_color_green<2>.
+ g_color_green<5>.
+ g_color_green<4>.
+ g_color_green<7>.
+ g_color_green<6>.
+ g_color_red<1>.
+ g_color_red<0>.
+ g_color_red<3>.
+ g_color_red<2>.
+ g_color_red<5>.
+ g_color_red<4>.
+ g_color_red<7>.
+ g_color_red<6>.
+ g_color_blue<4>.
+ g_color_blue<6>.
+ g_color_blue<5>.
+ g_color_blue<7>.
+ g_color_blue<0>.
+ g_color_blue<1>.
+ g_color_blue<2>.
+ g_color_blue<3>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<12>.
+ global_v_count_pixel_out<5>.
+ global_v_count_pixel_out<6>.
+ global_v_count_pixel_out<9>.
+ global_v_count_pixel_out<10>.
  global_output_active_video.
- leds_3_OBUF.
- global_pll_locked_b0.
- global_pll_locked_b1.
- global_output_timing/h_count[11]_GND_42_o_equal_17_o.
- global_output_timing/v_count<2>.
- global_output_timing/v_count<3>.
- global_output_timing/Reset_OR_DriverANDClockEnable12.
- global_output_timing/Reset_OR_DriverANDClockEnable11.
- global_output_timing/h_count<6>.
- global_output_timing/GND_42_o_h_count[11]_LessThan_13_o2.
- u_input_to_ddr_controller/reset_inv.
+ DDR_p3_wr_empty.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<8>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<28>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<29>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<31>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<21>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<27>.
+ global_v_count_pixel_out<0>.
+ global_v_count_pixel_out<1>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<4>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<5>.
+ global_v_count_pixel_out<8>.
+ global_v_count_pixel_out<7>.
+ u_input_to_ddr_controller/count_num_I1<0>.
+ u_input_to_ddr_controller/count_num_I1<1>.
+ u_input_to_ddr_controller/count_num_I1<3>.
+ u_ddr_to_bram_controller/I1_proc.out_count_I1<1>.
+ DDR_p3_cmd_empty.
+ u_ddr_to_bram_controller/Mmux_I1_proc.out_count_I1[31]_I1_proc.out_count_I1[31]_mux_25_OUT101.

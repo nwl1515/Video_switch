@@ -87,8 +87,9 @@ begin
 
 	Px_data_out		<= Px_data_out_I0_S0 when Px_I_select_out = '0' and Px_S_select = '0' else
 							Px_data_out_I1_S0 when Px_I_select_out = '1' and Px_S_select = '0' else
-							Px_data_out_I0_S0 when Px_I_select_out = '0' and Px_S_Select = '1' else
+							Px_data_out_I0_S1 when Px_I_select_out = '0' and Px_S_Select = '1' else
 							Px_data_out_I1_S1 when Px_I_select_out = '1' and Px_S_select = '1';
+	--Px_data_out <= "111111111111111111111111";
 							
 	Px_S0_read 		<= '1' when Px_S_select = '0' and Px_enable = '1' else '0';
 	Px_S1_read		<= '1' when Px_S_select = '1' and Px_enable = '1' else '0';
@@ -129,8 +130,11 @@ begin
     clkb => Clk_out_i,
     enb => Px_S0_read,
     addrb => Px_h_count_out,
-    doutb => Px_data_out_I1_S0  
+    doutb => Px_data_out_I1_S0
+	 --doutb => open
 	);
+	
+	--Px_data_out_I1_S0 <= "111111110000000000000000";
   
   Px_I0_S1 : BRAM_5x9kb
   PORT MAP (
@@ -156,8 +160,9 @@ begin
     enb => Px_S1_read,
     addrb => Px_h_count_out,
     doutb => Px_data_out_I1_S1
+	 --doutb => open
   );
-	
+	--Px_data_out_I1_S1 <= "111111110000000000000000";
 	
 
 

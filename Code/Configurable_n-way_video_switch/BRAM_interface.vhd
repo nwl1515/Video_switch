@@ -35,7 +35,7 @@ entity BRAM_interface is
     Port (
 		BRAM_enable 		: in STD_LOGIC;
 		clk_out				: in STD_LOGIC;
-		clk_in				: in STD_LOGIC;
+		clk_in				: in STD_LOGIC; -- obs x2_pixel_clock
 		clk_out_enable    : in STD_LOGIC;
 		P0_enable			: in STD_LOGIC;
 		P0_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);

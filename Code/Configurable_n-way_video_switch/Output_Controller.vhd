@@ -135,8 +135,9 @@ architecture Structural of Output_Controller is
 
 begin
 
- BRAM_clock_out_e <= '1' when active_video_p2 = '1' or active_video_p3 = '1' else '0';
-
+ --BRAM_clock_out_e <= '1' when active_video_p2 = '1' or active_video_p3 = '1' else '0';
+ BRAM_clock_out_e <= '1' when active_video_p2 = '1' else '0';
+ --BRAM_clock_out_e <= '1' when global_active_v = '1' else '0';
 ----------------------
 -- Pipeline signals for synchonization
 ----------------------
@@ -176,13 +177,17 @@ begin
 		Px_set_4 			=> P0_set_4,
 		Px_h_count_out 	=> P0_h_count_out,
 		Px_BRAM_in			=> P0_BRAM_in,
+		--Px_BRAM_in			=> "111111111111111111111111",
 		Px_video_out		=> P0_video_out,
+		--Px_video_out		=> open,
 		Px_I_selector		=> P0_I_selector,
 		Px_S_selector		=> P0_S_selector,
 		Px_enable			=> P0_enable,
 		Px_inload_done		=> P0_inload_done,
 		Px_unload_done		=> P0_unload_done 
 	 );
+	 
+	 --P0_video_out <= "111111111111111111111111";
 
 end Structural;
 
