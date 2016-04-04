@@ -137,7 +137,7 @@ generic(
       C_MEMCLK_PERIOD                  : integer := 2500;
       C_PORT_ENABLE                    : std_logic_vector(5 downto 0) := (others => '1');
 
-      C_MEM_ADDR_ORDER                 : string := "BANK_ROW_COLUMN";
+      C_MEM_ADDR_ORDER                 : string := "ROW_BANK_COLUMN";
       
       C_ARB_NUM_TIME_SLOTS             : integer := 12;
       C_ARB_TIME_SLOT_0                : bit_vector(17 downto 0):= "000" & "001" & "010" & "011" & "100" & "101";

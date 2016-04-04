@@ -9,6 +9,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity Resolution_output_timing is
+	generic (
+				offset_h			: integer := 0;
+				offset_v			: integer := 0
+				);
     Port ( 
 		     pixel_clock     : in std_logic;
            red_p   : out STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
@@ -31,7 +35,7 @@ architecture Structural of Resolution_output_timing is
    constant h_sync_end   : natural := h_sync_start+h_sync_width;
    constant h_max        : natural := 1650;
 	
-   signal   h_count      : unsigned(11 downto 0) := (others => '0');
+   signal   h_count      : unsigned(11 downto 0) := to_unsigned(offset_h,12);
    signal   h_offset     : unsigned(7 downto 0) := (others => '0');
 
    constant v_resolution : natural := 720;
@@ -40,7 +44,7 @@ architecture Structural of Resolution_output_timing is
 	constant v_sync_width : natural := 5;
    constant v_sync_end   : natural := v_sync_start+v_sync_width;
    constant v_max        : natural := 750;
-   signal   v_count      : unsigned(11 downto 0) := (others => '0');
+   signal   v_count      : unsigned(11 downto 0) := to_unsigned(offset_v,12);
    signal   v_offset     : unsigned(7 downto 0) := (others => '0');
 
 begin
@@ -63,8 +67,8 @@ process(pixel_clock)
             green_p <= (others => '1');
             blue_p  <= (others => '1');
             active_video   <= '0';
-				h_count_out <= (others => '1');
-				--v_count_out <= (others => '1');
+				h_count_out <= (others => '0');
+				--v_count_out <= (others => '0');
          end if;
 
          if h_count >= h_sync_start and h_count < h_sync_end then

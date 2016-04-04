@@ -88,7 +88,7 @@ generic
     DEBUG_EN                : integer := 0; 
                                        -- # = 1, Enable debug signals/controls,
                                        --   = 0, Disable debug signals/controls.
-    C3_MEM_ADDR_ORDER       : string := "BANK_ROW_COLUMN"; 
+    C3_MEM_ADDR_ORDER       : string := "ROW_BANK_COLUMN"; 
                                        -- The order in which user address is provided to the memory controller,
                                        -- ROW_BANK_COLUMN or BANK_ROW_COLUMN.
     C3_NUM_DQ_PINS          : integer := 16; 

@@ -31,6 +31,8 @@ entity Video_Switch is
 			-- Global clock
 			GCLK						: in STD_LOGIC;
 			
+			reset_btn				: in STD_LOGIC;
+			
 			-- LEDS
 			leds						: out STD_LOGIC_VECTOR(7 downto 0);
 			
@@ -105,6 +107,9 @@ architecture Structural of Video_Switch is
 	signal global_output_v_sync_controller : std_logic;
 	signal global_output_active_video 		: std_logic;
 	signal global_output_active_video_controller : std_logic;
+	signal simulator_active_video				: std_logic;
+	signal simulator_h_count					: std_logic_vector(11 downto 0);
+	signal simulator_v_count					: std_logic_vector(11 downto 0);
 	signal global_pll_locked					: std_logic := '0';
 	signal global_pll_locked_b0				: std_logic;
 	signal global_serdes_strobe_b0			: std_logic;
@@ -129,6 +134,16 @@ architecture Structural of Video_Switch is
 	signal g_color_red, g_color_green, g_color_blue : std_logic_vector(7 downto 0);
 	signal GCLK_i								: std_logic := '0';
 	
+	signal DDR_p2_cmd_en							: STD_LOGIC := '0';
+	signal DDR_p2_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
+	signal DDR_p2_cmd_full						: STD_LOGIC := '0';
+	signal DDR_p2_cmd_empty						: STD_LOGIC := '0';
+	signal DDR_p2_wr_en							: STD_LOGIC := '0';
+	signal DDR_p2_wr_data						: STD_LOGIC_VECTOR(31 downto 0);
+	signal DDR_p2_wr_full						: STD_LOGIC := '0';
+	signal DDR_p2_wr_empty						: STD_LOGIC := '0';
+	
+	
 	signal DDR_p3_cmd_en							: STD_LOGIC := '0';
 	signal DDR_p3_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
 	signal DDR_p3_cmd_full						: STD_LOGIC := '0';
@@ -137,6 +152,21 @@ architecture Structural of Video_Switch is
 	signal DDR_p3_wr_data						: STD_LOGIC_VECTOR(31 downto 0);
 	signal DDR_p3_wr_full						: STD_LOGIC := '0';
 	signal DDR_p3_wr_empty						: STD_LOGIC := '0';
+	
+	
+	signal p0_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0);
+	signal p0_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0);
+	signal DDR_p4_cmd_en							: STD_LOGIC;
+	signal DDR_p4_cmd_bl							: STD_LOGIC_VECTOR(5 downto 0);
+	signal DDR_p4_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
+	signal DDR_p4_cmd_empty						: STD_LOGIC;
+	signal DDR_p4_cmd_full						: STD_LOGIC;
+	signal DDR_p4_rd_en							: STD_LOGIC;
+	signal DDR_p4_rd_data						: STD_LOGIC_VECTOR(31 downto 0);
+	signal DDR_p4_rd_empty						: STD_LOGIC;
+	signal DDR_p4_rd_full						: STD_LOGIC;
+	
+	
 	
 	signal p0_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0);
 	signal p0_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0);
@@ -168,7 +198,7 @@ architecture Structural of Video_Switch is
     constant C3_CALIB_SOFT_IP          : string := "TRUE";
     constant C3_SIMULATION             : string := "FALSE";
     constant DEBUG_EN                  : integer := 0;
-    constant C3_MEM_ADDR_ORDER         : string := "BANK_ROW_COLUMN";
+    constant C3_MEM_ADDR_ORDER         : string := "ROW_BANK_COLUMN";
     constant C3_NUM_DQ_PINS            : integer := 16;
     constant C3_MEM_ADDR_WIDTH         : integer := 13;
     constant C3_MEM_BANKADDR_WIDTH     : integer := 3;
@@ -230,6 +260,13 @@ architecture Structural of Video_Switch is
 		P0_S_selector		: in STD_LOGIC;
 		P0_inload_done		: inout STD_LOGIC;
 		change_S				: in STD_LOGIC;
+		c3_p4_cmd_en                          	 : inout std_logic;
+		c3_p4_cmd_bl                            : out std_logic_vector(5 downto 0);
+		c3_p4_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
+		c3_p4_cmd_empty                         : in std_logic;		
+		c3_p4_rd_en                             : inout std_logic;
+		c3_p4_rd_data                           : in std_logic_vector(31 downto 0);
+		c3_p4_rd_empty                          : in std_logic;
 		c3_p5_cmd_en                          	 : inout std_logic;
 		c3_p5_cmd_bl                            : out std_logic_vector(5 downto 0);
 		c3_p5_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
@@ -334,7 +371,8 @@ architecture Structural of Video_Switch is
 		P0_S_selector		: out STD_LOGIC := '0';
 		P0_enable			: out STD_LOGIC := '0';
 		P0_inload_done		: in STD_LOGIC;
-		P0_unload_done		: inout STD_LOGIC := '0'
+		P0_unload_done		: inout STD_LOGIC := '0';
+		P0_change_s			: out STD_LOGIC
 		);
 		END COMPONENT;	
 
@@ -373,6 +411,10 @@ architecture Structural of Video_Switch is
 
 	
 	COMPONENT Resolution_output_timing
+	generic (
+				offset_h			: integer;
+				offset_v			: integer
+				);
     Port ( 
 		     pixel_clock     : in std_logic;
 			  red_p				: out std_logic_Vector(7 downto 0);
@@ -400,20 +442,20 @@ architecture Structural of Video_Switch is
 	
 	component DDR_Memory_Interface
  generic(
-    C3_P0_MASK_SIZE           : integer := 4;
-    C3_P0_DATA_PORT_SIZE      : integer := 32;
-    C3_P1_MASK_SIZE           : integer := 4;
-    C3_P1_DATA_PORT_SIZE      : integer := 32;
-    C3_MEMCLK_PERIOD          : integer := 2500;   -- note input clk is only 100 MHz, multiplier is edited to converto to 400 MHz
-    C3_RST_ACT_LOW            : integer := 0;
-    C3_INPUT_CLK_TYPE         : string := "SINGLE_ENDED";
-    C3_CALIB_SOFT_IP          : string := "TRUE";
-    C3_SIMULATION             : string := "FALSE";
-    DEBUG_EN                  : integer := 0;
-    C3_MEM_ADDR_ORDER         : string := "ROW_BANK_COLUMN";
-    C3_NUM_DQ_PINS            : integer := 16;
-    C3_MEM_ADDR_WIDTH         : integer := 13;
-    C3_MEM_BANKADDR_WIDTH     : integer := 3
+    C3_P0_MASK_SIZE           : integer;
+    C3_P0_DATA_PORT_SIZE      : integer;
+    C3_P1_MASK_SIZE           : integer;
+    C3_P1_DATA_PORT_SIZE      : integer;
+    C3_MEMCLK_PERIOD          : integer;   -- note input clk is only 100 MHz, multiplier is edited to converto to 400 MHz
+    C3_RST_ACT_LOW            : integer;
+    C3_INPUT_CLK_TYPE         : string;
+    C3_CALIB_SOFT_IP          : string;
+    C3_SIMULATION             : string;
+    DEBUG_EN                  : integer;
+    C3_MEM_ADDR_ORDER         : string;
+    C3_NUM_DQ_PINS            : integer;
+    C3_MEM_ADDR_WIDTH         : integer;
+    C3_MEM_BANKADDR_WIDTH     : integer
 );
     port (
    mcb3_dram_dq                            : inout  std_logic_vector(C3_NUM_DQ_PINS-1 downto 0);
@@ -629,6 +671,9 @@ hdmi_output_0 : HDMI_OUT
 			red_p      => P0_data_out(23 downto 16),
 			green_p    => P0_data_out(15 downto 8),
 			blue_p     => P0_data_out(7 downto 0),
+			--red_p			 => "11111111",
+			--green_p		 => "11111111",
+			--blue_p		 => "00000000",
 			active_video      => global_output_active_video_controller,
 			hsync      => global_output_h_sync_controller,
 			vsync      => global_output_v_sync_controller,
@@ -731,16 +776,38 @@ hdmi_output_5 : HDMI_OUT
 
 	
 	global_output_timing : Resolution_output_timing 
+	generic map(
+				offset_h			=> 0,
+				offset_v			=> 0
+				)
     Port map ( 
 		     pixel_clock    	=> global_pixel_clock,
-           red_p   			=> g_color_red,
-           green_p 			=> g_color_green,
-           blue_p  			=> g_color_blue,
+           red_p   			=> open,
+           green_p 			=> open,
+           blue_p  			=> open,
            active_video 	=> global_output_active_video,
            hsync   			=> global_output_h_sync,
            vsync   			=> global_output_v_sync,
 			  h_count_out 		=> global_h_count_pixel_out,
 			  v_count_out 		=> global_v_count_pixel_out,
+			  Pll_locked 		=> global_pll_locked
+	);
+	
+	simulator_timing : Resolution_output_timing
+	generic map(
+				offset_h			=> 500,
+				offset_v			=> 200
+				)
+	Port map ( 
+		     pixel_clock    	=> global_pixel_clock,
+           red_p   			=> g_color_red,
+           green_p 			=> g_color_green,
+           blue_p  			=> g_color_blue,
+           active_video 	=> simulator_active_video,
+           hsync   			=> open,
+           vsync   			=> open,
+			  h_count_out 		=> simulator_h_count,
+			  v_count_out 		=> simulator_v_count,
 			  Pll_locked 		=> global_pll_locked
 	);
 
@@ -878,19 +945,19 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_p1_rd_error                          => open,
      
 		-- Output port 2 control signals
-		c3_p2_cmd_clk                           =>  read_write_clock,
-		c3_p2_cmd_en                            =>  '1',
+		c3_p2_cmd_clk                           =>  global_pixel_clock,
+		c3_p2_cmd_en                            =>  DDR_p2_cmd_en,
 		c3_p2_cmd_instr                         =>  "000",
-		c3_p2_cmd_bl                            =>  "000000",
-		c3_p2_cmd_byte_addr                     =>  (others => '0'),
-		c3_p2_cmd_empty                         =>  Open,
-		c3_p2_cmd_full                          =>  Open,
-		c3_p2_wr_clk                            =>  read_write_clock,
-		c3_p2_wr_en                             =>  '1',
+		c3_p2_cmd_bl                            =>  "011111",
+		c3_p2_cmd_byte_addr                     =>  DDR_p2_cmd_byte_addr,
+		c3_p2_cmd_empty                         =>  DDR_p2_cmd_empty,
+		c3_p2_cmd_full                          =>  DDR_p2_cmd_full,
+		c3_p2_wr_clk                            =>  global_pixel_clock,
+		c3_p2_wr_en                             =>  DDR_p2_wr_en,
 		c3_p2_wr_mask                           =>  "0000",
-		c3_p2_wr_data                           =>  out_data,
-		c3_p2_wr_full                           =>  Open,
-		c3_p2_wr_empty                          =>  Open,
+		c3_p2_wr_data                           =>  DDR_p2_wr_data,
+		c3_p2_wr_full                           =>  DDR_p2_wr_full,
+		c3_p2_wr_empty                          =>  DDR_p2_wr_empty,
 		c3_p2_wr_count                          =>  Open,		-- Not used
 		c3_p2_wr_underrun                       =>  Open,		-- Not used
 		c3_p2_wr_error                          =>  Open,		-- Not used
@@ -899,7 +966,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_p3_cmd_clk                           =>  global_pixel_clock,
 		c3_p3_cmd_en                            =>  DDR_p3_cmd_en,
 		c3_p3_cmd_instr                         =>  "000",
-		c3_p3_cmd_bl                            =>  "001111",		-- 15 means 16
+		c3_p3_cmd_bl                            =>  "011111",		-- 15 means 16
 		c3_p3_cmd_byte_addr                     =>  DDR_p3_cmd_byte_addr,
 		c3_p3_cmd_empty                         =>  DDR_p3_cmd_empty,
 		c3_p3_cmd_full                          =>  DDR_p3_cmd_full,
@@ -914,18 +981,18 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_p3_wr_error                          =>  Open,		-- Not used
 		
 		-- Input port 4
-		c3_p4_cmd_clk                           =>  read_write_clock,
-		c3_p4_cmd_en                            =>  '0',
+		c3_p4_cmd_clk                           =>  global_pixel_clock_x2_b1,
+		c3_p4_cmd_en                            =>  DDR_p4_cmd_en,
 		c3_p4_cmd_instr                         =>  "001",
-		c3_p4_cmd_bl                            =>  "000000",
-		c3_p4_cmd_byte_addr                     =>  (others=> '0'),
-		c3_p4_cmd_empty                         =>  Open,
-		c3_p4_cmd_full                          =>  Open,
-		c3_p4_rd_clk                            =>  read_write_clock,
-		c3_p4_rd_en                             =>  '0',
-		c3_p4_rd_data                           =>  in_data,
-		c3_p4_rd_full                           =>  Open,
-		c3_p4_rd_empty                          =>  Open,
+		c3_p4_cmd_bl                            =>  DDR_p4_cmd_bl,
+		c3_p4_cmd_byte_addr                     =>  DDR_p4_cmd_byte_addr,
+		c3_p4_cmd_empty                         =>  DDR_p4_cmd_empty,
+		c3_p4_cmd_full                          =>  DDR_p4_cmd_full,
+		c3_p4_rd_clk                            =>  global_pixel_clock_x2_b1,
+		c3_p4_rd_en                             =>  DDR_p4_rd_en,
+		c3_p4_rd_data                           =>  DDR_p4_rd_data,
+		c3_p4_rd_full                           =>  DDR_p4_rd_full,
+		c3_p4_rd_empty                          =>  DDR_p4_rd_empty,
 		c3_p4_rd_count                          =>  Open,
 		c3_p4_rd_overflow                       =>  Open,
 		c3_p4_rd_error                          =>  Open,
@@ -955,11 +1022,11 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		clk_in				=> global_pixel_clock_x2_b1,
 		clk_out_enable    => BRAM_clock_out_enable,
 		P0_enable			=> P0_BRAM_enable,
-		P0_data_in_I0		=> "111111111111111111111111",
+		P0_data_in_I0		=> p0_BRAM_out_I0,
 		P0_data_in_I1		=> p0_BRAM_out_I1,
 		--P0_data_in_I1		=> color_in,
 		P0_data_out			=> P0_BRAM_data_out,
-		P0_h_count_in_I0	=> P0_BRAM_h_count,
+		P0_h_count_in_I0	=> P0_h_count_out_I0,
 		P0_h_count_in_I1	=> p0_h_count_out_I1,
 		--P0_h_count_in_I1	=> P0_BRAM_h_count,
 		P0_h_count_out		=> P0_BRAM_h_count,
@@ -1044,33 +1111,34 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		P0_I_selector		=> P0_BRAM_I_selector,
 		P0_S_selector		=> P0_BRAM_S_selector,
 		P0_enable			=> P0_BRAM_enable,
-		--P0_inload_done		=> p0_inload_done,
-		P0_inload_done		=> '1',
-		P0_unload_done		=> change_S
+		P0_inload_done		=> p0_inload_done,
+		--P0_inload_done		=> '1',
+		P0_unload_done		=> open,
+		P0_change_s			=> change_S
 		);
 		
 	u_input_to_ddr_controller : Input_to_DDR_controller
     Port map ( 
-				pixel_clock_I0 									=> '0',
+				pixel_clock_I0 									=> global_pixel_clock,
 				pixel_clock_I1										=> global_pixel_clock,
-				h_count_I0											=> (others => '0'),
-				h_count_I1											=> global_h_count_pixel_out(10 downto 0),
-				v_count_I0											=> (others => '0'),
-				v_count_I1											=> global_v_count_pixel_out(10 downto 0),
-				active_video_I0									=> '0',
-				active_video_I1									=> global_output_active_video,
-				video_in_I0											=> (others => '0'),
-				--video_in_I1											=> color_in,
-				video_in_I1											=> "000000000000000011111111",
-				reset													=> reset,
-				DDR_p2_cmd_en                            	=> open,
-				DDR_p2_cmd_byte_addr                     	=> open,
-				DDR_p2_cmd_full                          	=> '0',
-				DDR_p2_cmd_empty									=> '0',
-				DDR_p2_wr_en                            	=> open,
-				DDR_p2_wr_data                           	=> open,
-				DDR_p2_wr_full                           	=> '0',
-				DDR_p2_wr_empty                        	=> '0',			
+				h_count_I0											=> simulator_h_count(10 downto 0),
+				h_count_I1											=> simulator_h_count(10 downto 0),
+				v_count_I0											=> simulator_v_count(10 downto 0),
+				v_count_I1											=> simulator_v_count(10 downto 0),
+				active_video_I0									=> simulator_active_video,
+				active_video_I1									=> simulator_active_video,
+				video_in_I0											=> "000000000000000011111111",
+				video_in_I1											=> color_in,
+				--video_in_I1											=> "000000000000000011111111",
+				reset													=> reset_btn,
+				DDR_p2_cmd_en                            	=> DDR_p2_cmd_en,
+				DDR_p2_cmd_byte_addr                     	=> DDR_p2_cmd_byte_addr,
+				DDR_p2_cmd_full                          	=> DDR_p2_cmd_full,
+				DDR_p2_cmd_empty									=> DDR_p2_cmd_empty,
+				DDR_p2_wr_en                            	=> DDR_p2_wr_en,
+				DDR_p2_wr_data                           	=> DDR_p2_wr_data,
+				DDR_p2_wr_full                           	=> DDR_p2_wr_full,
+				DDR_p2_wr_empty                        	=> DDR_p2_wr_empty,			
 				DDR_p3_cmd_en                            	=> DDR_p3_cmd_en,
 				DDR_p3_cmd_byte_addr                     	=> DDR_p3_cmd_byte_addr,
 				DDR_p3_cmd_full                         	=> DDR_p3_cmd_full,
@@ -1084,19 +1152,29 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 	u_ddr_to_bram_controller : DDR_to_BRAM_controller
     Port map ( 
 		clk_in 						=> global_pixel_clock_x2_b1,
+		--clk_in						=> global_pixel_clock,
 		global_v_count				=> global_v_count_pixel_out,
-		reset							=> reset,
+		reset							=> reset_btn,
 		P0_conf						=> "0001",
 		P0_set_1 					=> (others => '0'),
 		P0_set_2 					=> (others => '0'),
-		P0_h_count_out_I0 		=> open,
+		P0_h_count_out_I0 		=> p0_h_count_out_I0,
 		P0_h_count_out_I1 		=> p0_h_count_out_I1,
-		P0_BRAM_out_I0				=> open,
+		P0_BRAM_out_I0				=> p0_BRAM_out_I0,
 		P0_BRAM_out_I1				=> p0_BRAM_out_I1,
 		P0_data_out_sel			=> p0_data_sel_out,
 		P0_S_selector				=> P0_BRAM_S_selector,
 		P0_inload_done				=> p0_inload_done,	
 		change_S						=> change_S,
+		c3_p4_cmd_en            => DDR_p4_cmd_en,
+		--c3_p4_cmd_en				=> open,
+		c3_p4_cmd_bl            => DDR_p4_cmd_bl,
+		c3_p4_cmd_byte_addr     => DDR_p4_cmd_byte_addr,
+		c3_p4_cmd_empty         =>	DDR_p4_cmd_empty,	
+		c3_p4_rd_en             => DDR_p4_rd_en,
+		--c3_p4_rd_en					=> open,
+		c3_p4_rd_data           => DDR_p4_rd_data,
+		c3_p4_rd_empty          => DDR_p4_rd_empty,
 		c3_p5_cmd_en            => DDR_p5_cmd_en,
 		c3_p5_cmd_bl            => DDR_p5_cmd_bl,
 		c3_p5_cmd_byte_addr     => DDR_p5_cmd_byte_addr,

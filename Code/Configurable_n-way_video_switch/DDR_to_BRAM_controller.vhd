@@ -47,7 +47,13 @@ entity DDR_to_BRAM_controller is
 		P0_S_selector		: in STD_LOGIC;
 		P0_inload_done		: inout STD_LOGIC;
 		change_S				: in STD_LOGIC;
-		
+		c3_p4_cmd_en                          	 : inout std_logic;
+		c3_p4_cmd_bl                            : out std_logic_vector(5 downto 0);
+		c3_p4_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
+		c3_p4_cmd_empty                         : in std_logic;		
+		c3_p4_rd_en                             : inout std_logic;
+		c3_p4_rd_data                           : in std_logic_vector(31 downto 0);
+		c3_p4_rd_empty                          : in std_logic;
 		c3_p5_cmd_en                          	 : inout std_logic;
 		c3_p5_cmd_bl                            : out std_logic_vector(5 downto 0);
 		c3_p5_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
@@ -68,16 +74,22 @@ architecture Structural of DDR_to_BRAM_controller is
 	signal h_count_I1				: STD_LOGIC_VECTOR(10 downto 0);
 	signal S_selector_old_P0		: STD_LOGIC := '0';
 	signal run_I1					   : STD_LOGIC := '0';
+	signal run_I0						: STD_LOGIC := '0';
 	signal change_I1   				: STD_LOGIC := '0';
+	signal out_count_I1				: STD_LOGIC_vector(7 downto 0) := (others => '0');
+	signal out_count_I0				: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal called_I1					: STD_LOGIC := '0';
-	signal inload_done				: STD_LOGIC := '0';
+	signal called_I0					: STD_LOGIC := '0';
+	signal inload_done				: STD_LOGIC := '1';
+	signal inload_done_2				: STD_LOGIC	:= '0';
 	
 	signal cmd_en_I0_p1			: STD_LOGIC := '0';
 	signal cmd_en_I1_p1			: STD_LOGIC := '0';
 	signal rd_en_I0_p1			: STD_LOGIC := '0';
 	signal rd_en_I1_p1			: STD_LOGIC := '0';
-	signal bank_col_I1			: STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	
+	--signal bank_col_I1			: STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+	signal bank_col_I1			: std_logic_vector(10 downto 0) := (others => '0');
+	signal bank_col_I0			: std_logic_vector(10 downto 0) := (others => '0');
 
 begin
 
@@ -91,9 +103,26 @@ begin
 	--p0_BRAM_out_I1 <= "111111111111111100000000";
 	p0_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';
 	c3_p5_rd_en <= '1' when c3_p5_rd_empty = '0' else '0';
+	--c3_p5_cmd_byte_addr <= "0001" & internal_v_count & "00" & (h_count_I1 + out_count_I1) & "00";
+	--c3_p5_cmd_en <= '1' when out_count_I1 < 9 and c3_p5_cmd_empty = '1' and (h_count_I1 + out_count_I1) < 1279 else '0';
 	
 	p0_h_count_out_I1 <= h_count_I1;
+	
+	--p0_inload_done <= inload_done and inload_done_2;
 	p0_inload_done <= inload_done;
+	
+	
+	
+	
+	p0_BRAM_out_I0 <= c3_p4_rd_data(23 downto 0);
+	p0_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';
+	c3_p4_rd_en <= '1' when c3_p4_rd_empty = '0' else '0';
+	c3_p4_cmd_byte_addr <= "0000" & internal_v_count & "00" & (h_count_I0 + out_count_I0) & "00";
+	
+	p0_h_count_out_I0 <= h_count_I0;
+	
+	
+	
 	
 	--leds_out <= h_count_I1(10 downto 3);
 	leds_out(0) <= run_I1;
@@ -105,48 +134,104 @@ begin
 	leds_out(6) <= c3_p5_cmd_empty;
 	leds_out(7) <= c3_p5_rd_empty;
 	
-	called_I1 <= c3_p5_cmd_en or cmd_en_I1_p1 or (not c3_p5_cmd_empty);
+	called_I1 <= c3_p5_cmd_en or (not c3_p5_cmd_empty);
+	
+	called_I0 <= c3_p4_cmd_en or (not c3_p4_cmd_empty);
+	
+--	I1_proc : process(clk_in, change_S)
+--		variable out_count_I1 : integer :=0;
+--	begin
+--			
+--		if rising_edge(clk_in) then
+--			c3_p5_cmd_en <= cmd_en_I1_p1;
+--			cmd_en_I1_p1 <= '0';
+--			
+--			if change_S = '1' then
+--			run_I1 <= '1';
+--			inload_done <= '0';
+--			h_count_I1 <= (others => '0');
+--			out_count_I1 := 0;
+--			bank_col_I1 <= conv_std_logic_vector(64, 16);
+--			--bank_col_I1 <= (others => '0');
+--			end if;
+--			
+--			if reset = '1' then
+--				c3_p5_cmd_en <= '0';
+--				cmd_en_I1_p1 <= '0';
+--				run_I1 <= '0';
+--				h_count_I1 <= (others => '0');
+--				bank_col_I1 <= conv_std_logic_vector(64,16);
+--				--bank_col_I1 <= (others => '0');
+--				out_count_I1 := 0;	
+--				inload_done <= '0';
+--			else
+--				if run_I1 = '1' then
+--					if c3_p5_rd_en = '1' then
+--						out_count_I1 := out_count_I1 - 1;
+--						h_count_I1 <= h_count_I1 + 1;					
+--					end if;
+--					
+--					if bank_col_I1(12 downto 2) < (1279+16) then
+--						if (c3_p5_rd_empty = '1' or out_count_I1 < 9) and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+--							cmd_en_I1_p1 <= '1';
+--							c3_p5_cmd_byte_addr <= "001" & internal_v_count & bank_col_I1;
+--							out_count_I1 := out_count_I1 + 16;
+--							bank_col_I1 <= bank_col_I1 + 64;
+--							c3_p5_cmd_bl <= "001111"; -- means 16	
+--						end if;
+--					elsif bank_col_I1(12 downto 2) >= (1279+16) and c3_p5_rd_empty = '1' then
+--						run_I1 <= '0'; -- stop!
+--						inload_done <= '1';
+--					end if;
+--				end if;
+--			end if;
+--		end if;				
+--	end process I1_proc;
+
+	c3_p5_cmd_bl <= "011111"; -- means 16
+	
+	c3_p4_cmd_bl <= "011111"; -- means 16
 	
 	I1_proc : process(clk_in, change_S)
-		variable out_count_I1 : integer :=0;
-	begin
-			
+		variable address_count : integer := 0;
+		variable count_buffer : integer := 0;
+	begin			
 		if rising_edge(clk_in) then
-			c3_p5_cmd_en <= cmd_en_I1_p1;
-			cmd_en_I1_p1 <= '0';
-			
-			if change_S = '1' then
-			run_I1 <= '1';
-			inload_done <= '0';
-			h_count_I1 <= (others => '0');
-			out_count_I1 := 0;
-			bank_col_I1 <= (others => '0');
-			end if;
-			
+			c3_p5_cmd_en <= '0';
+					
 			if reset = '1' then
-				c3_p5_cmd_en <= '0';
-				cmd_en_I1_p1 <= '0';
 				run_I1 <= '0';
 				h_count_I1 <= (others => '0');
-				bank_col_I1 <= (others => '0');
-				out_count_I1 := 0;	
 				inload_done <= '0';
+				address_count := 0;
+				count_buffer := 0;
+				if c3_p5_cmd_empty = '0' then
+					c3_p5_cmd_en <= '1';
+				end if;
+				
+			elsif change_S = '1' then
+				run_I1 <= '1';
+				inload_done <= '0';
+				h_count_I1 <= (others => '0');
+				address_count := 0;
+				count_buffer := 0;
+				
 			else
 				if run_I1 = '1' then
-					if c3_p5_rd_en = '1' then
-						out_count_I1 := out_count_I1 - 1;
-						h_count_I1 <= h_count_I1 + 1;					
-					end if;
-					
-					if bank_col_I1(12 downto 2) < 1279 then
-						if (c3_p5_rd_empty = '1' or out_count_I1 < 9) and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
-							cmd_en_I1_p1 <= '1';
-							c3_p5_cmd_byte_addr <= "001" & internal_v_count & bank_col_I1;
-							out_count_I1 := out_count_I1 + 16;
-							bank_col_I1 <= bank_col_I1 + (16*4);
-							c3_p5_cmd_bl <= "001111"; -- means 16	
+						if address_count < 1280 and count_buffer <= 32 and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+							c3_p5_cmd_en <= '1';
+							c3_p5_cmd_byte_addr <= "0001" & internal_v_count & "00" & conv_std_logic_vector(address_count, 11) & "00";
+							address_count := address_count + 32;
+							count_buffer := count_buffer +32;
+								
 						end if;
-					elsif bank_col_I1(12 downto 2) >= 1279 and c3_p5_rd_empty = '1' then
+						
+						if c3_p5_rd_en = '1' then
+							count_buffer := count_buffer - 1;
+							h_count_I1 <= h_count_I1 + 1;						
+						end if;
+						
+					if h_count_I1 >= 1279 and c3_p5_rd_empty = '1' then
 						run_I1 <= '0'; -- stop!
 						inload_done <= '1';
 					end if;
@@ -154,6 +239,52 @@ begin
 			end if;
 		end if;				
 	end process I1_proc;
+	
+	I0_proc : process(clk_in, change_S)
+		--variable out_count_I1 : integer :=0;
+	begin			
+		if rising_edge(clk_in) then
+			c3_p4_cmd_en <= '0';
+					
+			if reset = '1' then
+				c3_p4_cmd_en <= '0';
+				run_I0 <= '0';
+				h_count_I0 <= (others => '0');
+				out_count_I0 <= (others => '0');	
+				inload_done_2 <= '0';
+				
+			elsif change_S = '1' then
+				run_I0 <= '1';
+				inload_done_2 <= '0';
+				h_count_I0 <= (others => '0');
+				out_count_I0 <= (others => '0');
+				
+			else
+				if run_I0 = '1' then
+					if (h_count_I0) < (1279) then
+						if (h_count_I0 + out_count_I0) < 1279 and (c3_p4_rd_empty = '1' or out_count_I0 < 17) and called_I0 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+							c3_p4_cmd_en <= '1';
+							if c3_p4_rd_en = '1' then
+							out_count_I0 <= out_count_I0 + 30;
+							h_count_I0 <= h_count_I0 + 1;
+							else
+							out_count_I0 <= out_count_I0 + 31;
+							end if;	
+						
+						elsif c3_p4_rd_en = '1' then
+							out_count_I0 <= out_count_I0 - 1;
+							h_count_I0 <= h_count_I0 + 1;						
+						end if;
+						
+					elsif (h_count_I0 + out_count_I0) >= (1279) and c3_p4_rd_empty = '1' then
+						run_I0 <= '0'; -- stop!
+						inload_done_2 <= '1';
+					end if;
+				end if;
+			end if;
+		end if;				
+	end process I0_proc;
+
 	
 	
 	
