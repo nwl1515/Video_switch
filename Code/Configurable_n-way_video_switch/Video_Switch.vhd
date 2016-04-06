@@ -795,8 +795,8 @@ hdmi_output_5 : HDMI_OUT
 	
 	simulator_timing : Resolution_output_timing
 	generic map(
-				offset_h			=> 500,
-				offset_v			=> 200
+				offset_h			=> 800,
+				offset_v			=> 600
 				)
 	Port map ( 
 		     pixel_clock    	=> global_pixel_clock,
@@ -947,7 +947,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		-- Output port 2 control signals
 		c3_p2_cmd_clk                           =>  global_pixel_clock,
 		c3_p2_cmd_en                            =>  DDR_p2_cmd_en,
-		c3_p2_cmd_instr                         =>  "000",
+		c3_p2_cmd_instr                         =>  "010",
 		c3_p2_cmd_bl                            =>  "011111",
 		c3_p2_cmd_byte_addr                     =>  DDR_p2_cmd_byte_addr,
 		c3_p2_cmd_empty                         =>  DDR_p2_cmd_empty,
@@ -965,7 +965,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		-- Output port 3 control signals
 		c3_p3_cmd_clk                           =>  global_pixel_clock,
 		c3_p3_cmd_en                            =>  DDR_p3_cmd_en,
-		c3_p3_cmd_instr                         =>  "000",
+		c3_p3_cmd_instr                         =>  "010",
 		c3_p3_cmd_bl                            =>  "011111",		-- 15 means 16
 		c3_p3_cmd_byte_addr                     =>  DDR_p3_cmd_byte_addr,
 		c3_p3_cmd_empty                         =>  DDR_p3_cmd_empty,
@@ -983,7 +983,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		-- Input port 4
 		c3_p4_cmd_clk                           =>  global_pixel_clock_x2_b1,
 		c3_p4_cmd_en                            =>  DDR_p4_cmd_en,
-		c3_p4_cmd_instr                         =>  "001",
+		c3_p4_cmd_instr                         =>  "011",
 		c3_p4_cmd_bl                            =>  DDR_p4_cmd_bl,
 		c3_p4_cmd_byte_addr                     =>  DDR_p4_cmd_byte_addr,
 		c3_p4_cmd_empty                         =>  DDR_p4_cmd_empty,
@@ -1000,7 +1000,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		-- Input port 5
 		c3_p5_cmd_clk                           =>  global_pixel_clock_x2_b1,
 		c3_p5_cmd_en                            =>  DDR_p5_cmd_en,
-		c3_p5_cmd_instr                         =>  "001",
+		c3_p5_cmd_instr                         =>  "011",
 		c3_p5_cmd_bl                            =>  DDR_p5_cmd_bl,
 		c3_p5_cmd_byte_addr                     =>  DDR_p5_cmd_byte_addr,
 		c3_p5_cmd_empty                         =>  DDR_p5_cmd_empty,
@@ -1127,7 +1127,7 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 				v_count_I1											=> simulator_v_count(10 downto 0),
 				active_video_I0									=> simulator_active_video,
 				active_video_I1									=> simulator_active_video,
-				video_in_I0											=> "000000000000000011111111",
+				video_in_I0											=> color_in,
 				video_in_I1											=> color_in,
 				--video_in_I1											=> "000000000000000011111111",
 				reset													=> reset_btn,

@@ -62,26 +62,24 @@ begin
 	Px_enable <= '1' when Px_conf < "1111" else '0';
 	
 	Px_video_out <= Px_BRAM_in when Px_conf = "0000" or Px_conf = "0001" else  (others => '0');
-	Px_h_count_out <= global_h_count(10 downto 0) when Px_conf = "0000" or Px_conf = "0001" else (others => '0');
+	Px_h_count_out <= global_h_count(10 downto 0) when (Px_conf = "0000" or Px_conf = "0001") and not(global_v_count = "111111111111") else (others => '0');
 	
 	controller : process(clk_in)
 	begin
 		if rising_edge(clk_in) then
 			case Px_conf is
-				when "0000"	=>
+				when "0000" =>
 									Px_I_selector <= '0';
-									if Px_unload_done = '1' then
+									Px_change_s <= '0';
+								
+									if Px_h_count_out >= 1279 and global_active_v = '1' then
+										Px_unload_done <= '1';
+										
+									--elsif Px_inload_done = '1' and Px_unload_done = '1' then
+									elsif Px_unload_done = '1' then
 										Px_S_selector <= not Px_S_selector;
 										Px_unload_done <= '0';
-									end if;
-									if global_h_count < "11111111111" then
-										--Px_video_out <= Px_BRAM_in;
-										--Px_h_count_out <= global_h_count(10 downto 0);
-									else
-										--Px_h_count_out <= (others => '0');
-									end if;
-									if Px_h_count_out >= 1279 then
-										Px_unload_done <= '1';
+										Px_change_s <= '1';
 									end if;
 									
 																	
@@ -92,8 +90,7 @@ begin
 									if Px_h_count_out >= 1279 and global_active_v = '1' then
 										Px_unload_done <= '1';
 										
-									--elsif Px_inload_done = '1' and Px_unload_done = '1' then
-									elsif Px_unload_done = '1' then
+									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
 										Px_S_selector <= not Px_S_selector;
 										Px_unload_done <= '0';
 										Px_change_s <= '1';
