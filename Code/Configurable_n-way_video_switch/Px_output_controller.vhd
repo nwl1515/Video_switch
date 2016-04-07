@@ -33,24 +33,24 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity Px_output_controller is
     Port ( 
-		clk_in 				: in  STD_LOGIC; --- OBS x1 pixel clock
-		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0);
-		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
-		global_active_v	: in STD_LOGIC;
-		Px_conf				: in STD_LOGIC_VECTOR(3 downto 0);
-		Px_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
-		Px_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
-		Px_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
-		Px_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		clk_in 				: in  STD_LOGIC := '0'; --- OBS x1 pixel clock
+		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		global_active_v	: in STD_LOGIC := '0';
+		Px_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		Px_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		Px_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		Px_set_3 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		Px_set_4 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
 		Px_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
-		Px_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		Px_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 		Px_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 		Px_I_selector		: out STD_LOGIC := '0';
 		Px_S_selector		: inout STD_LOGIC := '0';
 		Px_enable			: out STD_LOGIC := '0';
-		Px_inload_done		: in STD_LOGIC;
+		Px_inload_done		: in STD_LOGIC := '0';
 		Px_unload_done		: inout STD_LOGIC := '0';
-		Px_change_s			: out STD_LOGIC
+		Px_change_s			: out STD_LOGIC := '0'
 	 
 	 );
 end Px_output_controller;
@@ -75,8 +75,7 @@ begin
 									if Px_h_count_out >= 1279 and global_active_v = '1' then
 										Px_unload_done <= '1';
 										
-									--elsif Px_inload_done = '1' and Px_unload_done = '1' then
-									elsif Px_unload_done = '1' then
+									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
 										Px_S_selector <= not Px_S_selector;
 										Px_unload_done <= '0';
 										Px_change_s <= '1';

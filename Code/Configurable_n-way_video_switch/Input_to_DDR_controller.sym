@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<symbol version="7" name="Input_to_DDR_controller">
+    <symboltype>BLOCK</symboltype>
+    <timestamp>2016-4-7T21:46:16</timestamp>
+    <pin polarity="Input" x="0" y="-1184" name="pixel_clock_I0" />
+    <pin polarity="Input" x="0" y="-1120" name="pixel_clock_I1" />
+    <pin polarity="Input" x="0" y="-1056" name="active_video_I0" />
+    <pin polarity="Input" x="0" y="-992" name="active_video_I1" />
+    <pin polarity="Input" x="0" y="-928" name="reset" />
+    <pin polarity="Input" x="0" y="-864" name="DDR_p2_cmd_full" />
+    <pin polarity="Input" x="0" y="-800" name="DDR_p2_cmd_empty" />
+    <pin polarity="Input" x="0" y="-736" name="DDR_p2_wr_full" />
+    <pin polarity="Input" x="0" y="-672" name="DDR_p2_wr_empty" />
+    <pin polarity="Input" x="0" y="-608" name="DDR_p3_cmd_full" />
+    <pin polarity="Input" x="0" y="-544" name="DDR_p3_cmd_empty" />
+    <pin polarity="Input" x="0" y="-480" name="DDR_p3_wr_full" />
+    <pin polarity="Input" x="0" y="-416" name="DDR_p3_wr_empty" />
+    <pin polarity="Input" x="0" y="-352" name="h_count_I0(10:0)" />
+    <pin polarity="Input" x="0" y="-288" name="h_count_I1(10:0)" />
+    <pin polarity="Input" x="0" y="-224" name="v_count_I0(10:0)" />
+    <pin polarity="Input" x="0" y="-160" name="v_count_I1(10:0)" />
+    <pin polarity="Input" x="0" y="-96" name="video_in_I0(23:0)" />
+    <pin polarity="Input" x="0" y="-32" name="video_in_I1(23:0)" />
+    <pin polarity="Output" x="672" y="-1184" name="DDR_p2_cmd_en" />
+    <pin polarity="Output" x="672" y="-1024" name="DDR_p2_wr_en" />
+    <pin polarity="Output" x="672" y="-864" name="DDR_p3_cmd_en" />
+    <pin polarity="Output" x="672" y="-704" name="DDR_p3_wr_en" />
+    <pin polarity="Output" x="672" y="-544" name="DDR_p2_cmd_byte_addr(29:0)" />
+    <pin polarity="Output" x="672" y="-384" name="DDR_p2_wr_data(31:0)" />
+    <pin polarity="Output" x="672" y="-224" name="DDR_p3_cmd_byte_addr(29:0)" />
+    <pin polarity="Output" x="672" y="-64" name="DDR_p3_wr_data(31:0)" />
+    <graph>
+        <rect width="544" x="64" y="-1216" height="1216" />
+        <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="336" y="-1224" type="symbol" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1184" type="pin pixel_clock_I0" />
+        <line x2="0" y1="-1184" y2="-1184" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1120" type="pin pixel_clock_I1" />
+        <line x2="0" y1="-1120" y2="-1120" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1056" type="pin active_video_I0" />
+        <line x2="0" y1="-1056" y2="-1056" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-992" type="pin active_video_I1" />
+        <line x2="0" y1="-992" y2="-992" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-928" type="pin reset" />
+        <line x2="0" y1="-928" y2="-928" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-864" type="pin DDR_p2_cmd_full" />
+        <line x2="0" y1="-864" y2="-864" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-800" type="pin DDR_p2_cmd_empty" />
+        <line x2="0" y1="-800" y2="-800" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-736" type="pin DDR_p2_wr_full" />
+        <line x2="0" y1="-736" y2="-736" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-672" type="pin DDR_p2_wr_empty" />
+        <line x2="0" y1="-672" y2="-672" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-608" type="pin DDR_p3_cmd_full" />
+        <line x2="0" y1="-608" y2="-608" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-544" type="pin DDR_p3_cmd_empty" />
+        <line x2="0" y1="-544" y2="-544" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-480" type="pin DDR_p3_wr_full" />
+        <line x2="0" y1="-480" y2="-480" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-416" type="pin DDR_p3_wr_empty" />
+        <line x2="0" y1="-416" y2="-416" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-352" type="pin h_count_I0(10:0)" />
+        <rect width="64" x="0" y="-364" height="24" />
+        <line x2="0" y1="-352" y2="-352" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-288" type="pin h_count_I1(10:0)" />
+        <rect width="64" x="0" y="-300" height="24" />
+        <line x2="0" y1="-288" y2="-288" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-224" type="pin v_count_I0(10:0)" />
+        <rect width="64" x="0" y="-236" height="24" />
+        <line x2="0" y1="-224" y2="-224" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-160" type="pin v_count_I1(10:0)" />
+        <rect width="64" x="0" y="-172" height="24" />
+        <line x2="0" y1="-160" y2="-160" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-96" type="pin video_in_I0(23:0)" />
+        <rect width="64" x="0" y="-108" height="24" />
+        <line x2="0" y1="-96" y2="-96" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-32" type="pin video_in_I1(23:0)" />
+        <rect width="64" x="0" y="-44" height="24" />
+        <line x2="0" y1="-32" y2="-32" x1="64" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-1184" type="pin DDR_p2_cmd_en" />
+        <line x2="672" y1="-1184" y2="-1184" x1="608" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-1024" type="pin DDR_p2_wr_en" />
+        <line x2="672" y1="-1024" y2="-1024" x1="608" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-864" type="pin DDR_p3_cmd_en" />
+        <line x2="672" y1="-864" y2="-864" x1="608" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-704" type="pin DDR_p3_wr_en" />
+        <line x2="672" y1="-704" y2="-704" x1="608" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-544" type="pin DDR_p2_cmd_byte_addr(29:0)" />
+        <rect width="64" x="608" y="-556" height="24" />
+        <line x2="672" y1="-544" y2="-544" x1="608" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-384" type="pin DDR_p2_wr_data(31:0)" />
+        <rect width="64" x="608" y="-396" height="24" />
+        <line x2="672" y1="-384" y2="-384" x1="608" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-224" type="pin DDR_p3_cmd_byte_addr(29:0)" />
+        <rect width="64" x="608" y="-236" height="24" />
+        <line x2="672" y1="-224" y2="-224" x1="608" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="600" y="-64" type="pin DDR_p3_wr_data(31:0)" />
+        <rect width="64" x="608" y="-76" height="24" />
+        <line x2="672" y1="-64" y2="-64" x1="608" />
+    </graph>
+</symbol>

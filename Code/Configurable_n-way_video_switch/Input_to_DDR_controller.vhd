@@ -33,38 +33,38 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity Input_to_DDR_controller is
     Port ( 
-				pixel_clock_I0 									: in  STD_LOGIC;
-				pixel_clock_I1										: in 	STD_LOGIC;
-				h_count_I0											: in 	STD_LOGIC_VECTOR(10 downto 0);
-				h_count_I1											: in 	STD_LOGIC_VECTOR(10 downto 0);
-				v_count_I0											: in 	STD_LOGIC_VECTOR(10 downto 0);
-				v_count_I1											: in 	STD_LOGIC_VECTOR(10 downto 0);
-				active_video_I0									: in 	STD_LOGIC;
-				active_video_I1									: in	STD_LOGIC;
-				video_in_I0											: in 	STD_LOGIC_VECTOR(23 downto 0);
-				video_in_I1											: in 	STD_LOGIC_VECTOR(23 downto 0);
-				reset													: in  STD_LOGIC;
+				pixel_clock_I0 									: in  STD_LOGIC := '0';
+				pixel_clock_I1										: in 	STD_LOGIC := '0';
+				h_count_I0											: in 	STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+				h_count_I1											: in 	STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+				v_count_I0											: in 	STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+				v_count_I1											: in 	STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+				active_video_I0									: in 	STD_LOGIC := '0';
+				active_video_I1									: in	STD_LOGIC := '0';
+				video_in_I0											: in 	STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+				video_in_I1											: in 	STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+				reset													: in  STD_LOGIC := '0';
 				
 				-- DDR signals
-				DDR_p2_cmd_en                            : out std_logic;
-				DDR_p2_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-				DDR_p2_cmd_full                          : in std_logic;
-				DDR_p2_cmd_empty									: in std_logic;
+				DDR_p2_cmd_en                            : out std_logic := '0';
+				DDR_p2_cmd_byte_addr                     : out std_logic_vector(29 downto 0) := "000000000000000000000000000000";
+				DDR_p2_cmd_full                          : in std_logic := '0';
+				DDR_p2_cmd_empty									: in std_logic := '1';
 				
-				DDR_p2_wr_en                             : out std_logic;
-				DDR_p2_wr_data                           : out std_logic_vector(31 downto 0);
-				DDR_p2_wr_full                           : in std_logic;
-				DDR_p2_wr_empty                          : in std_logic;
+				DDR_p2_wr_en                             : out std_logic := '0';
+				DDR_p2_wr_data                           : out std_logic_vector(31 downto 0) := (others => '0');
+				DDR_p2_wr_full                           : in std_logic := '0';
+				DDR_p2_wr_empty                          : in std_logic := '1';
 				
-				DDR_p3_cmd_en                            : out std_logic;
-				DDR_p3_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-				DDR_p3_cmd_full                          : in std_logic;
-				DDR_p3_cmd_empty									: in std_logic;
+				DDR_p3_cmd_en                            : out std_logic := '0';
+				DDR_p3_cmd_byte_addr                     : out std_logic_vector(29 downto 0) := "000100000000000000000000000000";
+				DDR_p3_cmd_full                          : in std_logic := '0';
+				DDR_p3_cmd_empty									: in std_logic := '1';
 				
-				DDR_p3_wr_en                             : out std_logic;
-				DDR_p3_wr_data                           : out std_logic_vector(31 downto 0);
-				DDR_p3_wr_full                           : in std_logic;
-				DDR_p3_wr_empty                          : in std_logic
+				DDR_p3_wr_en                             : out std_logic := '0';
+				DDR_p3_wr_data                           : out std_logic_vector(31 downto 0) := (others => '0');
+				DDR_p3_wr_full                           : in std_logic := '0';
+				DDR_p3_wr_empty                          : in std_logic := '1'
 				
 				-- I0 -> p2
 				-- I1 -> p3
@@ -74,32 +74,24 @@ end Input_to_DDR_controller;
 
 architecture Structural of Input_to_DDR_controller is
 	
-	signal count_num_I0			: STD_LOGIC_VECTOR(4 downto 0) := "00000";
-	--signal count_num_I1			: STD_LOGIC_VECTOR(4 downto 0) := "00000";
 	
-	signal addr_out_I0			: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
-	signal addr_out_I1			: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
 	
-	signal v_count_I1_p1			: STD_LOGIC_VECTOR(10 downto 0);
-	signal v_count_I0_p1			: STD_LOGIC_VECTOR(10 downto 0);
+	
+	signal v_count_I1_p1			: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal v_count_I0_p1			: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
 	
 	constant error_addr			: STD_LOGIC_VECTOR(29 downto 0) := "001111111111111111111111111100";
-	
-	signal cmd_en_I0_p1			: STD_LOGIC;
-	signal cmd_en_I1_p1			: STD_LOGIC;
-	signal wr_en_I0_p1			: STD_LOGIC;
-	signal wr_en_I1_p1			: STD_LOGIC;
 		
 
 begin
 
 	
 	DDR_p3_wr_data <= "00000000" & video_in_I1;
-	DDR_p3_wr_en <= '1' when active_video_I1 = '1' else '0';
+	DDR_p3_wr_en <= '1' when active_video_I1 = '1' and reset = '0' else '0';
 
 	input_1 : process(pixel_clock_I1)
-	variable count_num_I1 		: integer := 0;
-	variable address_count		: integer := 0;
+	variable count_num_I1 		: integer range 0 to 32 := 0;
+	variable address_count		: integer range 0 to 1280 := 0;
 	begin
 		if rising_edge(pixel_clock_I1) then
 			DDR_p3_cmd_en <= '0';
@@ -122,11 +114,13 @@ begin
 					address_count := 0;
 				end if;
 		
-				if count_num_I1 = 32 then
-					DDR_p3_cmd_en <= '1';
-					DDR_p3_cmd_byte_addr <= "00010" & v_count_I1_p1 & "0" & conv_std_logic_Vector(address_count,11) & "00";
-					count_num_I1 := 0;
-					address_count := address_count + 32;
+				if count_num_I1 >= 32 then
+					if DDR_p3_cmd_empty = '1' then
+						DDR_p3_cmd_en <= '1';
+						DDR_p3_cmd_byte_addr <= "000100" & v_count_I1_p1 & conv_std_logic_Vector(address_count,11) & "00";
+						count_num_I1 := count_num_I1 - 32;
+						address_count := address_count + 32;
+					end if;
 					
 				end if;
 			end if;
@@ -136,11 +130,11 @@ begin
 	
 	
 	DDR_p2_wr_data <= "00000000" & video_in_I0;
-	DDR_p2_wr_en <= '1' when active_video_I0 = '1' else '0';
-
+	DDR_p2_wr_en <= '1' when active_video_I0 = '1' and reset = '0' else '0';
+	
 	input_0 : process(pixel_clock_I0)
-	variable count_num_I0 		: integer := 0;
-	variable address_count		: integer := 0;
+	variable count_num_I0 		: integer range 0 to 32 := 0;
+	variable address_count		: integer range 0 to 1280 := 0;
 	begin
 		if rising_edge(pixel_clock_I0) then
 			DDR_p2_cmd_en <= '0';
@@ -163,11 +157,13 @@ begin
 					address_count := 0;
 				end if;
 		
-				if count_num_I0 = 32 then
-					DDR_p2_cmd_en <= '1';
-					DDR_p2_cmd_byte_addr <= "00000" & v_count_I0_p1 & "0" & conv_std_logic_Vector(address_count,11) & "00";
-					count_num_I0 := 0;
-					address_count := address_count + 32;
+				if count_num_I0 >= 32 then
+					if DDR_p2_cmd_empty = '1' then
+						DDR_p2_cmd_en <= '1';
+						DDR_p2_cmd_byte_addr <= "000000" & v_count_I0_p1 & conv_std_logic_Vector(address_count,11) & "00";
+						count_num_I0 := count_num_I0 - 32;
+						address_count := address_count + 32;
+					end if;
 					
 				end if;
 			end if;

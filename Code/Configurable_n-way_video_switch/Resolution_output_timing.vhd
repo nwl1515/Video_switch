@@ -21,9 +21,9 @@ entity Resolution_output_timing is
            active_video   : inout STD_LOGIC := '0';
            hsync   : out STD_LOGIC := '0';
            vsync   : out STD_LOGIC := '0';
-			  h_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
-			  v_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
-			  Pll_locked : in  std_logic);
+			  h_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+			  v_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+			  Pll_locked : in  std_logic := '0');
 end Resolution_output_timing;
 
 architecture Structural of Resolution_output_timing is

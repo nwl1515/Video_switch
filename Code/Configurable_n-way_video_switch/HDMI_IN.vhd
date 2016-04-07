@@ -25,15 +25,15 @@ use UNISIM.VComponents.all;
 
 entity HDMI_IN is
 	PORT(
-			hdmi_in_p		: in STD_LOGIC_VECTOR(3 downto 0);
-			hdmi_in_n		: in STD_LOGIC_VECTOR(3 downto 0);
-			ddc_sclk			: in STD_LOGIC;
-			ddc_sdat			: inout STD_LOGIC;
-			gclk				: in STD_LOGIC;
-			red_c				: out STD_LOGIC_VECTOR(7 downto 0);
-			green_c			: out STD_LOGIC_VECTOR(7 downto 0);
-			blue_c			: out STD_LOGIC_VECTOR(7 downto 0);
-			pclk				: out STD_LOGIC
+			hdmi_in_p		: in STD_LOGIC_VECTOR(3 downto 0) := (others => '1');
+			hdmi_in_n		: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+			ddc_sclk			: in STD_LOGIC := '0';
+			ddc_sdat			: inout STD_LOGIC := 'Z';
+			gclk				: in STD_LOGIC := '0';
+			red_c				: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+			green_c			: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+			blue_c			: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+			pclk				: out STD_LOGIC  := '0'
 			
 			);
 end HDMI_IN;
@@ -54,21 +54,21 @@ architecture Behavioral of HDMI_IN is
 	COMPONENT edid_rom_0
 		port ( clk      	: in    std_logic;
           sclk_raw 		: in    std_logic;
-          sdat_raw 		: inout std_logic := 'Z';
+          sdat_raw 		: inout std_logic;
           edid_debug 	: out std_logic_vector(2 downto 0) := (others => '0')
 		);
   END COMPONENT;
 
-	signal pclk_unbuffered 			: std_logic;
-	signal pclk_buffered				: std_logic;
-	signal serdes_strobe				: std_logic;
-	signal pll_locked					: std_logic;
-	signal pclk_x1						: std_logic;
-	signal pclk_x2						: std_logic;
-	signal pclk_x10					: std_logic;
-	signal red_tmds					: std_logic;
-	signal green_tmds					: std_logic;
-	signal blue_tmds					: std_logic;
+	signal pclk_unbuffered 			: std_logic := '0';
+	signal pclk_buffered				: std_logic := '0';
+	signal serdes_strobe				: std_logic := '0';
+	signal pll_locked					: std_logic := '0';
+	signal pclk_x1						: std_logic := '0';
+	signal pclk_x2						: std_logic := '0';
+	signal pclk_x10					: std_logic := '0';
+	signal red_tmds					: std_logic := '0';
+	signal green_tmds					: std_logic := '0';
+	signal blue_tmds					: std_logic := '0';
 
 	begin
 	pclk <= pclk_buffered;

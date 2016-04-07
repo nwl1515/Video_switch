@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Wed Apr 06 22:05:22 2016
+Fri Apr 08 01:29:36 2016
 
   SmartGuide Results
   ------------------
@@ -9,50 +9,92 @@ Wed Apr 06 22:05:22 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |   1170
-    Number of guided Components               |   1168 out of   1170  99.8%
-    Number of re-implemented Components       |      1 out of   1170   0.1%
-    Number of new/changed Components          |      1 out of   1170   0.1%
-  Number of Nets in the input design          |   3851
-    Number of guided Nets                     |   3835 out of   3851  99.6%
-    Number of partially guided Nets           |      6 out of   3851   0.2%
-    Number of re-routed Nets                  |      9 out of   3851   0.2%
-    Number of new/changed Nets                |      1 out of   3851   0.1%
+  Number of Components in the input design    |   1230
+    Number of guided Components               |   1230 out of   1230 100.0%
+    Number of re-implemented Components       |      0 out of   1230   0.0%
+    Number of new/changed Components          |      0 out of   1230   0.0%
+  Number of Nets in the input design          |   4044
+    Number of guided Nets                     |   3984 out of   4044  98.5%
+    Number of partially guided Nets           |     26 out of   4044   0.6%
+    Number of re-routed Nets                  |     34 out of   4044   0.8%
+    Number of new/changed Nets                |      0 out of   4044   0.0%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
- u_input_to_ddr_controller/input_1.count_num_I1<4> : SLICE_X1Y67.
 
 
 The following Components are new/changed.
 -----------------------------------------
- u_input_to_ddr_controller/GND_1421_o_GND_1421_o_AND_88_o : SLICE_X3Y67.
 
 
 The following Nets were re-routed.
 ----------------------------------
- u_input_to_ddr_controller/input_1.count_num_I1<0>.
- u_input_to_ddr_controller/input_1.count_num_I1<1>.
- u_input_to_ddr_controller/input_1.count_num_I1<2>.
- u_input_to_ddr_controller/input_1.count_num_I1<3>.
- u_input_to_ddr_controller/input_1.count_num_I1<4>.
- u_input_to_ddr_controller/input_1.count_num_I1[31]_GND_1421_o_add_2_OUT<0>.
- u_input_to_ddr_controller/input_1.count_num_I1[31]_GND_1421_o_add_2_OUT<1>.
- u_input_to_ddr_controller/input_1.count_num_I1[31]_GND_1421_o_add_2_OUT<2>.
- u_input_to_ddr_controller/N2.
+ DDR_p2_cmd_byte_addr<12>.
+ DDR_p2_cmd_byte_addr<11>.
+ DDR_p2_cmd_byte_addr<13>.
+ DDR_p3_cmd_byte_addr<13>.
+ DDR_p3_cmd_byte_addr<14>.
+ DDR_p3_cmd_byte_addr<15>.
+ DDR_p3_cmd_byte_addr<16>.
+ DDR_p3_cmd_byte_addr<17>.
+ DDR_p3_cmd_byte_addr<18>.
+ DDR_p3_cmd_byte_addr<19>.
+ DDR_p3_cmd_byte_addr<20>.
+ DDR_p2_cmd_byte_addr<14>.
+ DDR_p2_cmd_byte_addr<15>.
+ DDR_p2_cmd_byte_addr<16>.
+ DDR_p2_cmd_byte_addr<17>.
+ DDR_p2_cmd_en.
+ DDR_p2_cmd_byte_addr<18>.
+ DDR_p2_cmd_byte_addr<22>.
+ DDR_p2_cmd_byte_addr<19>.
+ DDR_p2_cmd_byte_addr<23>.
+ DDR_p2_cmd_byte_addr<20>.
+ DDR_p2_cmd_byte_addr<24>.
+ DDR_p2_cmd_byte_addr<21>.
+ DDR_p2_cmd_byte_addr<25>.
+ DDR_p3_cmd_byte_addr<23>.
+ DDR_p3_cmd_byte_addr<21>.
+ DDR_p3_cmd_byte_addr<22>.
+ DDR_p3_cmd_byte_addr<24>.
+ DDR_p3_cmd_byte_addr<25>.
+ DDR_p3_cmd_byte_addr<8>.
+ DDR_p3_cmd_byte_addr<12>.
+ DDR_p3_cmd_byte_addr<11>.
+ DDR_p2_cmd_byte_addr<26>.
+ u_BRAM_interface/Port0/Px_data_out_I1_S0<17>.
 
 
 The following Nets are new/changed.
 -----------------------------------
- u_input_to_ddr_controller/GND_1421_o_GND_1421_o_AND_88_o.
 
 
 The following Nets were partially guided.
 -----------------------------------------
- global_pixel_clock.
- DDR_p2_wr_en.
- reset_btn_IBUF.
- u_input_to_ddr_controller/input_1.count_num_I1[31]_GND_1421_o_add_2_OUT<3>.
- u_input_to_ddr_controller/input_1.count_num_I1[31]_GND_1421_o_add_2_OUT<4>.
- u_input_to_ddr_controller/input_1.count_num_I1[31]_GND_1421_o_add_2_OUT<5>.
+ DDR_p5_cmd_byte_addr<26>.
+ DDR_p5_cmd_byte_addr<18>.
+ DDR_p5_cmd_byte_addr<20>.
+ DDR_p5_cmd_byte_addr<21>.
+ DDR_p5_cmd_byte_addr<16>.
+ DDR_p5_cmd_byte_addr<15>.
+ DDR_p4_cmd_byte_addr<19>.
+ DDR_p4_cmd_byte_addr<20>.
+ DDR_p4_cmd_byte_addr<21>.
+ DDR_p4_cmd_byte_addr<22>.
+ DDR_p4_cmd_byte_addr<15>.
+ DDR_p4_cmd_byte_addr<16>.
+ DDR_p4_cmd_byte_addr<17>.
+ DDR_p4_cmd_byte_addr<18>.
+ DDR_p5_cmd_byte_addr<22>.
+ DDR_p4_cmd_byte_addr<9>.
+ DDR_p5_cmd_byte_addr<17>.
+ DDR_p5_cmd_byte_addr<19>.
+ DDR_p4_cmd_byte_addr<11>.
+ DDR_p4_cmd_byte_addr<12>.
+ DDR_p4_cmd_byte_addr<13>.
+ DDR_p4_cmd_byte_addr<14>.
+ DDR_p5_cmd_byte_addr<11>.
+ DDR_p5_cmd_byte_addr<12>.
+ DDR_p5_cmd_byte_addr<13>.
+ DDR_p5_cmd_byte_addr<14>.

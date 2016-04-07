@@ -31,30 +31,30 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity Output_Controller is
     Port ( 
-		clk_in 				: in  STD_LOGIC; --- OBS x1 pixel clock
-		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0);
-		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
-		global_h_sync		: in STD_LOGIC;
-		global_v_sync		: in STD_LOGIC;
+		clk_in 				: in  STD_LOGIC := '0'; --- OBS x1 pixel clock
+		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		global_h_sync		: in STD_LOGIC := '0';
+		global_v_sync		: in STD_LOGIC := '0';
 		global_output_h	: out STD_LOGIC := '0';
 		global_output_v	: out STD_LOGIC := '0';
-		global_active_v	: in STD_LOGIC;
+		global_active_v	: in STD_LOGIC := '0';
 		global_output_av	: out STD_LOGIC := '0';
 		BRAM_clock_out_e	: out STD_LOGIC := '0';
-		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0);
-		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P0_set_3 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P0_set_4 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
 		P0_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
-		P0_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		P0_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 		P0_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 		P0_I_selector		: out STD_LOGIC := '0';
 		P0_S_selector		: inout STD_LOGIC := '0';
 		P0_enable			: out STD_LOGIC := '0';
-		P0_inload_done		: in STD_LOGIC;
+		P0_inload_done		: in STD_LOGIC := '0';
 		P0_unload_done 	: inout STD_LOGIC := '0';
-		P0_change_s			: out STD_LOGIC
+		P0_change_s			: out STD_LOGIC := '0'
 		);
 		
 		-- Px_conf settings:
@@ -118,14 +118,14 @@ architecture Structural of Output_Controller is
 		Px_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
 		Px_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
 		Px_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
-		Px_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		Px_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0);
 		Px_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
-		Px_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
-		Px_I_selector		: out STD_LOGIC := '0';
-		Px_S_selector		: inout STD_LOGIC := '0';
-		Px_enable			: out STD_LOGIC := '0';
+		Px_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
+		Px_I_selector		: out STD_LOGIC;
+		Px_S_selector		: inout STD_LOGIC;
+		Px_enable			: out STD_LOGIC;
 		Px_inload_done		: in STD_LOGIC;
-		Px_unload_done		: inout STD_LOGIC := '0';
+		Px_unload_done		: inout STD_LOGIC;
 		Px_change_s			: out STD_LOGIC
 	 
 	 );
@@ -139,7 +139,7 @@ architecture Structural of Output_Controller is
 begin
 
  BRAM_clock_out_e <= '1' when active_video_p2 = '1' or active_video_p3 = '1' else '0';
- --BRAM_clock_out_e <= '1' when active_video_p2 = '1' else '0';
+ --BRAM_clock_out_e <= '1' when active_video_p3 = '1' else '0';
  --BRAM_clock_out_e <= '1' when global_active_v = '1' else '0';
  
  --global_output_av <= global_active_v;

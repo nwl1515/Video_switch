@@ -33,18 +33,18 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity BRAM_port is
     Port ( 
-		Clk_out_i 			: in STD_LOGIC;
-		Clk_in_i 			: in STD_LOGIC;
-		Px_enable			: in STD_LOGIC;
-		Px_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0);
-		Px_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0);
-		Px_data_out			: out STD_LOGIC_VECTOR(23 downto 0);
-		Px_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0);
-		Px_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0);
-		Px_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0);
-		Px_data_select_in : in STD_LOGIC_VECTOR(1 downto 0);
-		Px_I_select_out	: in STD_LOGIC;
-		Px_S_select			: in STD_LOGIC
+		Clk_out_i 			: in STD_LOGIC := '0';
+		Clk_in_i 			: in STD_LOGIC := '0';
+		Px_enable			: in STD_LOGIC := '0';
+		Px_data_in_I0		: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		Px_data_in_I1		: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		Px_data_out			: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		Px_h_count_in_I0	: in STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		Px_h_count_in_I1	: in STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		Px_h_count_out		: in STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		Px_data_select_in : in STD_LOGIC_VECTOR(1 downto 0) := "00";
+		Px_I_select_out	: in STD_LOGIC := '0';
+		Px_S_select			: in STD_LOGIC := '0'
 		);
 				
 end BRAM_port;
@@ -72,14 +72,14 @@ architecture Structural of BRAM_port is
 	signal Px_data_out_I0_S1				: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 	signal Px_data_out_I1_S1				: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 	
-	signal Px_S0_read							: STD_LOGIC;
-	signal Px_S1_read							: STD_LOGIC;
+	signal Px_S0_read							: STD_LOGIC := '0';
+	signal Px_S1_read							: STD_LOGIC := '0';
 
 	
-	signal Px_I0_S0_write			: STD_LOGIC;
-	signal Px_I1_S0_write			: STD_LOGIC;
-	signal Px_I0_S1_write			: STD_LOGIC;
-	signal Px_I1_S1_write			: STD_LOGIC;
+	signal Px_I0_S0_write			: STD_LOGIC_vector(0 downto 0) := (others => '0');
+	signal Px_I1_S0_write			: STD_LOGIC_Vector(0 downto 0) := (others => '0');
+	signal Px_I0_S1_write			: STD_LOGIC_vector(0 downto 0) := (others => '0');
+	signal Px_I1_S1_write			: STD_LOGIC_vector(0 downto 0) := (others => '0');
 	
 	
 
@@ -100,18 +100,18 @@ begin
 	-- 10 -> data for I1
 	-- 11 -> data for both I0 and I1
 	
-	Px_I0_S0_write <= '1' when Px_S_select = '1' and Px_data_select_in(0) = '1' and Px_enable = '1' else '0';
-	Px_I1_S0_write <= '1' when Px_S_select = '1' and Px_data_select_in(1) = '1' and Px_enable = '1' else '0';
-	Px_I0_S1_write <= '1' when Px_S_select = '0' and Px_data_select_in(0) = '1' and Px_enable = '1' else '0';
-	Px_I1_S1_write <= '1' when Px_S_select = '0' and Px_data_select_in(1) = '1' and Px_enable = '1' else '0';
+	Px_I0_S0_write(0) <= '1' when Px_S_select = '1' and Px_data_select_in(0) = '1' and Px_enable = '1' else '0';
+	Px_I1_S0_write(0) <= '1' when Px_S_select = '1' and Px_data_select_in(1) = '1' and Px_enable = '1' else '0';
+	Px_I0_S1_write(0) <= '1' when Px_S_select = '0' and Px_data_select_in(0) = '1' and Px_enable = '1' else '0';
+	Px_I1_S1_write(0) <= '1' when Px_S_select = '0' and Px_data_select_in(1) = '1' and Px_enable = '1' else '0';
 						
 	
 	
 	Px_I0_S0 : BRAM_5x9kb
   PORT MAP (
     clka => clk_in_i,
-    ena => Px_I0_S0_write,
-    wea => "1",
+    ena => Px_I0_S0_write(0),
+    wea => Px_I0_S0_write,
     addra => Px_h_count_in_I0,
     dina => Px_data_in_I0,
     clkb => Clk_out_i,
@@ -123,8 +123,8 @@ begin
   Px_I1_S0 : BRAM_5x9kb
   PORT MAP (
     clka => clk_in_i,
-    ena => Px_I1_S0_write,
-    wea => "1",
+    ena => Px_I1_S0_write(0),
+    wea => Px_I1_S0_write,
     addra => Px_h_count_in_I1,
     dina => Px_data_in_I1,
     clkb => Clk_out_i,
@@ -139,8 +139,8 @@ begin
   Px_I0_S1 : BRAM_5x9kb
   PORT MAP (
     clka => clk_in_i,
-    ena => Px_I0_S1_write,
-    wea => "1",
+    ena => Px_I0_S1_write(0),
+    wea => Px_I0_S1_write,
     addra => Px_h_count_in_I0,
     dina => Px_data_in_I0,
     clkb => Clk_out_i,
@@ -152,8 +152,8 @@ begin
   Px_I1_S1 : BRAM_5x9kb
   PORT MAP (
     clka => clk_in_i,
-    ena => Px_I1_S1_write,
-    wea => "1",
+    ena => Px_I1_S1_write(0),
+    wea => Px_I1_S1_write,
     addra => Px_h_count_in_I1,
     dina => Px_data_in_I1,
     clkb => Clk_out_i,

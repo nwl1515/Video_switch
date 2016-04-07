@@ -29,12 +29,12 @@ use UNISIM.VComponents.all;
 entity Video_Switch is
 	Port(
 			-- Global clock
-			GCLK						: in STD_LOGIC;
+			GCLK						: in STD_LOGIC := '0';
 			
-			reset_btn				: in STD_LOGIC;
+			reset_btn				: in STD_LOGIC := '0';
 			
 			-- LEDS
-			leds						: out STD_LOGIC_VECTOR(7 downto 0);
+			leds						: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 			
 			-- Inputs TMDS
 			hdmi_port_0_in_p		: in STD_LOGIC_VECTOR(3 downto 0);
@@ -94,96 +94,96 @@ end Video_Switch;
 
 architecture Structural of Video_Switch is
 
-	signal global_pixel_clock					: std_logic;
-	signal global_pixel_clock_x1_b0			: std_logic;
-	signal global_pixel_clock_x2_b0			: std_logic;
-	signal global_pixel_clock_x10_b0			: std_logic;
-	signal global_pixel_clock_x1_b1			: std_logic;
-	signal global_pixel_clock_x2_b1			: std_logic;
-	signal global_pixel_clock_x10_b1			: std_logic;
-	signal global_output_h_sync 				: std_logic;
-	signal global_output_h_sync_controller : std_logic;
-	signal global_output_v_sync 				: std_logic;
-	signal global_output_v_sync_controller : std_logic;
-	signal global_output_active_video 		: std_logic;
-	signal global_output_active_video_controller : std_logic;
-	signal simulator_active_video				: std_logic;
-	signal simulator_h_count					: std_logic_vector(11 downto 0);
-	signal simulator_v_count					: std_logic_vector(11 downto 0);
+	signal global_pixel_clock					: std_logic := '0';
+	signal global_pixel_clock_x1_b0			: std_logic := '0';
+	signal global_pixel_clock_x2_b0			: std_logic := '0';
+	signal global_pixel_clock_x10_b0			: std_logic := '0';
+	signal global_pixel_clock_x1_b1			: std_logic := '0';
+	signal global_pixel_clock_x2_b1			: std_logic := '0';
+	signal global_pixel_clock_x10_b1			: std_logic := '0';
+	signal global_output_h_sync 				: std_logic := '0';
+	signal global_output_h_sync_controller : std_logic := '0';
+	signal global_output_v_sync 				: std_logic := '0';
+	signal global_output_v_sync_controller : std_logic := '0';
+	signal global_output_active_video 		: std_logic := '0';
+	signal global_output_active_video_controller : std_logic := '0';
+	signal simulator_active_video				: std_logic := '0';
+	signal simulator_h_count					: std_logic_vector(11 downto 0) := (others => '0');
+	signal simulator_v_count					: std_logic_vector(11 downto 0) := (others => '0');
 	signal global_pll_locked					: std_logic := '0';
-	signal global_pll_locked_b0				: std_logic;
-	signal global_serdes_strobe_b0			: std_logic;
-	signal global_pll_locked_b1				: std_logic;
-	signal global_serdes_strobe_b1			: std_logic;
-	signal global_h_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '1');
-	signal global_v_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '1');
+	signal global_pll_locked_b0				: std_logic := '0';
+	signal global_serdes_strobe_b0			: std_logic := '0';
+	signal global_pll_locked_b1				: std_logic := '0';
+	signal global_serdes_strobe_b1			: std_logic := '0';
+	signal global_h_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
+	signal global_v_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
 	
 	signal BRAM_clock_out_enable				: std_logic := '0';
 	signal P0_BRAM_enable						: std_logic := '0';
-	signal P0_BRAM_h_count						: std_logic_vector(10 downto 0);
-	signal P0_BRAM_data_out						: std_logic_vector(23 downto 0);
-	signal P0_data_out							: std_logic_vector(23 downto 0);
+	signal P0_BRAM_h_count						: std_logic_vector(10 downto 0) := (others => '0');
+	signal P0_BRAM_data_out						: std_logic_vector(23 downto 0) := (others => '0');
+	signal P0_data_out							: std_logic_vector(23 downto 0) := (others => '0');
 	signal P0_BRAM_I_selector					: std_logic := '0';
 	signal P0_BRAM_S_selector					: std_logic := '0';
 	
-	 signal color_in							: std_logic_vector(23 downto 0);
+	 signal color_in							: std_logic_vector(23 downto 0) := (others => '0');
 	 
 	signal reset									: std_logic := '0';
 	
 	signal color_red, color_blue, color_green : std_logic_vector(7 downto 0) := (others => '0');
-	signal g_color_red, g_color_green, g_color_blue : std_logic_vector(7 downto 0);
+	signal g_color_red, g_color_green, g_color_blue : std_logic_vector(7 downto 0) := (others => '0');
 	signal GCLK_i								: std_logic := '0';
 	
 	signal DDR_p2_cmd_en							: STD_LOGIC := '0';
-	signal DDR_p2_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
+	signal DDR_p2_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
 	signal DDR_p2_cmd_full						: STD_LOGIC := '0';
-	signal DDR_p2_cmd_empty						: STD_LOGIC := '0';
+	signal DDR_p2_cmd_empty						: STD_LOGIC := '1';
 	signal DDR_p2_wr_en							: STD_LOGIC := '0';
-	signal DDR_p2_wr_data						: STD_LOGIC_VECTOR(31 downto 0);
+	signal DDR_p2_wr_data						: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 	signal DDR_p2_wr_full						: STD_LOGIC := '0';
-	signal DDR_p2_wr_empty						: STD_LOGIC := '0';
+	signal DDR_p2_wr_empty						: STD_LOGIC := '1';
 	
 	
 	signal DDR_p3_cmd_en							: STD_LOGIC := '0';
-	signal DDR_p3_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
+	signal DDR_p3_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
 	signal DDR_p3_cmd_full						: STD_LOGIC := '0';
-	signal DDR_p3_cmd_empty						: STD_LOGIC := '0';
+	signal DDR_p3_cmd_empty						: STD_LOGIC := '1';
 	signal DDR_p3_wr_en							: STD_LOGIC := '0';
-	signal DDR_p3_wr_data						: STD_LOGIC_VECTOR(31 downto 0);
+	signal DDR_p3_wr_data						: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 	signal DDR_p3_wr_full						: STD_LOGIC := '0';
-	signal DDR_p3_wr_empty						: STD_LOGIC := '0';
+	signal DDR_p3_wr_empty						: STD_LOGIC := '1';
 	
 	
-	signal p0_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0);
-	signal p0_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0);
-	signal DDR_p4_cmd_en							: STD_LOGIC;
-	signal DDR_p4_cmd_bl							: STD_LOGIC_VECTOR(5 downto 0);
-	signal DDR_p4_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
-	signal DDR_p4_cmd_empty						: STD_LOGIC;
-	signal DDR_p4_cmd_full						: STD_LOGIC;
-	signal DDR_p4_rd_en							: STD_LOGIC;
-	signal DDR_p4_rd_data						: STD_LOGIC_VECTOR(31 downto 0);
-	signal DDR_p4_rd_empty						: STD_LOGIC;
-	signal DDR_p4_rd_full						: STD_LOGIC;
+	signal p0_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p0_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal DDR_p4_cmd_en							: STD_LOGIC := '0';
+	signal DDR_p4_cmd_bl							: STD_LOGIC_VECTOR(5 downto 0) := "011111";
+	signal DDR_p4_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
+	signal DDR_p4_cmd_empty						: STD_LOGIC := '1';
+	signal DDR_p4_cmd_full						: STD_LOGIC := '0';
+	signal DDR_p4_rd_en							: STD_LOGIC := '0';
+	signal DDR_p4_rd_data						: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+	signal DDR_p4_rd_empty						: STD_LOGIC := '1';
+	signal DDR_p4_rd_full						: STD_LOGIC := '0';
 	
 	
 	
-	signal p0_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0);
-	signal p0_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0);
-	signal p0_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0);
-	signal p0_inload_done						: STD_LOGIC;
-	signal DDR_p5_cmd_en							: STD_LOGIC;
-	signal DDR_p5_cmd_bl							: STD_LOGIC_VECTOR(5 downto 0);
-	signal DDR_p5_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0);
-	signal DDR_p5_cmd_empty						: STD_LOGIC;
-	signal DDR_p5_cmd_full						: STD_LOGIC;
-	signal DDR_p5_rd_en							: STD_LOGIC;
-	signal DDR_p5_rd_data						: STD_LOGIC_VECTOR(31 downto 0);
-	signal DDR_p5_rd_empty						: STD_LOGIC;
-	signal DDR_p5_rd_full						: STD_LOGIC;
+	signal p0_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p0_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p0_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0) := "00";
+	signal p0_inload_done						: STD_LOGIC := '0';
+	signal DDR_p5_cmd_en							: STD_LOGIC := '0';
+	signal DDR_p5_cmd_bl							: STD_LOGIC_VECTOR(5 downto 0) := "011111";
+	signal DDR_p5_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
+	signal DDR_p5_cmd_empty						: STD_LOGIC := '1';
+	signal DDR_p5_cmd_full						: STD_LOGIC := '0';
+	signal DDR_p5_rd_en							: STD_LOGIC := '0';
+	signal DDR_p5_rd_data						: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+	signal DDR_p5_rd_empty						: STD_LOGIC := '1';
+	signal DDR_p5_rd_full						: STD_LOGIC := '0';
 	signal change_S								: STD_LOGIC := '0';
 	
-	signal test_leds								: STD_LOGIC_VECTOR(7 downto 0);
+	signal test_leds								: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	
 	-----------
 	-- Memory signals
@@ -192,7 +192,7 @@ architecture Structural of Video_Switch is
     constant C3_P0_DATA_PORT_SIZE      : integer := 32;
     constant C3_P1_MASK_SIZE           : integer := 4;
     constant C3_P1_DATA_PORT_SIZE      : integer := 32;
-    constant C3_MEMCLK_PERIOD          : integer := 2500;  -- note input clk is only 100 MHz, multiplier is edited to converto to 400 MHz
+    constant C3_MEMCLK_PERIOD          : integer := 2223;  -- note input clk is only 100 MHz, multiplier is edited to converto to 400 MHz
     constant C3_RST_ACT_LOW            : integer := 0;
     constant C3_INPUT_CLK_TYPE         : string := "SINGLE_ENDED";
     constant C3_CALIB_SOFT_IP          : string := "TRUE";
@@ -354,24 +354,24 @@ architecture Structural of Video_Switch is
 		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
 		global_h_sync		: in STD_LOGIC;
 		global_v_sync		: in STD_LOGIC;
-		global_output_h	: out STD_LOGIC := '0';
-		global_output_v	: out STD_LOGIC := '0';
+		global_output_h	: out STD_LOGIC;
+		global_output_v	: out STD_LOGIC;
 		global_active_v	: in STD_LOGIC;
-		global_output_av	: out STD_LOGIC := '0';
-		BRAM_clock_out_e	: out STD_LOGIC := '0';
+		global_output_av	: out STD_LOGIC;
+		BRAM_clock_out_e	: out STD_LOGIC;
 		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0);
 		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
 		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
 		P0_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
 		P0_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_h_count_out 	: out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P0_h_count_out 	: out STD_LOGIC_VECTOR(10 downto 0);
 		P0_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
-		P0_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
-		P0_I_selector		: out STD_LOGIC := '0';
-		P0_S_selector		: out STD_LOGIC := '0';
-		P0_enable			: out STD_LOGIC := '0';
+		P0_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
+		P0_I_selector		: out STD_LOGIC;
+		P0_S_selector		: out STD_LOGIC;
+		P0_enable			: out STD_LOGIC;
 		P0_inload_done		: in STD_LOGIC;
-		P0_unload_done		: inout STD_LOGIC := '0';
+		P0_unload_done		: inout STD_LOGIC;
 		P0_change_s			: out STD_LOGIC
 		);
 		END COMPONENT;	
@@ -423,8 +423,8 @@ architecture Structural of Video_Switch is
            active_video   : inout STD_LOGIC;
            hsync   : out STD_LOGIC;
            vsync   : out STD_LOGIC;
-			  h_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
-			  v_count_out : out STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
+			  h_count_out : out STD_LOGIC_VECTOR(11 downto 0);
+			  v_count_out : out STD_LOGIC_VECTOR(11 downto 0);
 			  Pll_locked : in  std_logic);
 	END COMPONENT;
 	
@@ -602,10 +602,12 @@ begin
 --leds(0) <= ddr_calibration;
 --leds(7 downto 4) <= leds_out(4 downto 1);
 --leds(0) <= DDR_p3_cmd_en;
---leds(1) <= DDR_p3_cmd_full;
---leds(2) <= DDR_p3_wr_full;
+leds(4) <= DDR_p2_cmd_full;
+leds(5) <= DDR_p2_wr_full;
+leds(6) <= DDR_p3_cmd_full;
+leds(7) <= DDR_p3_wr_full;
 --leds(3) <= DDR_p3_wr_empty;
-leds(7 downto 0) <= test_leds(7 downto 0);
+--leds(7 downto 0) <= test_leds(7 downto 0);
 --leds(4) <= DDR_p5_cmd_en;
 --leds(5) <= DDR_p5_cmd_full;
 --leds(6) <= DDR_p5_rd_full;
@@ -613,11 +615,11 @@ leds(7 downto 0) <= test_leds(7 downto 0);
 --leds(0) <= reset;
 --leds(7 downto 1) <= DDR_p3_cmd_byte_addr(29 downto 23);
 
+
+
 clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 
---read_write_clock <= slow_clock when ddr_calibration = '1' else '0';
-out_data(7 downto 0) <= diode_count(7 downto 0);
-leds_out(7 downto 0) <= in_data(7 downto 0);
+
 
 
 ------------------------------
@@ -954,13 +956,14 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_p2_cmd_full                          =>  DDR_p2_cmd_full,
 		c3_p2_wr_clk                            =>  global_pixel_clock,
 		c3_p2_wr_en                             =>  DDR_p2_wr_en,
-		c3_p2_wr_mask                           =>  "0000",
+		c3_p2_wr_mask                           =>  "1000",
 		c3_p2_wr_data                           =>  DDR_p2_wr_data,
 		c3_p2_wr_full                           =>  DDR_p2_wr_full,
+		--c3_p2_wr_full									 => leds(4),
 		c3_p2_wr_empty                          =>  DDR_p2_wr_empty,
 		c3_p2_wr_count                          =>  Open,		-- Not used
-		c3_p2_wr_underrun                       =>  Open,		-- Not used
-		c3_p2_wr_error                          =>  Open,		-- Not used
+		c3_p2_wr_underrun                       =>  leds(0),		-- Not used
+		c3_p2_wr_error                          =>  leds(1),		-- Not used
 		
 		-- Output port 3 control signals
 		c3_p3_cmd_clk                           =>  global_pixel_clock,
@@ -972,54 +975,60 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_p3_cmd_full                          =>  DDR_p3_cmd_full,
 		c3_p3_wr_clk                            =>  global_pixel_clock,
 		c3_p3_wr_en                             =>  DDR_p3_wr_en,
-		c3_p3_wr_mask                           =>  "0000",	-- Not used
+		c3_p3_wr_mask                           =>  "1000",	-- Not used
 		c3_p3_wr_data                           =>  DDR_p3_wr_data,
 		c3_p3_wr_full                           =>  DDR_p3_wr_full,
+		--c3_p3_wr_full									 => leds(5),
 		c3_p3_wr_empty                          =>  DDR_p3_wr_empty,
 		c3_p3_wr_count                          =>  Open,		-- not used
-		c3_p3_wr_underrun                       =>  Open,		-- Not used
-		c3_p3_wr_error                          =>  Open,		-- Not used
+		c3_p3_wr_underrun                       =>  leds(2),		-- Not used
+		c3_p3_wr_error                          =>  leds(3),		-- Not used
 		
 		-- Input port 4
-		c3_p4_cmd_clk                           =>  global_pixel_clock_x2_b1,
+		--c3_p4_cmd_clk                           =>  global_pixel_clock_x2_b1,
+		c3_p4_cmd_clk									 => global_pixel_clock,
 		c3_p4_cmd_en                            =>  DDR_p4_cmd_en,
 		c3_p4_cmd_instr                         =>  "011",
 		c3_p4_cmd_bl                            =>  DDR_p4_cmd_bl,
 		c3_p4_cmd_byte_addr                     =>  DDR_p4_cmd_byte_addr,
 		c3_p4_cmd_empty                         =>  DDR_p4_cmd_empty,
 		c3_p4_cmd_full                          =>  DDR_p4_cmd_full,
-		c3_p4_rd_clk                            =>  global_pixel_clock_x2_b1,
+		--c3_p4_rd_clk                            =>  global_pixel_clock_x2_b1,
+		c3_p4_rd_clk									 => global_pixel_clock,
 		c3_p4_rd_en                             =>  DDR_p4_rd_en,
 		c3_p4_rd_data                           =>  DDR_p4_rd_data,
 		c3_p4_rd_full                           =>  DDR_p4_rd_full,
 		c3_p4_rd_empty                          =>  DDR_p4_rd_empty,
 		c3_p4_rd_count                          =>  Open,
-		c3_p4_rd_overflow                       =>  Open,
-		c3_p4_rd_error                          =>  Open,
+		c3_p4_rd_overflow                       =>  open,
+		c3_p4_rd_error                          =>  open,
 		
 		-- Input port 5
-		c3_p5_cmd_clk                           =>  global_pixel_clock_x2_b1,
+		--c3_p5_cmd_clk                           =>  global_pixel_clock_x2_b1,
+		c3_p5_cmd_clk									 => global_pixel_clock,
 		c3_p5_cmd_en                            =>  DDR_p5_cmd_en,
 		c3_p5_cmd_instr                         =>  "011",
 		c3_p5_cmd_bl                            =>  DDR_p5_cmd_bl,
 		c3_p5_cmd_byte_addr                     =>  DDR_p5_cmd_byte_addr,
 		c3_p5_cmd_empty                         =>  DDR_p5_cmd_empty,
 		c3_p5_cmd_full                          =>  DDR_p5_cmd_full,
-		c3_p5_rd_clk                            =>  global_pixel_clock_x2_b1,
+		--c3_p5_rd_clk                            =>  global_pixel_clock_x2_b1,
+		c3_p5_rd_clk									 => global_pixel_clock,
 		c3_p5_rd_en                             =>  DDR_p5_rd_en,
 		c3_p5_rd_data                           =>  DDR_p5_rd_data,
 		c3_p5_rd_full                           =>  DDR_p5_rd_full,
 		c3_p5_rd_empty                          =>  DDR_p5_rd_empty,
 		c3_p5_rd_count                          =>  Open,
-		c3_p5_rd_overflow                       =>  Open,
-		c3_p5_rd_error                          =>  Open
+		c3_p5_rd_overflow                       =>  open,
+		c3_p5_rd_error                          =>  open
 );
 
 	u_BRAM_interface : BRAM_interface
     Port map(
 		BRAM_enable 		=> '1',
 		clk_out				=> global_pixel_clock,
-		clk_in				=> global_pixel_clock_x2_b1,
+		--clk_in				=> global_pixel_clock_x2_b1,
+		clk_in				=> global_pixel_clock,
 		clk_out_enable    => BRAM_clock_out_enable,
 		P0_enable			=> P0_BRAM_enable,
 		P0_data_in_I0		=> p0_BRAM_out_I0,
@@ -1126,6 +1135,7 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 				v_count_I0											=> simulator_v_count(10 downto 0),
 				v_count_I1											=> simulator_v_count(10 downto 0),
 				active_video_I0									=> simulator_active_video,
+				--active_video_I0									=> '0',
 				active_video_I1									=> simulator_active_video,
 				video_in_I0											=> color_in,
 				video_in_I1											=> color_in,
@@ -1151,8 +1161,8 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 			
 	u_ddr_to_bram_controller : DDR_to_BRAM_controller
     Port map ( 
-		clk_in 						=> global_pixel_clock_x2_b1,
-		--clk_in						=> global_pixel_clock,
+		--clk_in 						=> global_pixel_clock_x2_b1,
+		clk_in						=> global_pixel_clock,
 		global_v_count				=> global_v_count_pixel_out,
 		reset							=> reset_btn,
 		P0_conf						=> "0001",

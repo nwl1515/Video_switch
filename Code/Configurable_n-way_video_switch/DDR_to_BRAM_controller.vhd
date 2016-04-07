@@ -33,35 +33,35 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 
 entity DDR_to_BRAM_controller is
     Port ( 
-		clk_in 				: in  STD_LOGIC; -- x2_pixel_clock!
-		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
-		reset					: in STD_LOGIC;
-		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0);
-		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0);
-		P0_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0);
-		P0_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0);
-		P0_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0);
-		P0_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0);
-		P0_S_selector		: in STD_LOGIC;
-		P0_inload_done		: inout STD_LOGIC;
-		change_S				: in STD_LOGIC;
-		c3_p4_cmd_en                          	 : inout std_logic;
-		c3_p4_cmd_bl                            : out std_logic_vector(5 downto 0);
-		c3_p4_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-		c3_p4_cmd_empty                         : in std_logic;		
-		c3_p4_rd_en                             : inout std_logic;
-		c3_p4_rd_data                           : in std_logic_vector(31 downto 0);
-		c3_p4_rd_empty                          : in std_logic;
-		c3_p5_cmd_en                          	 : inout std_logic;
-		c3_p5_cmd_bl                            : out std_logic_vector(5 downto 0);
-		c3_p5_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-		c3_p5_cmd_empty                         : in std_logic;
+		clk_in 				: in  STD_LOGIC := '0'; -- x2_pixel_clock!
+		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
+		reset					: in STD_LOGIC := '0';
+		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P0_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P0_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P0_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P0_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P0_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P0_S_selector		: in STD_LOGIC := '0';
+		P0_inload_done		: inout STD_LOGIC := '0';
+		change_S				: in STD_LOGIC := '0';
+		c3_p4_cmd_en                          	 : inout std_logic := '0';
+		c3_p4_cmd_bl                            : out std_logic_vector(5 downto 0) := "011111";
+		c3_p4_cmd_byte_addr                     : out std_logic_vector(29 downto 0) := (others => '0');
+		c3_p4_cmd_empty                         : in std_logic := '1';		
+		c3_p4_rd_en                             : inout std_logic := '0';
+		c3_p4_rd_data                           : in std_logic_vector(31 downto 0) := (others => '0');
+		c3_p4_rd_empty                          : in std_logic := '1';
+		c3_p5_cmd_en                          	 : inout std_logic := '0';
+		c3_p5_cmd_bl                            : out std_logic_vector(5 downto 0) := "011111";
+		c3_p5_cmd_byte_addr                     : out std_logic_vector(29 downto 0) := (others => '0');
+		c3_p5_cmd_empty                         : in std_logic := '1';
 		
-		c3_p5_rd_en                             : inout std_logic;
-		c3_p5_rd_data                           : in std_logic_vector(31 downto 0);
-		c3_p5_rd_empty                          : in std_logic;
+		c3_p5_rd_en                             : inout std_logic := '0';
+		c3_p5_rd_data                           : in std_logic_vector(31 downto 0) := (others => '0');
+		c3_p5_rd_empty                          : in std_logic := '1';
 		leds_out											 : inout std_logic_vector(7 downto 0) := (others => '0')
 			 
 	 );
@@ -69,9 +69,9 @@ end DDR_to_BRAM_controller;
 
 architecture Structural of DDR_to_BRAM_controller is
 
-	signal internal_v_count			: STD_LOGIC_VECTOR(10 downto 0);
-	signal h_count_I0				: STD_LOGIC_VECTOR(10 downto 0);
-	signal h_count_I1				: STD_LOGIC_VECTOR(10 downto 0);
+	signal internal_v_count			: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal h_count_I0				: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal h_count_I1				: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
 	signal S_selector_old_P0		: STD_LOGIC := '0';
 	signal run_I1					   : STD_LOGIC := '0';
 	signal run_I0						: STD_LOGIC := '0';
@@ -116,7 +116,9 @@ begin
 	
 	p0_BRAM_out_I0 <= c3_p4_rd_data(23 downto 0);
 	p0_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';
+	--p0_data_out_Sel(0) <= '0';
 	c3_p4_rd_en <= '1' when c3_p4_rd_empty = '0' else '0';
+	
 	p0_h_count_out_I0 <= h_count_I0;
 	
 	
@@ -181,7 +183,7 @@ begin
 	
 	c3_p4_cmd_bl <= "011111"; -- means 32
 	
-	I1_proc : process(clk_in, change_S)
+	I1_proc : process(clk_in,change_S)
 		variable address_count : integer := 0;
 		variable count_buffer : integer := 0;
 	begin			
@@ -211,9 +213,9 @@ begin
 							h_count_I1 <= h_count_I1 + 1;						
 						end if;
 						
-						if address_count <= 1280 and count_buffer <= 32 and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+						if address_count < 1280 and count_buffer <= 32 and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
 							c3_p5_cmd_en <= '1';
-							c3_p5_cmd_byte_addr <= "00010" & internal_v_count & "0" & conv_std_logic_vector(address_count, 11) & "00";
+							c3_p5_cmd_byte_addr <= "000100" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
 							address_count := address_count + 32;
 							count_buffer := count_buffer +32;
 								
@@ -231,9 +233,9 @@ begin
 	
 	
 	
-	I0_proc : process(clk_in, change_S)
-		variable address_count_I0 : integer := 0;
-		variable count_buffer_I0 : integer := 0;
+	I0_proc : process(clk_in,change_S)
+		variable address_count : integer := 0;
+		variable count_buffer : integer := 0;
 	begin			
 		if rising_edge(clk_in) then
 			c3_p4_cmd_en <= '0';
@@ -241,32 +243,35 @@ begin
 			if reset = '1' then
 				run_I0 <= '0';
 				h_count_I0 <= (others => '0');
-				address_count_I0 := 0;
-				count_buffer_I0 := 0;
+				address_count := 0;
+				count_buffer := 0;
 				if c3_p4_cmd_empty = '0' then
 					c3_p4_cmd_en <= '1';
 				end if;
 				
 			elsif change_S = '1' then
-				run_I0 <= '0';
+				run_I0 <= '1';
 				h_count_I0 <= (others => '0');
-				address_count_I0 := 0;
-				count_buffer_I0 := 0;
+				address_count := 0;
+				count_buffer := 0;
 				
 			else
 				if run_I0 = '1' then
-						if address_count_I0 < 1280 and count_buffer_I0 <= 32 and called_I0 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+						
+						if c3_p4_rd_en = '1' then
+							count_buffer := count_buffer - 1;
+							h_count_I0 <= h_count_I0 + 1;						
+						end if;
+						
+						if address_count < 1280 and count_buffer <= 32 and called_I0 = '0' then -- call for 16 new pixels if buffer empty or less than 8
 							c3_p4_cmd_en <= '1';
-							c3_p4_cmd_byte_addr <= "00000" & internal_v_count & "0" & conv_std_logic_vector(address_count_I0, 11) & "00";
-							address_count_I0 := address_count_I0 + 32;
-							count_buffer_I0 := count_buffer_I0 +32;
+							c3_p4_cmd_byte_addr <= "000000" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
+							address_count := address_count + 32;
+							count_buffer := count_buffer +32;
 								
 						end if;
 						
-						if c3_p4_rd_en = '1' then
-							count_buffer_I0 := count_buffer_I0 - 1;
-							h_count_I0 <= h_count_I0 + 1;						
-						end if;
+						
 						
 					if h_count_I0 >= 1279 and c3_p4_rd_empty = '1' then
 						run_I0 <= '0'; -- stop!

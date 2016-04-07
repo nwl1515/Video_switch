@@ -26,23 +26,23 @@ use UNISIM.VComponents.all;
 
 entity Pixel_clock_multiplier is
 	PORT(
-		pclk_in			: in STD_LOGIC;
-		pclk_o_x1		: out STD_LOGIC;
-		pclk_o_x2		: out STD_LOGIC;
-		pclk_o_x10		: out STD_LOGIC;
-		pll_locked		: out STD_LOGIC;
-		serdes_strobe	: out STD_LOGIC
+		pclk_in			: in STD_LOGIC := '0';
+		pclk_o_x1		: out STD_LOGIC := '0';
+		pclk_o_x2		: out STD_LOGIC := '0';
+		pclk_o_x10		: out STD_LOGIC := '0';
+		pll_locked		: out STD_LOGIC := '0';
+		serdes_strobe	: out STD_LOGIC := '0'
 	);
 end Pixel_clock_multiplier;
 
 architecture Behavioral of Pixel_clock_multiplier is
 
-	signal pclk_x1		: std_logic;
-	signal pclk_x2		: std_logic;
-	signal pclk_x10	: std_logic;
-	signal pclk_x2_b	: std_logic;
-	signal pll_locked_i : std_logic;
-	signal clk_feedback : std_logic;
+	signal pclk_x1		: std_logic := '0';
+	signal pclk_x2		: std_logic := '0';
+	signal pclk_x10	: std_logic := '0';
+	signal pclk_x2_b	: std_logic := '0';
+	signal pll_locked_i : std_logic := '0';
+	signal clk_feedback : std_logic := '0';
 	
 
 	begin

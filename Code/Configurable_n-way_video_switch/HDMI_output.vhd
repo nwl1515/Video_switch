@@ -24,21 +24,21 @@ use UNISIM.vcomponents.all;
 
 entity HDMI_OUT is
     Port ( -- Clocking
-			  Pixel_clock : in std_logic;
-			  clk_x1			: in std_logic;
-			  clk_x2			: in std_logic;
-			  clk_x10		: in std_logic;
-			  serdes_strobe : in std_logic;
+			  Pixel_clock : in std_logic := '0';
+			  clk_x1			: in std_logic := '0';
+			  clk_x2			: in std_logic := '0';
+			  clk_x10		: in std_logic := '0';
+			  serdes_strobe : in std_logic := '0';
            -- Pixel data
-           red_p     : in  STD_LOGIC_VECTOR (7 downto 0);
-           green_p   : in  STD_LOGIC_VECTOR (7 downto 0);
-           blue_p    : in  STD_LOGIC_VECTOR (7 downto 0);
-           active_video     : in  STD_LOGIC;
-           hsync     : in  STD_LOGIC;
-           vsync     : in  STD_LOGIC;
+           red_p     : in  STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
+           green_p   : in  STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
+           blue_p    : in  STD_LOGIC_VECTOR (7 downto 0) := (others => '0');
+           active_video     : in  STD_LOGIC := '0';
+           hsync     : in  STD_LOGIC := '0';
+           vsync     : in  STD_LOGIC := '0';
            -- TMDS outputs
-            tmds_out_p : out  STD_LOGIC_VECTOR(3 downto 0);
-            tmds_out_n : out  STD_LOGIC_VECTOR(3 downto 0));
+            tmds_out_p : out  STD_LOGIC_VECTOR(3 downto 0) := (others => '1');
+            tmds_out_n : out  STD_LOGIC_VECTOR(3 downto 0) := (others => '0'));
 end HDMI_OUT;
 
 architecture Structural of HDMI_OUT is
@@ -71,18 +71,18 @@ architecture Structural of HDMI_OUT is
 
 	signal not_clk_pixel		: std_logic;
 
-
-   signal encoded_red, encoded_green, encoded_blue : std_logic_vector(9 downto 0);
+ 
+   signal encoded_red, encoded_green, encoded_blue : std_logic_vector(9 downto 0) := (others => '0');
    signal ser_in_red,  ser_in_green,  ser_in_blue, ser_in_clock   : std_logic_vector(4 downto 0) := (others => '0');
    
    constant c_red       : std_logic_vector(1 downto 0) := (others => '0');
    constant c_green     : std_logic_vector(1 downto 0) := (others => '0');
-   signal   c_blue      : std_logic_vector(1 downto 0);
+   signal   c_blue      : std_logic_vector(1 downto 0) := (others => '0');
 
-   signal red_s     : STD_LOGIC;
-   signal green_s   : STD_LOGIC;
-   signal blue_s    : STD_LOGIC;
-   signal clock_s   : STD_LOGIC;
+   signal red_s     : STD_LOGIC := '0';
+   signal green_s   : STD_LOGIC := '0';
+   signal blue_s    : STD_LOGIC := '0';
+   signal clock_s   : STD_LOGIC := '0';
 
 begin   
    -- Send the pixels to the encoder
