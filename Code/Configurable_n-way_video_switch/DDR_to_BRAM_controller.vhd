@@ -141,12 +141,34 @@ begin
 	end process gearbox_proc_i1;
 	
 	
-	p0_BRAM_out_I0 <= c3_p4_rd_data(23 downto 0);
+	p0_BRAM_out_I0 <= gearbox_I0;
 	p0_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';
-	--p0_data_out_Sel(0) <= '0';
-	c3_p4_rd_en <= '1' when c3_p4_rd_empty = '0' else '0';
-	
+	c3_p4_rd_en <= '1' when c3_p4_rd_empty = '0' else '0';	
 	p0_h_count_out_I0 <= h_count_I0;
+	
+	
+	gearbox_proc_i0 : process(clk_in_x2)
+	begin
+		if rising_Edge(clk_in_x2) then
+			if change_S = '1' then
+				h_count_I0 <= (others => '0');
+			
+			elsif run_I0 = '1' then
+			
+				if c3_p4_rd_en = '1' then
+					h_count_I0 <= h_count_I0 + 1;						
+				end if;
+				
+				if gearbox_I0_s = '0' then
+					gearbox_I0(23 downto 0) <= c3_p4_rd_data(31 downto 27) & "000" & c3_p4_rd_data(26 downto 21) & "00" & c3_p4_rd_data(20 downto 16) & "000";
+					gearbox_I0_s <= not gearbox_I0_s;
+				else
+					gearbox_I0(23 downto 0) <= c3_p4_rd_data(15 downto 11) & "000" & c3_p4_rd_data(10 downto 5) & "00" & c3_p4_rd_data(4 downto 0) & "000";
+					gearbox_I0_s <= not gearbox_I0_s;
+				end if;
+			end if;
+		end if;
+	end process gearbox_proc_i0;
 	
 	
 	
@@ -266,7 +288,6 @@ begin
 					
 			if reset = '1' then
 				run_I0 <= '0';
-				h_count_I0 <= (others => '0');
 				address_count := 0;
 				count_buffer := 0;
 				if c3_p4_cmd_empty = '0' then
@@ -275,7 +296,6 @@ begin
 				
 			elsif change_S = '1' then
 				run_I0 <= '1';
-				h_count_I0 <= (others => '0');
 				address_count := 0;
 				count_buffer := 0;
 				
@@ -283,11 +303,10 @@ begin
 				if run_I0 = '1' then
 						
 						if c3_p4_rd_en = '1' then
-							count_buffer := count_buffer - 1;
-							h_count_I0 <= h_count_I0 + 1;						
+							count_buffer := count_buffer - 1;						
 						end if;
 						
-						if address_count < 1280 and count_buffer <= 32 and called_I0 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+						if address_count < 640 and count_buffer <= 32 and called_I0 = '0' then -- call for 16 new pixels if buffer empty or less than 8
 							c3_p4_cmd_en <= '1';
 							c3_p4_cmd_byte_addr <= "000000" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
 							address_count := address_count + 32;

@@ -36,6 +36,8 @@ entity Video_Switch is
 			-- LEDS
 			leds						: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 			
+			btn						: in std_logic_vector(7 downto 0);
+			
 			-- Inputs TMDS
 			hdmi_port_0_in_p		: in STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_0_in_n		: in STD_LOGIC_VECTOR(3 downto 0);
@@ -188,6 +190,9 @@ architecture Structural of Video_Switch is
 	signal change_S								: STD_LOGIC := '0';
 	
 	signal test_leds								: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+	
+	signal conf_O0									: std_logic_vector(3 downto 0) := (others => '0');
+	signal set_1_O0								: std_logic_vector(11 downto 0) := (others => '0');
 	
 	-----------
 	-- Memory signals
@@ -572,7 +577,8 @@ leds(7) <= DDR_p3_wr_full;
 --leds(0) <= reset;
 --leds(7 downto 1) <= DDR_p3_cmd_byte_addr(29 downto 23);
 
-
+conf_O0 <= "0" & btn(1) & "0" & btn(0);
+set_1_O0 <= "00" & btn(7 downto 2) & "0000";
 
 clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 
@@ -754,8 +760,8 @@ hdmi_output_5 : HDMI_OUT
 	
 	simulator_timing : Resolution_output_timing
 	generic map(
-				offset_h			=> 800,
-				offset_v			=> 600
+				offset_h			=> 200,
+				offset_v			=> 100
 				)
 	Port map ( 
 		     pixel_clock    	=> global_pixel_clock,
@@ -777,9 +783,9 @@ hdmi_output_5 : HDMI_OUT
 				)
 	Port map ( 
 		     pixel_clock    	=> global_pixel_clock,
-           red_p   			=> color_in_2(23 downto 16),
-           green_p 			=> color_in_2(15 downto 8),
-           blue_p  			=> color_in_2(7 downto 0),
+           red_p   			=> open,
+           green_p 			=> color_in_2(7 downto 0),
+           blue_p  			=> color_in_2(23 downto 16),
            active_video 	=> simulator_active_video_2,
            hsync   			=> open,
            vsync   			=> open,
@@ -787,7 +793,7 @@ hdmi_output_5 : HDMI_OUT
 			  v_count_out 		=> simulator_v_count_2,
 			  Pll_locked 		=> global_pll_locked
 	);
-
+color_in_2(15 downto 8) <= "11111111";
 reset <= not global_pll_locked;
 global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calibration; 
 ------------------------------
@@ -1029,8 +1035,8 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		global_active_v	=> global_output_active_video,
 		global_output_av	=> global_output_active_video_controller,
 		BRAM_clock_out_e	=> BRAM_clock_out_enable,
-		P0_conf				=> "0001",
-		P0_set_1 			=> "000000000001",
+		P0_conf				=> conf_O0,
+		P0_set_1 			=> set_1_O0,
 		P0_set_2 			=> (others => '0'),
 		P0_set_3 			=> (others => '0'),
 		P0_set_4 			=> (others => '0'),
