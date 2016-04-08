@@ -34,6 +34,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 entity DDR_to_BRAM_controller is
     Port ( 
 		clk_in 				: in  STD_LOGIC := '0'; -- x2_pixel_clock!
+		clk_in_x2			: in STD_LOGIC := '0';
 		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
 		reset					: in STD_LOGIC := '0';
 		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
@@ -87,6 +88,11 @@ architecture Structural of DDR_to_BRAM_controller is
 	signal rd_en_I1_p1			: STD_LOGIC := '0';
 	signal bank_col_I1			: std_logic_vector(10 downto 0) := (others => '0');
 	signal bank_col_I0			: std_logic_vector(10 downto 0) := (others => '0');
+	
+	signal gearbox_I0				: std_logic_vector(23 downto 0) := (others => '0');
+	signal gearbox_I1				: std_logic_Vector(23 downto 0) := (others => '0');
+	signal gearbox_I0_s			: std_logic := '0';
+	signal gearbox_I1_s			: std_logic := '0';
 
 begin
 
@@ -105,13 +111,34 @@ begin
 	
 	
 	-- Data from DDR to BRAM, when something in buffer
-	p0_BRAM_out_I1 <= c3_p5_rd_data(23 downto 0);
+	p0_BRAM_out_I1 <= gearbox_I1;
 	p0_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';
 	c3_p5_rd_en <= '1' when c3_p5_rd_empty = '0' else '0';	
 	p0_h_count_out_I1 <= h_count_I1;
 	
 	
-	
+	gearbox_proc_i1 : process(clk_in_x2)
+	begin
+		if rising_Edge(clk_in_x2) then
+			if change_S = '1' then
+				h_count_I1 <= (others => '0');
+			
+			elsif run_I1 = '1' then
+			
+				if c3_p5_rd_en = '1' then
+					h_count_I1 <= h_count_I1 + 1;						
+				end if;
+				
+				if gearbox_I1_s = '0' then
+					gearbox_I1(23 downto 0) <= c3_p5_rd_data(31 downto 27) & "000" & c3_p5_rd_data(26 downto 21) & "00" & c3_p5_rd_data(20 downto 16) & "000";
+					gearbox_I1_s <= not gearbox_I1_s;
+				else
+					gearbox_I1(23 downto 0) <= c3_p5_rd_data(15 downto 11) & "000" & c3_p5_rd_data(10 downto 5) & "00" & c3_p5_rd_data(4 downto 0) & "000";
+					gearbox_I1_s <= not gearbox_I1_s;
+				end if;
+			end if;
+		end if;
+	end process gearbox_proc_i1;
 	
 	
 	p0_BRAM_out_I0 <= c3_p4_rd_data(23 downto 0);
@@ -192,7 +219,6 @@ begin
 					
 			if reset = '1' then
 				run_I1 <= '0';
-				h_count_I1 <= (others => '0');
 				address_count := 0;
 				count_buffer := 0;
 				if c3_p5_cmd_empty = '0' then
@@ -201,7 +227,6 @@ begin
 				
 			elsif change_S = '1' then
 				run_I1 <= '1';
-				h_count_I1 <= (others => '0');
 				address_count := 0;
 				count_buffer := 0;
 				
@@ -209,11 +234,10 @@ begin
 				if run_I1 = '1' then
 						
 						if c3_p5_rd_en = '1' then
-							count_buffer := count_buffer - 1;
-							h_count_I1 <= h_count_I1 + 1;						
+							count_buffer := count_buffer - 1;						
 						end if;
 						
-						if address_count < 1280 and count_buffer <= 32 and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+						if address_count < 640 and count_buffer <= 32 and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
 							c3_p5_cmd_en <= '1';
 							c3_p5_cmd_byte_addr <= "000100" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
 							address_count := address_count + 32;

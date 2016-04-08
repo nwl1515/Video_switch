@@ -79,6 +79,11 @@ architecture Structural of Input_to_DDR_controller is
 	
 	signal v_count_I1_p1			: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
 	signal v_count_I0_p1			: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal gearbox_I1				: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+	signal gearbox_I1_s			: std_logic := '0';
+	signal gearbox_I0				: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+	signal gearbox_I0_s			: std_logic := '0';
+	signal DDR_p3_wr_en_I1_p1		: std_logic := '0';
 	
 	constant error_addr			: STD_LOGIC_VECTOR(29 downto 0) := "001111111111111111111111111100";
 		
@@ -86,14 +91,29 @@ architecture Structural of Input_to_DDR_controller is
 begin
 
 	
-	DDR_p3_wr_data <= "00000000" & video_in_I1;
-	DDR_p3_wr_en <= '1' when active_video_I1 = '1' and reset = '0' else '0';
+	DDR_p3_wr_data <= gearbox_I1;
+	
 
 	input_1 : process(pixel_clock_I1)
 	variable count_num_I1 		: integer range 0 to 32 := 0;
 	variable address_count		: integer range 0 to 1280 := 0;
 	begin
 		if rising_edge(pixel_clock_I1) then
+			if active_video_I1 = '1' and gearbox_I1_s = '0' and reset = '0' then
+				DDR_p3_wr_en_I1_p1 <= '1';
+			else
+				DDR_p3_wr_en_I1_p1 <= '0';
+			end if;
+			DDR_p3_wr_en <= DDR_p3_wr_en_I1_p1;
+		
+			if gearbox_I1_s = '0' then
+				gearbox_I1(31 downto 16) <= video_in_I1(23 downto 19) & video_in_I1(15 downto 10) & video_in_I1(7 downto 3);
+				gearbox_I1_s <= not gearbox_I1_s;
+			else
+				gearbox_I1(15 downto 0) <= video_in_I1(23 downto 19) & video_in_I1(15 downto 10) & video_in_I1(7 downto 3);
+				gearbox_I1_s <= not gearbox_I1_s;
+			end if;
+			
 			DDR_p3_cmd_en <= '0';
 			if reset = '1' then
 				if DDR_p3_wr_empty = '0' then
@@ -103,7 +123,7 @@ begin
 				count_num_I1 := 0;
 				address_count := 0;
 				
-			else
+			elsif gearbox_I1_s = '0' then
 				if active_video_I1 = '1' then
 					count_num_I1 := count_num_I1 + 1;
 					v_count_I1_p1 <= v_count_I1;
@@ -129,14 +149,21 @@ begin
 	
 	
 	
-	DDR_p2_wr_data <= "00000000" & video_in_I0;
-	DDR_p2_wr_en <= '1' when active_video_I0 = '1' and reset = '0' else '0';
+	DDR_p2_wr_data <= gearbox_I0;
+	DDR_p2_wr_en <= '1' when active_video_I0 = '1' and gearbox_I0_s = '0' and reset = '0' else '0';
 	
 	input_0 : process(pixel_clock_I0)
 	variable count_num_I0 		: integer range 0 to 32 := 0;
 	variable address_count		: integer range 0 to 1280 := 0;
 	begin
 		if rising_edge(pixel_clock_I0) then
+			if gearbox_I0_s = '0' then
+				gearbox_I0(31 downto 16) <= video_in_I0(23 downto 19) & video_in_I0(15 downto 10) & video_in_I0(7 downto 3);
+				gearbox_I0_s <= not gearbox_I0_s;
+			else
+				gearbox_I0(15 downto 0) <= video_in_I0(23 downto 19) & video_in_I0(15 downto 10) & video_in_I0(7 downto 3);
+				gearbox_I0_s <= not gearbox_I0_s;
+			end if;
 			DDR_p2_cmd_en <= '0';
 			if reset = '1' then
 				if DDR_p2_wr_empty = '0' then
@@ -146,7 +173,7 @@ begin
 				count_num_I0 := 0;
 				address_count := 0;
 				
-			else
+			elsif gearbox_I0_s = '0' then
 				if active_video_I0 = '1' then
 					count_num_I0 := count_num_I0 + 1;
 					v_count_I0_p1 <= v_count_I0;

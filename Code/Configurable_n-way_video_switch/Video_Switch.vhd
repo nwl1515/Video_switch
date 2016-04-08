@@ -251,6 +251,7 @@ architecture Structural of Video_Switch is
 	COMPONENT DDR_to_BRAM_controller is
     Port ( 
 		clk_in 				: in  STD_LOGIC; -- x2_pixel_clock!
+		clk_in_x2			: in STD_LOGIC;
 		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
 		reset					: in STD_LOGIC;
 		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0);
@@ -875,7 +876,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_p2_cmd_full                          =>  DDR_p2_cmd_full,
 		c3_p2_wr_clk                            =>  global_pixel_clock,
 		c3_p2_wr_en                             =>  DDR_p2_wr_en,
-		c3_p2_wr_mask                           =>  "1000",
+		c3_p2_wr_mask                           =>  "0000",
 		c3_p2_wr_data                           =>  DDR_p2_wr_data,
 		c3_p2_wr_full                           =>  DDR_p2_wr_full,
 		--c3_p2_wr_full									 => leds(4),
@@ -894,7 +895,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_p3_cmd_full                          =>  DDR_p3_cmd_full,
 		c3_p3_wr_clk                            =>  global_pixel_clock,
 		c3_p3_wr_en                             =>  DDR_p3_wr_en,
-		c3_p3_wr_mask                           =>  "1000",	-- Not used
+		c3_p3_wr_mask                           =>  "0000",	-- Not used
 		c3_p3_wr_data                           =>  DDR_p3_wr_data,
 		c3_p3_wr_full                           =>  DDR_p3_wr_full,
 		--c3_p3_wr_full									 => leds(5),
@@ -946,8 +947,8 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
     Port map(
 		BRAM_enable 		=> '1',
 		clk_out				=> global_pixel_clock,
-		--clk_in				=> global_pixel_clock_x2_b1,
-		clk_in				=> global_pixel_clock,
+		clk_in				=> global_pixel_clock_x2_b1,
+		--clk_in				=> global_pixel_clock,
 		clk_out_enable    => BRAM_clock_out_enable,
 		P0_enable			=> P0_BRAM_enable,
 		P0_data_in_I0		=> p0_BRAM_out_I0,
@@ -1082,6 +1083,7 @@ color_in <= g_color_red & g_color_green & g_color_blue;
     Port map ( 
 		--clk_in 						=> global_pixel_clock_x2_b1,
 		clk_in						=> global_pixel_clock,
+		clk_in_x2						=> global_pixel_clock_X2_b1,
 		global_v_count				=> global_v_count_pixel_out,
 		reset							=> reset_btn,
 		P0_conf						=> "0001",
