@@ -77,7 +77,7 @@ generic
     C_CLKOUT1_DIVIDE   : integer := 1;
     C_CLKOUT2_DIVIDE   : integer := 16;
     C_CLKOUT3_DIVIDE   : integer := 8;
-    C_CLKFBOUT_MULT   : integer := 8;
+    C_CLKFBOUT_MULT   : integer := 2;
     C_DIVCLK_DIVIDE   : integer := 1
 
   );

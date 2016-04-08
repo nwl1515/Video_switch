@@ -42,21 +42,21 @@
         <Configuration>Two 32-bit bi-directional and four 32-bit unidirectional ports</Configuration>
         <RzqPin>L6</RzqPin>
         <ZioPin>C2</ZioPin>
-        <PortsSelected>Port0,Port1,Port2,Port3,Port4,Port5</PortsSelected>
-        <PortDirections>Bi-directional,Bi-directional,Write,Write,Read,Read</PortDirections>
-        <UserMemoryAddressMap>BANK_ROW_COLUMN</UserMemoryAddressMap>
+        <PortsSelected>Port2,Port3,Port4,Port5</PortsSelected>
+        <PortDirections>none,none,Write,Write,Read,Read</PortDirections>
+        <UserMemoryAddressMap>ROW_BANK_COLUMN</UserMemoryAddressMap>
         <ArbitrationAlgorithm>Round Robin</ArbitrationAlgorithm>
-        <TimeSlot0>012345</TimeSlot0>
-        <TimeSlot1>123450</TimeSlot1>
-        <TimeSlot2>234501</TimeSlot2>
-        <TimeSlot3>345012</TimeSlot3>
-        <TimeSlot4>450123</TimeSlot4>
-        <TimeSlot5>501234</TimeSlot5>
-        <TimeSlot6>012345</TimeSlot6>
-        <TimeSlot7>123450</TimeSlot7>
-        <TimeSlot8>234501</TimeSlot8>
-        <TimeSlot9>345012</TimeSlot9>
-        <TimeSlot10>450123</TimeSlot10>
-        <TimeSlot11>501234</TimeSlot11>
+        <TimeSlot0>2345</TimeSlot0>
+        <TimeSlot1>3452</TimeSlot1>
+        <TimeSlot2>4523</TimeSlot2>
+        <TimeSlot3>5234</TimeSlot3>
+        <TimeSlot4>2345</TimeSlot4>
+        <TimeSlot5>3452</TimeSlot5>
+        <TimeSlot6>4523</TimeSlot6>
+        <TimeSlot7>5234</TimeSlot7>
+        <TimeSlot8>2345</TimeSlot8>
+        <TimeSlot9>3452</TimeSlot9>
+        <TimeSlot10>4523</TimeSlot10>
+        <TimeSlot11>5234</TimeSlot11>
     </Controller>
 </Project>

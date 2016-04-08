@@ -32,7 +32,7 @@ Target Device                       : 6slx45csg324-3
 
    Number of Slice registers gated                           : 83              
    Number of BRAM Ports gated                                : 4               
-   Number of clock enable net processed                      : 60              
+   Number of clock enable net processed                      : 62              
    Number of Flops added for Enable Generation               : 0               
 
 

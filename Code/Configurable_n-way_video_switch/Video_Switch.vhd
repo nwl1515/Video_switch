@@ -110,6 +110,9 @@ architecture Structural of Video_Switch is
 	signal simulator_active_video				: std_logic := '0';
 	signal simulator_h_count					: std_logic_vector(11 downto 0) := (others => '0');
 	signal simulator_v_count					: std_logic_vector(11 downto 0) := (others => '0');
+	signal simulator_active_video_2				: std_logic := '0';
+	signal simulator_h_count_2					: std_logic_vector(11 downto 0) := (others => '0');
+	signal simulator_v_count_2					: std_logic_vector(11 downto 0) := (others => '0');
 	signal global_pll_locked					: std_logic := '0';
 	signal global_pll_locked_b0				: std_logic := '0';
 	signal global_serdes_strobe_b0			: std_logic := '0';
@@ -127,6 +130,7 @@ architecture Structural of Video_Switch is
 	signal P0_BRAM_S_selector					: std_logic := '0';
 	
 	 signal color_in							: std_logic_vector(23 downto 0) := (others => '0');
+	 signal color_in_2							: std_logic_vector(23 downto 0) := (others => '0');
 	 
 	signal reset									: std_logic := '0';
 	
@@ -192,7 +196,7 @@ architecture Structural of Video_Switch is
     constant C3_P0_DATA_PORT_SIZE      : integer := 32;
     constant C3_P1_MASK_SIZE           : integer := 4;
     constant C3_P1_DATA_PORT_SIZE      : integer := 32;
-    constant C3_MEMCLK_PERIOD          : integer := 2223;  -- note input clk is only 100 MHz, multiplier is edited to converto to 400 MHz
+    constant C3_MEMCLK_PERIOD          : integer := 2500;  -- note input clk is only 100 MHz, multiplier is edited to converto to 400 MHz
     constant C3_RST_ACT_LOW            : integer := 0;
     constant C3_INPUT_CLK_TYPE         : string := "SINGLE_ENDED";
     constant C3_CALIB_SOFT_IP          : string := "TRUE";
@@ -481,54 +485,6 @@ architecture Structural of Video_Switch is
    mcb3_dram_dqs_n                         : inout  std_logic;
    mcb3_dram_ck                            : out std_logic;
    mcb3_dram_ck_n                          : out std_logic;
-	c3_p0_cmd_clk                           : in std_logic;
-   c3_p0_cmd_en                            : in std_logic;
-   c3_p0_cmd_instr                         : in std_logic_vector(2 downto 0);
-   c3_p0_cmd_bl                            : in std_logic_vector(5 downto 0);
-   c3_p0_cmd_byte_addr                     : in std_logic_vector(29 downto 0);
-   c3_p0_cmd_empty                         : out std_logic;
-   c3_p0_cmd_full                          : out std_logic;
-   c3_p0_wr_clk                            : in std_logic;
-   c3_p0_wr_en                             : in std_logic;
-   c3_p0_wr_mask                           : in std_logic_vector(C3_P0_MASK_SIZE - 1 downto 0);
-   c3_p0_wr_data                           : in std_logic_vector(C3_P0_DATA_PORT_SIZE - 1 downto 0);
-   c3_p0_wr_full                           : out std_logic;
-   c3_p0_wr_empty                          : out std_logic;
-   c3_p0_wr_count                          : out std_logic_vector(6 downto 0);
-   c3_p0_wr_underrun                       : out std_logic;
-   c3_p0_wr_error                          : out std_logic;
-   c3_p0_rd_clk                            : in std_logic;
-   c3_p0_rd_en                             : in std_logic;
-   c3_p0_rd_data                           : out std_logic_vector(C3_P0_DATA_PORT_SIZE - 1 downto 0);
-   c3_p0_rd_full                           : out std_logic;
-   c3_p0_rd_empty                          : out std_logic;
-   c3_p0_rd_count                          : out std_logic_vector(6 downto 0);
-   c3_p0_rd_overflow                       : out std_logic;
-   c3_p0_rd_error                          : out std_logic;
-   c3_p1_cmd_clk                           : in std_logic;
-   c3_p1_cmd_en                            : in std_logic;
-   c3_p1_cmd_instr                         : in std_logic_vector(2 downto 0);
-   c3_p1_cmd_bl                            : in std_logic_vector(5 downto 0);
-   c3_p1_cmd_byte_addr                     : in std_logic_vector(29 downto 0);
-   c3_p1_cmd_empty                         : out std_logic;
-   c3_p1_cmd_full                          : out std_logic;
-   c3_p1_wr_clk                            : in std_logic;
-   c3_p1_wr_en                             : in std_logic;
-   c3_p1_wr_mask                           : in std_logic_vector(C3_P1_MASK_SIZE - 1 downto 0);
-   c3_p1_wr_data                           : in std_logic_vector(C3_P1_DATA_PORT_SIZE - 1 downto 0);
-   c3_p1_wr_full                           : out std_logic;
-   c3_p1_wr_empty                          : out std_logic;
-   c3_p1_wr_count                          : out std_logic_vector(6 downto 0);
-   c3_p1_wr_underrun                       : out std_logic;
-   c3_p1_wr_error                          : out std_logic;
-   c3_p1_rd_clk                            : in std_logic;
-   c3_p1_rd_en                             : in std_logic;
-   c3_p1_rd_data                           : out std_logic_vector(C3_P1_DATA_PORT_SIZE - 1 downto 0);
-   c3_p1_rd_full                           : out std_logic;
-   c3_p1_rd_empty                          : out std_logic;
-   c3_p1_rd_count                          : out std_logic_vector(6 downto 0);
-   c3_p1_rd_overflow                       : out std_logic;
-   c3_p1_rd_error                          : out std_logic;
    c3_p2_cmd_clk                           : in std_logic;
    c3_p2_cmd_en                            : in std_logic;
    c3_p2_cmd_instr                         : in std_logic_vector(2 downto 0);
@@ -812,6 +768,24 @@ hdmi_output_5 : HDMI_OUT
 			  v_count_out 		=> simulator_v_count,
 			  Pll_locked 		=> global_pll_locked
 	);
+	
+	simulator_timing_2 : Resolution_output_timing
+	generic map(
+				offset_h			=> 200,
+				offset_v			=> 100
+				)
+	Port map ( 
+		     pixel_clock    	=> global_pixel_clock,
+           red_p   			=> color_in_2(23 downto 16),
+           green_p 			=> color_in_2(15 downto 8),
+           blue_p  			=> color_in_2(7 downto 0),
+           active_video 	=> simulator_active_video_2,
+           hsync   			=> open,
+           vsync   			=> open,
+			  h_count_out 		=> simulator_h_count_2,
+			  v_count_out 		=> simulator_v_count_2,
+			  Pll_locked 		=> global_pll_locked
+	);
 
 reset <= not global_pll_locked;
 global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calibration; 
@@ -890,61 +864,6 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		c3_rst0				 =>        		Open,
 		c3_calib_done      =>    			ddr_calibration,
 		
-		-- BIPORT 0 control signals
-		c3_p0_cmd_clk                    		 => '0',
-		c3_p0_cmd_en                            => '0',
-		c3_p0_cmd_instr                         => "000",
-		c3_p0_cmd_bl                            => "000000",
-		c3_p0_cmd_byte_addr                     => (others => '0'),
-		c3_p0_cmd_empty                         => open,
-		c3_p0_cmd_full                          => open,
-		-- Write not used
-		c3_p0_wr_clk                            => '0',
-		c3_p0_wr_en                             => '0',
-		c3_p0_wr_mask                           => (others => '0'), -- mask not used
-		c3_p0_wr_data                           => (others => '0'),
-		c3_p0_wr_full                           => open,
-		c3_p0_wr_empty                          => open,
-		c3_p0_wr_count                          => open,
-		c3_p0_wr_underrun                       => open,				-- underrun not used
-		c3_p0_wr_error                          => open,				-- error not used
-		-- Read signals
-		c3_p0_rd_clk                            => '0',
-		c3_p0_rd_en                             => '0',
-		c3_p0_rd_data                           => open,
-		c3_p0_rd_full                           => open, 
-		c3_p0_rd_empty                          => open,
-		c3_p0_rd_count                          => open,
-		c3_p0_rd_overflow                       => open,
-		c3_p0_rd_error                          => open,
-		
-		-- BIPORT 1 control signals
-		c3_p1_cmd_clk                           => '0',
-		c3_p1_cmd_en                            => '0',
-		c3_p1_cmd_instr                         => "000",
-		c3_p1_cmd_bl                            => "000000",
-		c3_p1_cmd_byte_addr                     => (others => '0'),
-		c3_p1_cmd_empty                         => open,
-		c3_p1_cmd_full                          => open, 
-		-- Write not used
-		c3_p1_wr_clk                            => '0',
-		c3_p1_wr_en                             => '0',
-		c3_p1_wr_mask                           => (others => '0'),
-		c3_p1_wr_data                           => (others => '0'),
-		c3_p1_wr_full                           => open,
-		c3_p1_wr_empty                          => open,
-		c3_p1_wr_count                          => open,
-		c3_p1_wr_underrun                       => open, 
-		c3_p1_wr_error                          => open,
-		-- Read signals
-		c3_p1_rd_clk                            => '0',
-		c3_p1_rd_en                             => '0',
-		c3_p1_rd_data                           => open,
-		c3_p1_rd_full                           => open, 
-		c3_p1_rd_empty                          => open, 
-		c3_p1_rd_count                          => open, 
-		c3_p1_rd_overflow                       => open,
-		c3_p1_rd_error                          => open,
      
 		-- Output port 2 control signals
 		c3_p2_cmd_clk                           =>  global_pixel_clock,
@@ -1131,14 +1050,14 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 				pixel_clock_I0 									=> global_pixel_clock,
 				pixel_clock_I1										=> global_pixel_clock,
 				h_count_I0											=> simulator_h_count(10 downto 0),
-				h_count_I1											=> simulator_h_count(10 downto 0),
+				h_count_I1											=> simulator_h_count_2(10 downto 0),
 				v_count_I0											=> simulator_v_count(10 downto 0),
-				v_count_I1											=> simulator_v_count(10 downto 0),
+				v_count_I1											=> simulator_v_count_2(10 downto 0),
 				active_video_I0									=> simulator_active_video,
 				--active_video_I0									=> '0',
-				active_video_I1									=> simulator_active_video,
+				active_video_I1									=> simulator_active_video_2,
 				video_in_I0											=> color_in,
-				video_in_I1											=> color_in,
+				video_in_I1											=> color_in_2,
 				--video_in_I1											=> "000000000000000011111111",
 				reset													=> reset_btn,
 				DDR_p2_cmd_en                            	=> DDR_p2_cmd_en,

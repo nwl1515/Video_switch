@@ -104,7 +104,7 @@ function c3_sim_hw (val1:std_logic_vector( 31 downto 0); val2: std_logic_vector(
    constant C3_NUM_DQ_PINS        : integer := 16;
    constant C3_MEM_ADDR_WIDTH     : integer := 13;
    constant C3_MEM_BANKADDR_WIDTH : integer := 3;
-   constant C3_MEM_ADDR_ORDER     : string := "BANK_ROW_COLUMN"; 
+   constant C3_MEM_ADDR_ORDER     : string := "ROW_BANK_COLUMN"; 
       constant C3_P0_MASK_SIZE : integer      := 4;
    constant C3_P0_DATA_PORT_SIZE : integer := 32;  
    constant C3_P1_MASK_SIZE   : integer    := 4;
