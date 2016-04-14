@@ -49,111 +49,184 @@ architecture Behavioral of edid_rom_0 is
 
    signal edid_rom : a_edid_rom := (
       ------- BASE EDID Bytes 0 to 35 -----------------------------
-      -- Header
+      -- Fixed Header
       x"00",x"FF",x"FF",x"FF",x"FF",x"FF",x"FF",x"00",
-      -- EISA ID - Manufacturer, Product,
-      x"04",x"43", x"07",x"f2", 
-      -- EISA ID -Serial
+      -- Manufacturer ID - NIL
+      x"3A",x"EC", 
+		-- Manufacturer product code - 1
+		x"01",x"00", 
+      -- Serial number - 1
       x"01",x"00",x"00",x"00",
-      -- Model/year
-      x"FF", x"11",
-      -- EDID Version
-      x"01", x"04",
-      ------------------------------------
-      ------------------------------------
-      -- Digital Video using DVI, 8 bits
-      --- x"81",   -- Checksum 0xB6 
-      ------------------------------------
-      -- Digital Video using HDMI, 8 bits
-      x"A2", -- Checksum 0x95 
-      ------------------------------------
-      -- Aspect ratio, flag, gamma
-      x"4f", x"00", x"78", 
-      ------------------------------------      
-      -- Features 
-      x"3E",
-      -- Display x,y Chromaticity V Breaks here!
-      x"EE", x"91", x"a3", x"54", x"4c", x"99", x"26", x"0f", x"50", x"54",
-      -- Established timings
-      x"20", x"00", x"00",
-      -- Standard timings
-      x"01", x"01", x"01", x"01", x"01", x"01", x"01", x"01", 
-      x"01", x"01", x"01", x"01", x"01", x"01", x"01", x"01", 
-      ------- End of BASE EDID ---------------------------------
-
-      ----- 18 byte data block 1080p --------
-      -- Pixel clock
-      x"02",x"3A",
-      -- Horizontal 1920 with 280 blanking
-      x"80", x"18", x"71",
-      -- Vertical 1080 with 45 lines blanking
-      x"38", x"2D", x"40",
-      -- Horizontal front porch
-      x"58",x"2C",
-      -- Vertical front porch
-      x"04",x"05",
-      -- Horizontal and vertical image size
-      x"0f", x"48", x"42",
-      -- Horizontal and vertical boarder
-      x"00", x"00",
-      -- Options (non-interlaces, not 3D, syncs...)
-      x"1E",
-
-      ----- 18 byte data block 1080i --------
-      -- Pixel clock
-      x"01",x"1D",
-      -- Horizontal 1920 with 280 blanking
-      x"80", x"18", x"71",
-      -- Vertical 1080 with 45 lines blanking
-      x"1C", x"16", x"20",
-      -- Horizontal front porch
-      x"58",x"2C",
-      -- Vertical front porch -- SEEMS WRONG!
-      x"25",x"00",
-      -- Horizontal and vertical image size
-      x"0f", x"48", x"42",
-      -- Horizontal and vertical boarder
-      x"00", x"00",
-      -- Options (non-interlaces, not 3D, syncs...)
-      x"9E",
-
-      ----- 18 byte data block 720p --------
-      -- Pixel clock
-      x"01",x"1D",
-      -- Horizontal 1920 with 280 blanking
-      x"00", x"72", x"51",
-      -- Vertical 1080 with 45 lines blanking
-      x"D0", x"1E", x"20",
-      -- Horizontal front porch
-      x"6E",x"28",
-      -- Vertical front porch -- SEEMS WRONG!
-      x"55",x"00",
-      -- Horizontal and vertical image size
-      x"0f", x"48", x"42",
-      -- Horizontal and vertical boarder
-      x"00", x"00",
-      -- Options (non-interlaces, not 3D, syncs...)
-      x"1E",
-
-      ----- 18 byte data block 720p --------
-      -- Monitor name ASCII descriptor
-      x"00", x"00", x"00", x"FC", x"00",
-      -- ASCII name - "ABC LCD47w[lf] "
-      x"48", x"61", x"6D", x"73", x"74", x"65", x"72", x"6B",
-      x"73", x"0A", x"20", x"20", x"20",
-
-      ----- End of EDID block
-      -- Extension flag & checksum
-      x"01", x"74",
+      -- Week of manufacturing - 06
+      x"06", 
+		-- Year of manufacturing - 2016
+		x"1A",
+      -- EDID Version - 1.3
+      x"01", x"03",
       
-       x"02", x"03", x"18", x"72", x"47", x"90", x"85", x"04", x"03", x"02", x"07", x"06", x"23", x"09", x"07", x"07",
-       x"83", x"01", x"00", x"00", x"65", x"03", x"0C", x"00", x"10", x"00", x"8E", x"0A", x"D0", x"8A", x"20", x"E0",
-       x"2d", x"10", x"10", x"3E", x"96", x"00", x"1F", x"09", x"00", x"00", x"00", x"18", x"8E", x"0A", x"D0", x"8A",
-       x"20", x"E0", x"2D", x"10", x"10", x"3E", x"96", x"00", x"04", x"03", x"00", x"00", x"00", x"18", x"8E", x"0A",
-       x"A0", x"14", x"51", x"F0", x"16", x"00", x"26", x"7C", x"43", x"00", x"1F", x"09", x"00", x"00", x"00", x"98",
-       x"8E", x"0A", x"A0", x"14", x"51", x"F0", x"16", x"00", x"26", x"7C", x"43", x"00", x"04", x"03", x"00", x"00",
-       x"00", x"98", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00",
-       x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"C9"
+		
+		------------------------------------
+      -- Basic display parameters 
+		------------------------------------
+      -- Digital Video input,
+      x"80", 
+      -- Max horizontal image size - 129 cm
+      x"60", 
+		-- Max vertical image size - 96 cm
+		x"39", 
+		-- Display gamma - 2.2
+		x"78",      
+      -- Supported features - sRGB and prederred timing mode specifiged in descruptor block 1 
+      x"06",
+		
+		-------------------------------------
+      -- Chromaticity coordinates
+		-------------------------------------
+		-- Std. settings for sRGB
+      x"EE", x"91", x"a3", x"54", x"4c", x"99", x"26", x"0f", x"50", x"54",
+		
+		-------------------------------------
+		-- Supported std. timing modes - None
+		-------------------------------------
+      x"00", x"00", x"00",
+		
+		-------------------------------------
+      -- Standard timing information 8x2byte std. display modes
+		-------------------------------------
+		-- Display mode 1: 1280 x-resolution, X:Y = 16:9 aspect ratio, vertical freq = 60 Hz 
+      x"81", x"C0", 
+		
+		-- Display mode 2-8 - Not defined
+		x"01", x"01", 
+		x"01", x"01", 
+		x"01", x"01", 
+      x"01", x"01", 
+		x"01", x"01", 
+		x"01", x"01", 
+		x"01", x"01", 
+
+		-------------------------------------
+		-- 4 x 18byte descripter blocks
+		-------------------------------------
+		
+		
+      -- Block 1: Detailed Timing Descripter 1280x720p
+      -- Pixel clock 74,25 MHz
+      x"01",x"1D",
+      -- Horizontal 1280 with 370 blanking
+      x"00", x"72", x"51",
+      -- Vertical 720 with 30 lines blanking
+      x"D0", x"1E", x"20",
+      -- Horizontal front porch -- 110/40
+      x"6E",x"28",
+      -- Vertical front porch -- 5/5
+      x"55",x"00",
+      -- Horizontal and vertical image size - 961 x 567 mm.
+      x"C1", x"37", x"32",
+      -- Horizontal and vertical boarder - 0/0
+      x"00", x"00",
+      -- Options - Prograssive, No stereo, Sync type = digital seperate, Vertical sync = +, HSync = +
+      x"1E",
+
+		-- Block 2: Monitor Name - Conf 2/6-n-sw
+		-- Define not a timing descriptor
+		x"00", x"00", x"00",
+		-- Define descriptor type - Monitor name
+		x"FC",
+		-- Just zero
+		x"00",
+		-- Conf 2/6-2-Sw
+		x"43",x"6F",x"6E",x"66",x"20",x"32",x"2F",x"36",x"2D",x"6E",x"2D",x"53",x"77",
+		
+		-- Block 3: Monitor Serial number - 0000000000001
+		-- Define not a timing descriptor
+		x"00",x"00", x"00",
+		-- Define descriptor type -- Monitor serial
+		x"FF",
+		-- Just zero
+		x"00",
+		-- Serial number - 0000000000001
+		x"30",x"30",x"30",x"30",x"30",x"30",x"30",x"30",x"30",x"30",x"30",x"30",x"31",
+		
+		-- Block 4: Just some text for padding
+		-- Define not a timing descruptor
+		x"00",x"00",x"00",
+		-- Define descriptor type -- Unspecified text
+		x"FE",
+		-- Just zero
+		x"00",
+		-- Secret text
+		x"4E",x"69",x"6B",x"6F",x"6C",x"61",x"6A",x"20",x"4C",x"65",x"74",x"68",x"0A",
+
+      -- Extension flag - 1 extension CEA/EDID extension block
+      x"01", 
+		-- Checksum
+		x"C5",
+      --------------------------
+		-- END of Block 0
+		--------------------------
+		
+		--------------------------
+		-- Start block 1: CEA/EDID extension block
+		--------------------------
+      -- Extension tag - CEA EDID
+		x"02",
+		-- Revision number - 3
+		x"03", 
+		-- Byte number 'd' within block, where DTDs begin - 12
+		x"0C",
+		-- No overscan, no audio, no, YCbCr 4:4:4 and 4:2:2, 1 DTD
+		x"01", 
+		--------------------------
+		-- Data block collection
+		--------------------------
+		-- Data block 1: Video
+		-- Type Video, lenght after this byte 1
+		x"41", 
+		-- Video Data block - Native 720p 
+		x"84", 
+		
+		-- Data block 2: Vendor Specific
+		-- Type Vendor- lenght after this byte 5
+		x"65", 
+		-- Define HDMI
+		x"03", x"0C", x"00", 
+		-- Source Physical Address - 1000 (just something)
+		x"10", x"00", 
+		
+		---------------------------
+		-- Detailed timing descriptor - start at 0C/ byte 12
+		---------------------------
+		--  Detailed Timing Descripter 1: 1280x720p
+      -- Pixel clock 74,25 MHz
+      x"01",x"1D",
+      -- Horizontal 1280 with 370 blanking
+      x"00", x"72", x"51",
+      -- Vertical 720 with 30 lines blanking
+      x"D0", x"1E", x"20",
+      -- Horizontal front porch -- 110/40
+      x"6E",x"28",
+      -- Vertical front porch -- 5/5
+      x"55",x"00",
+      -- Horizontal and vertical image size - 961 x 567 mm.
+      x"C1", x"37", x"32",
+      -- Horizontal and vertical boarder - 0/0
+      x"00", x"00",
+      -- Options - Prograssive, No stereo, Sync type = digital seperate, Vertical sync = +, HSync = +
+      x"1E",
+
+		-----------------------------
+		-- Padding
+		-----------------------------
+		x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", 
+		x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", 
+		x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", 
+		x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", 
+		x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", 
+		x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", 
+		x"00", 
+		-- Checksum
+		x"93"
       
       );
 

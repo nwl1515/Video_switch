@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Thu Apr 14 21:02:35 2016
+Thu Apr 14 21:34:05 2016
 
   SmartGuide Results
   ------------------
@@ -9,104 +9,135 @@ Thu Apr 14 21:02:35 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |   1630
-    Number of guided Components               |   1622 out of   1630  99.5%
-    Number of re-implemented Components       |      2 out of   1630   0.1%
-    Number of new/changed Components          |      6 out of   1630   0.4%
-  Number of Nets in the input design          |   4828
-    Number of guided Nets                     |   4764 out of   4828  98.7%
-    Number of partially guided Nets           |     20 out of   4828   0.4%
-    Number of re-routed Nets                  |     31 out of   4828   0.6%
-    Number of new/changed Nets                |     13 out of   4828   0.3%
+  Number of Components in the input design    |   1627
+    Number of guided Components               |   1615 out of   1627  99.3%
+    Number of re-implemented Components       |      6 out of   1627   0.4%
+    Number of new/changed Components          |      6 out of   1627   0.4%
+  Number of Nets in the input design          |   4814
+    Number of guided Nets                     |   4723 out of   4814  98.1%
+    Number of partially guided Nets           |     28 out of   4814   0.6%
+    Number of re-routed Nets                  |     52 out of   4814   1.1%
+    Number of new/changed Nets                |     11 out of   4814   0.2%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
- u_ddr_to_bram_controller/gearbox_I1_s : SLICE_X0Y42.
- u_ddr_to_bram_controller/_n0235 : SLICE_X9Y62.
+ global_clock_multiplier_b1/buffer_pclk_x10_PLL_buff : BUFPLL_X1Y1.
+ hdmi_input_1/edid_rom_port_0/_n0155<4> : SLICE_X47Y55.
+ hdmi_input_1/edid_rom_port_0/_n0154<4> : SLICE_X47Y56.
+ hdmi_input_1/edid_rom_port_0/_n0155<1> : SLICE_X47Y57.
+ hdmi_input_1/edid_rom_port_0/_n0154<7> : SLICE_X49Y57.
+ hdmi_input_1/edid_rom_port_0/addr_reg<4> : SLICE_X49Y58.
 
 
 The following Components are new/changed.
 -----------------------------------------
- u_ddr_to_bram_controller/_n0255_inv : SLICE_X26Y55.
- u_ddr_to_bram_controller/_n0249_inv : SLICE_X1Y57.
- u_ddr_to_bram_controller/_n0273_inv : SLICE_X5Y53.
- u_ddr_to_bram_controller/_n0306_inv1 : SLICE_X11Y50.
- u_ddr_to_bram_controller/_n0297_inv : SLICE_X11Y52.
- u_ddr_to_bram_controller/_n0245_inv : SLICE_X26Y52.
+ hdmi_input_1/edid_rom_port_0/N43 : SLICE_X44Y55.
+ hdmi_input_1/edid_rom_port_0/N26 : SLICE_X44Y57.
+ hdmi_input_1/edid_rom_port_0/N45 : SLICE_X46Y55.
+ hdmi_input_1/edid_rom_port_0/N38 : SLICE_X46Y56.
+ hdmi_input_1/edid_rom_port_0/_n0154<5> : SLICE_X49Y55.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX116 : SLICE_X51Y56.
 
 
 The following Nets were re-routed.
 ----------------------------------
- u_ddr_to_bram_controller/gearbox_I0_s.
- DDR_p4_rd_data<29>.
- u_ddr_to_bram_controller/run_I0.
- u_ddr_to_bram_controller/gearbox_I1_s.
- simulator_v_count<2>.
- simulator_v_count<3>.
- DDR_p5_rd_data<2>.
- DDR_p5_rd_data<19>.
- DDR_p5_rd_data<3>.
- DDR_p5_rd_data<29>.
- DDR_p5_rd_data<20>.
- DDR_p5_rd_data<4>.
- DDR_p5_rd_data<21>.
- DDR_p5_rd_data<5>.
- DDR_p5_rd_data<22>.
- DDR_p5_rd_data<6>.
- DDR_p5_rd_data<23>.
- DDR_p5_rd_data<7>.
- DDR_p5_rd_data<24>.
- DDR_p5_rd_data<8>.
- DDR_p5_rd_data<25>.
- DDR_p5_rd_data<26>.
- DDR_p5_rd_data<15>.
- DDR_p4_rd_data<23>.
- DDR_p4_rd_data<7>.
- DDR_p4_rd_data<8>.
- DDR_p4_rd_data<25>.
- DDR_p4_rd_data<26>.
- DDR_p4_rd_data<10>.
- DDR_p4_rd_data<31>.
- u_ddr_to_bram_controller/_n0235.
+ hdmi_input_1/edid_rom_port_0/addr_reg<1>.
+ hdmi_input_1/edid_rom_port_0/addr_reg<0>.
+ hdmi_input_1/edid_rom_port_0/addr_reg<2>.
+ hdmi_input_1/edid_rom_port_0/addr_reg<3>.
+ hdmi_input_1/edid_rom_port_0/addr_reg[7]_GND_9_o_add_11_OUT<4>.
+ hdmi_input_1/edid_rom_port_0/addr_reg<5>.
+ hdmi_input_1/edid_rom_port_0/addr_reg<4>.
+ hdmi_input_1/edid_rom_port_0/_n0155<0>.
+ hdmi_input_1/edid_rom_port_0/_n0155<1>.
+ hdmi_input_1/edid_rom_port_0/N30.
+ hdmi_input_1/edid_rom_port_0/N33.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX552.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX55.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX116.
+ hdmi_input_1/edid_rom_port_0/N35.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX146.
+ hdmi_input_1/edid_rom_port_0/N20.
+ hdmi_input_1/edid_rom_port_0/N25.
+ hdmi_input_1/edid_rom_port_0/N24.
+ hdmi_input_1/edid_rom_port_0/N91.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX1461.
+ hdmi_input_1/edid_rom_port_0/N10.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX661.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX362.
+ hdmi_input_1/edid_rom_port_0/_n0155<4>.
+ hdmi_input_1/edid_rom_port_0/_n0154<4>.
+ hdmi_input_1/edid_rom_port_0/_n0154<5>.
+ hdmi_input_1/edid_rom_port_0/data_out_sr<5>.
+ hdmi_input_1/edid_rom_port_0/N29.
+ hdmi_input_1/edid_rom_port_0/N1111.
+ hdmi_input_1/edid_rom_port_0/_n0154<6>.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX662.
+ hdmi_input_1/edid_rom_port_0/N51.
+ hdmi_input_1/edid_rom_port_0/N111.
+ hdmi_input_1/edid_rom_port_0/N01.
+ hdmi_input_1/edid_rom_port_0/N141.
+ hdmi_input_1/edid_rom_port_0/N15.
+ hdmi_input_1/edid_rom_port_0/_n0155<6>.
+ global_pixel_clock_x10_b1.
+ global_serdes_strobe_b1.
+ global_clock_multiplier_b1/pclk_x10.
+ hdmi_input_1/edid_rom_port_0/_n0155<7>.
+ hdmi_input_1/edid_rom_port_0/_n0154<7>.
+ hdmi_input_1/edid_rom_port_0/N34.
+ hdmi_input_1/edid_rom_port_0/N23.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX1462.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX551.
+ hdmi_input_1/edid_rom_port_0/N28.
+ hdmi_input_1/edid_rom_port_0/N19.
+ hdmi_input_1/edid_rom_port_0/inst_LPM_MUX66.
+ hdmi_input_1/edid_rom_port_0/N6.
+ hdmi_input_1/edid_rom_port_0/N2.
 
 
 The following Nets are new/changed.
 -----------------------------------
- u_ddr_to_bram_controller/_n0248_inv.
- u_ddr_to_bram_controller/_n0249_inv.
- u_ddr_to_bram_controller/_n0273_inv.
- u_ddr_to_bram_controller/_n0255_inv.
- u_ddr_to_bram_controller/_n0245_inv.
- u_ddr_to_bram_controller/_n0265_inv.
- u_ddr_to_bram_controller/_n0244_inv.
- u_ddr_to_bram_controller/_n0297_inv.
- u_ddr_to_bram_controller/_n0306_inv2.
- u_ddr_to_bram_controller/_n0310_inv2.
- u_ddr_to_bram_controller/_n0310_inv1.
- u_ddr_to_bram_controller/_n0259_inv1_rstpot.
- u_ddr_to_bram_controller/_n0306_inv1.
+ hdmi_input_1/edid_rom_port_0/N18.
+ hdmi_input_1/edid_rom_port_0/N8.
+ hdmi_input_1/edid_rom_port_0/N26.
+ hdmi_input_1/edid_rom_port_0/N4.
+ hdmi_input_1/edid_rom_port_0/N131.
+ hdmi_input_1/edid_rom_port_0/N40.
+ hdmi_input_1/edid_rom_port_0/N43.
+ hdmi_input_1/edid_rom_port_0/N45.
+ hdmi_input_1/edid_rom_port_0/N38.
+ hdmi_input_1/edid_rom_port_0/N44.
+ hdmi_input_1/edid_rom_port_0/N39.
 
 
 The following Nets were partially guided.
 -----------------------------------------
- global_pixel_clock.
- change_S.
- reset_btn_IBUF.
+ hdmi_input_1/edid_rom_port_0/data_shift_reg<0>.
+ hdmi_input_1/edid_rom_port_0/PWR_9_o_data_shift_reg[7]_equal_5_o<7>1.
+ GCLK_i_BUFG.
+ hdmi_input_1/edid_rom_port_0/sdat_delay<6>.
  global_pixel_clock_x2_b1.
- u_ddr_to_bram_controller/run_I1.
- u_ddr_to_bram_controller/change_S_1.
- DDR_p4_rd_empty.
- u_ddr_to_bram_controller/reset_1.
- p0_h_count_out_I0<10>.
- p0_h_count_out_I0<9>.
- p0_h_count_out_I0<8>.
- p0_h_count_out_I0<7>.
- p0_h_count_out_I0<6>.
- p0_h_count_out_I0<5>.
- p0_h_count_out_I0<4>.
- p0_h_count_out_I0<3>.
- p0_h_count_out_I0<2>.
- p0_h_count_out_I0<1>.
- p0_h_count_out_I0<0>.
- DDR_p4_cmd_byte_addr<15>.
+ hdmi_input_1/edid_rom_port_0/data_shift_reg<1>.
+ hdmi_input_1/edid_rom_port_0/state<5>.
+ hdmi_input_1/edid_rom_port_0/data_shift_reg<2>.
+ hdmi_input_1/edid_rom_port_0/data_shift_reg<3>.
+ hdmi_input_1/edid_rom_port_0/_n0206_inv.
+ hdmi_input_1/edid_rom_port_0/data_shift_reg<5>.
+ hdmi_input_1/edid_rom_port_0/addr_reg[7]_GND_9_o_add_11_OUT<5>.
+ hdmi_input_1/edid_rom_port_0/data_shift_reg<4>.
+ hdmi_input_1/edid_rom_port_0/_n0209.
+ hdmi_input_1/edid_rom_port_0/Mmux_state[5]_data_out_sr[6]_wide_mux_17_OUT111.
+ hdmi_input_1/edid_rom_port_0/Mmux_state[5]_data_out_sr[6]_wide_mux_17_OUT113.
+ hdmi_input_1/edid_rom_port_0/Mmux_state[5]_data_out_sr[6]_wide_mux_17_OUT112.
+ hdmi_input_1/edid_rom_port_0/addr_reg[7]_GND_9_o_add_11_OUT<1>.
+ hdmi_input_1/edid_rom_port_0/addr_reg[7]_GND_9_o_add_11_OUT<2>.
+ hdmi_input_1/edid_rom_port_0/addr_reg[7]_GND_9_o_add_11_OUT<3>.
+ hdmi_input_1/edid_rom_port_0/addr_reg[7]_GND_9_o_add_11_OUT<6>.
+ hdmi_input_1/edid_rom_port_0/addr_reg<6>.
+ hdmi_input_1/edid_rom_port_0/addr_reg<7>.
+ hdmi_input_1/edid_rom_port_0/addr_reg[7]_GND_9_o_add_11_OUT<7>.
+ hdmi_input_1/edid_rom_port_0/data_shift_reg<7>.
+ hdmi_input_1/edid_rom_port_0/GND_9_o_data_shift_reg[7]_equal_7_o.
+ global_pll_locked_b1.
+ hdmi_input_1/edid_rom_port_0/data_out_sr<6>.
