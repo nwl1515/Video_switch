@@ -123,6 +123,18 @@ architecture Structural of Video_Switch is
 	signal global_h_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
 	signal global_v_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
 	
+	signal ready_I1								: std_logic := '0';
+	signal ready_I0								: std_logic := '0';
+	
+	signal colors_I1								: std_logic_vector(23 downto 0);
+	signal colors_I0								: std_logic_vector(23 downto 0);
+	
+	signal v_count_I1								: std_logic_vector(11 downto 0) := (others => '0');
+	signal v_count_I0								: std_logic_vector(11 downto 0) := (others => '0');
+	
+	signal active_video_I1						: std_logic := '0';
+	signal active_video_I0						: std_logic := '0';
+	
 	signal BRAM_clock_out_enable				: std_logic := '0';
 	signal P0_BRAM_enable						: std_logic := '0';
 	signal P0_BRAM_h_count						: std_logic_vector(10 downto 0) := (others => '0');
@@ -234,6 +246,10 @@ architecture Structural of Video_Switch is
 				video_in_I0											: in 	STD_LOGIC_VECTOR(23 downto 0);
 				video_in_I1											: in 	STD_LOGIC_VECTOR(23 downto 0);
 				reset													: in  STD_LOGIC;
+				ready_I0												: in 	STD_LOGIC;
+				ready_I1												: in 	STD_LOGIC;
+				new_frame_I0										: in 	STD_LOGIC;
+				new_frame_I1										: in 	STD_LOGIC;
 				DDR_p2_cmd_en                            : out std_logic;
 				DDR_p2_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
 				DDR_p2_cmd_full                          : in std_logic;
@@ -252,6 +268,24 @@ architecture Structural of Video_Switch is
 				DDR_p3_wr_empty                          : in std_logic
 			);
 	END COMPONENT;
+	
+	COMPONENT dvi_encoder_top is
+	port (
+        pclk : in std_logic;           
+        pclkx2 : in std_logic;       
+        pclkx10 : in std_logic;      
+       serdesstrobe : in std_logic;   
+        rstin : in std_logic;         
+  blue_din : in std_logic_Vector(7 downto 0);     
+  green_din : in std_logic_vector(7 downto 0);    
+   red_din : in std_logic_Vector(7 downto 0);       
+       hsync : in std_logic;          
+  vsync : in std_logic;          
+	DE	:	in std_logic;             
+  TMDS : out std_logic_vector;
+   TMDSB : out std_logic_vector
+  );
+  END COMPONENT;
 	
 	COMPONENT DDR_to_BRAM_controller is
     Port ( 
@@ -396,7 +430,12 @@ architecture Structural of Video_Switch is
 			red_c				: out STD_LOGIC_VECTOR(7 downto 0);
 			green_c			: out STD_LOGIC_VECTOR(7 downto 0);
 			blue_c			: out STD_LOGIC_VECTOR(7 downto 0);
-			pclk				: out STD_LOGIC		
+			v_count			: out STD_LOGIC_VECTOR(11 downto 0);
+			active_video	: out STD_LOGIC;
+			new_frame		: out STD_LOGIC;
+			ready				: out STD_LOGIC;
+			pclk				: inout STD_LOGIC;
+			leds				: out STD_LOGIC_VECTOR(7 downto 0)
 			);
 	END COMPONENT;
 	
@@ -564,10 +603,10 @@ begin
 --leds(0) <= ddr_calibration;
 --leds(7 downto 4) <= leds_out(4 downto 1);
 --leds(0) <= DDR_p3_cmd_en;
-leds(4) <= DDR_p2_cmd_full;
-leds(5) <= DDR_p2_wr_full;
-leds(6) <= DDR_p3_cmd_full;
-leds(7) <= DDR_p3_wr_full;
+--leds(4) <= DDR_p2_cmd_full;
+--leds(5) <= DDR_p2_wr_full;
+--leds(6) <= DDR_p3_cmd_full;
+--leds(7) <= DDR_p3_wr_full;
 --leds(3) <= DDR_p3_wr_empty;
 --leds(7 downto 0) <= test_leds(7 downto 0);
 --leds(4) <= DDR_p5_cmd_en;
@@ -597,10 +636,16 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 			ddc_sclk			=> hdmi_port_1_sclk,
 			ddc_sdat			=> hdmi_port_1_sdat,
 			gclk				=> GCLK_i,
-			red_c				=> open,
-			green_c			=> open,
-			blue_c			=> open,
-			pclk				=> global_pixel_clock
+			red_c				=> colors_I1(23 downto 16),
+			green_c			=> colors_I1(15 downto 8),
+			blue_c			=> colors_I1(7 downto 0),
+			v_count			=> v_count_I1,
+			active_video	=> active_video_I1,
+			new_frame		=> open,
+			ready				=> ready_I1,		
+			pclk				=> global_pixel_clock,
+			leds				=> leds
+
 	);
 	
 --------------------------------
@@ -618,8 +663,13 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 			red_c				=> open,
 			green_c			=> open,
 			blue_c			=> open,
-			pclk				=> Open
-	);
+			v_count			=> open,
+			active_video	=> open,	
+			new_frame		=> open,
+			ready				=> open,
+			pclk				=> Open,
+			leds				=> open
+			);
 	
 ------------------------------
 -- HDMI output 0
@@ -645,6 +695,23 @@ hdmi_output_0 : HDMI_OUT
 			tmds_out_p => hdmi_port_0_out_p,
 			tmds_out_n => hdmi_port_0_out_n
 		);
+		
+		--hdmi_output_0 : dvi_encoder_top
+	--port map(
+        --pclk => global_pixel_clock_x1_b0,        
+        --pclkx2 => global_pixel_clock_x2_b0,       
+        --pclkx10 => global_pixel_clock_x10_b0,      
+       --serdesstrobe => global_serdes_strobe_b0, 
+        --rstin => '0',         
+  --blue_din => P0_data_out(7 downto 0),    
+  --green_din => P0_data_out(15 downto 8),   
+   --red_din => P0_data_out(23 downto 16),       
+       --hsync => global_output_h_sync_controller,         
+  --vsync => global_output_v_sync_controller,         
+	--DE	=> global_output_active_video_controller,            
+  --TMDS => hdmi_port_0_out_p,
+   --TMDSB => hdmi_port_0_out_n
+  --);
 		
 hdmi_output_1 : HDMI_OUT
 		PORT MAP(
@@ -679,6 +746,8 @@ hdmi_output_2 : HDMI_OUT
 			tmds_out_p => hdmi_port_2_out_p,
 			tmds_out_n => hdmi_port_2_out_n
 		);
+		
+		
 		
 hdmi_output_3 : HDMI_OUT
 		PORT MAP(
@@ -730,6 +799,23 @@ hdmi_output_5 : HDMI_OUT
 			tmds_out_p => hdmi_port_5_out_p,
 			tmds_out_n => hdmi_port_5_out_n
 		);
+		
+		--hdmi_output_5 : dvi_encoder_top
+	--port map(
+        --pclk => global_pixel_clock_x1_b1,        
+        --pclkx2 => global_pixel_clock_x2_b1,       
+        --pclkx10 => global_pixel_clock_x10_b1,      
+       --serdesstrobe => global_serdes_strobe_b1, 
+        --rstin => '0',         
+  --blue_din => g_color_blue,    
+  --green_din => g_color_green,   
+   --red_din => g_color_red,       
+       --hsync => global_output_h_sync,         
+  --vsync => global_output_v_sync,         
+	--DE	=> global_output_active_video,            
+  --TMDS => hdmi_port_5_out_p,
+   --TMDSB => hdmi_port_5_out_n
+	--);
 
 
 ------------------------------
@@ -888,8 +974,8 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		--c3_p2_wr_full									 => leds(4),
 		c3_p2_wr_empty                          =>  DDR_p2_wr_empty,
 		c3_p2_wr_count                          =>  Open,		-- Not used
-		c3_p2_wr_underrun                       =>  leds(0),		-- Not used
-		c3_p2_wr_error                          =>  leds(1),		-- Not used
+		c3_p2_wr_underrun                       =>  open,		-- Not used
+		c3_p2_wr_error                          =>  open,		-- Not used
 		
 		-- Output port 3 control signals
 		c3_p3_cmd_clk                           =>  global_pixel_clock,
@@ -907,8 +993,8 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		--c3_p3_wr_full									 => leds(5),
 		c3_p3_wr_empty                          =>  DDR_p3_wr_empty,
 		c3_p3_wr_count                          =>  Open,		-- not used
-		c3_p3_wr_underrun                       =>  leds(2),		-- Not used
-		c3_p3_wr_error                          =>  leds(3),		-- Not used
+		c3_p3_wr_underrun                       =>  open,		-- Not used
+		c3_p3_wr_error                          =>  open,		-- Not used
 		
 		-- Input port 4
 		--c3_p4_cmd_clk                           =>  global_pixel_clock_x2_b1,
@@ -1057,16 +1143,23 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 				pixel_clock_I0 									=> global_pixel_clock,
 				pixel_clock_I1										=> global_pixel_clock,
 				h_count_I0											=> simulator_h_count(10 downto 0),
-				h_count_I1											=> simulator_h_count_2(10 downto 0),
+				--h_count_I1											=> simulator_h_count_2(10 downto 0),
+				h_count_I1											=> (others => '0'),
 				v_count_I0											=> simulator_v_count(10 downto 0),
-				v_count_I1											=> simulator_v_count_2(10 downto 0),
+				--v_count_I1											=> simulator_v_count_2(10 downto 0),
+				v_count_I1											=> v_count_I1(10 downto 0),
 				active_video_I0									=> simulator_active_video,
 				--active_video_I0									=> '0',
-				active_video_I1									=> simulator_active_video_2,
+				--active_video_I1									=> simulator_active_video_2,
+				active_video_I1									=> active_video_I1,
 				video_in_I0											=> color_in,
-				video_in_I1											=> color_in_2,
-				--video_in_I1											=> "000000000000000011111111",
+				--video_in_I1											=> color_in_2,
+				video_in_I1											=> colors_I1,
 				reset													=> reset_btn,
+				ready_I0												=> '1',
+				ready_I1												=> ready_I1,
+				new_frame_I0										=> '0',
+				new_frame_I1										=> '0',
 				DDR_p2_cmd_en                            	=> DDR_p2_cmd_en,
 				DDR_p2_cmd_byte_addr                     	=> DDR_p2_cmd_byte_addr,
 				DDR_p2_cmd_full                          	=> DDR_p2_cmd_full,

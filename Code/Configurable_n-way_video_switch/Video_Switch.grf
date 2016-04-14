@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Fri Apr 08 06:15:51 2016
+Thu Apr 14 21:02:35 2016
 
   SmartGuide Results
   ------------------
@@ -9,70 +9,104 @@ Fri Apr 08 06:15:51 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |   1305
-    Number of guided Components               |   1302 out of   1305  99.8%
-    Number of re-implemented Components       |      2 out of   1305   0.2%
-    Number of new/changed Components          |      1 out of   1305   0.1%
-  Number of Nets in the input design          |   4255
-    Number of guided Nets                     |   4220 out of   4255  99.2%
-    Number of partially guided Nets           |     14 out of   4255   0.3%
-    Number of re-routed Nets                  |     21 out of   4255   0.5%
-    Number of new/changed Nets                |      0 out of   4255   0.0%
+  Number of Components in the input design    |   1630
+    Number of guided Components               |   1622 out of   1630  99.5%
+    Number of re-implemented Components       |      2 out of   1630   0.1%
+    Number of new/changed Components          |      6 out of   1630   0.4%
+  Number of Nets in the input design          |   4828
+    Number of guided Nets                     |   4764 out of   4828  98.7%
+    Number of partially guided Nets           |     20 out of   4828   0.4%
+    Number of re-routed Nets                  |     31 out of   4828   0.6%
+    Number of new/changed Nets                |     13 out of   4828   0.3%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
- u_input_to_ddr_controller/input_0.count_num_I0<5> : SLICE_X0Y67.
- DDR_p2_cmd_byte_addr<12> : SLICE_X1Y69.
+ u_ddr_to_bram_controller/gearbox_I1_s : SLICE_X0Y42.
+ u_ddr_to_bram_controller/_n0235 : SLICE_X9Y62.
 
 
 The following Components are new/changed.
 -----------------------------------------
- u_input_to_ddr_controller/_n0188 : SLICE_X3Y67.
+ u_ddr_to_bram_controller/_n0255_inv : SLICE_X26Y55.
+ u_ddr_to_bram_controller/_n0249_inv : SLICE_X1Y57.
+ u_ddr_to_bram_controller/_n0273_inv : SLICE_X5Y53.
+ u_ddr_to_bram_controller/_n0306_inv1 : SLICE_X11Y50.
+ u_ddr_to_bram_controller/_n0297_inv : SLICE_X11Y52.
+ u_ddr_to_bram_controller/_n0245_inv : SLICE_X26Y52.
 
 
 The following Nets were re-routed.
 ----------------------------------
- u_input_to_ddr_controller/_n0212_inv.
- reset_btn_IBUF_1.
- DDR_p2_cmd_byte_addr<11>.
- DDR_p2_cmd_byte_addr<10>.
- u_input_to_ddr_controller/v_count_I0_p1<1>.
- u_input_to_ddr_controller/input_0.count_num_I0<5>.
- u_input_to_ddr_controller/input_0.address_count<5>.
- u_input_to_ddr_controller/input_0.count_num_I0<0>.
- u_input_to_ddr_controller/input_0.count_num_I0<1>.
- u_input_to_ddr_controller/input_0.count_num_I0<2>.
- u_input_to_ddr_controller/input_0.count_num_I0<3>.
- u_input_to_ddr_controller/input_0.count_num_I0<4>.
- DDR_p2_cmd_byte_addr<7>.
- DDR_p2_cmd_byte_addr<9>.
- u_input_to_ddr_controller/v_count_I1_p1<3>.
- u_input_to_ddr_controller/v_count_I1_p1<4>.
- u_input_to_ddr_controller/_n0218_inv.
- DDR_p2_wr_en.
- u_input_to_ddr_controller/_n0188.
- DDR_p2_cmd_byte_addr<12>.
- DDR_p2_cmd_byte_addr<6>.
+ u_ddr_to_bram_controller/gearbox_I0_s.
+ DDR_p4_rd_data<29>.
+ u_ddr_to_bram_controller/run_I0.
+ u_ddr_to_bram_controller/gearbox_I1_s.
+ simulator_v_count<2>.
+ simulator_v_count<3>.
+ DDR_p5_rd_data<2>.
+ DDR_p5_rd_data<19>.
+ DDR_p5_rd_data<3>.
+ DDR_p5_rd_data<29>.
+ DDR_p5_rd_data<20>.
+ DDR_p5_rd_data<4>.
+ DDR_p5_rd_data<21>.
+ DDR_p5_rd_data<5>.
+ DDR_p5_rd_data<22>.
+ DDR_p5_rd_data<6>.
+ DDR_p5_rd_data<23>.
+ DDR_p5_rd_data<7>.
+ DDR_p5_rd_data<24>.
+ DDR_p5_rd_data<8>.
+ DDR_p5_rd_data<25>.
+ DDR_p5_rd_data<26>.
+ DDR_p5_rd_data<15>.
+ DDR_p4_rd_data<23>.
+ DDR_p4_rd_data<7>.
+ DDR_p4_rd_data<8>.
+ DDR_p4_rd_data<25>.
+ DDR_p4_rd_data<26>.
+ DDR_p4_rd_data<10>.
+ DDR_p4_rd_data<31>.
+ u_ddr_to_bram_controller/_n0235.
 
 
 The following Nets are new/changed.
 -----------------------------------
+ u_ddr_to_bram_controller/_n0248_inv.
+ u_ddr_to_bram_controller/_n0249_inv.
+ u_ddr_to_bram_controller/_n0273_inv.
+ u_ddr_to_bram_controller/_n0255_inv.
+ u_ddr_to_bram_controller/_n0245_inv.
+ u_ddr_to_bram_controller/_n0265_inv.
+ u_ddr_to_bram_controller/_n0244_inv.
+ u_ddr_to_bram_controller/_n0297_inv.
+ u_ddr_to_bram_controller/_n0306_inv2.
+ u_ddr_to_bram_controller/_n0310_inv2.
+ u_ddr_to_bram_controller/_n0310_inv1.
+ u_ddr_to_bram_controller/_n0259_inv1_rstpot.
+ u_ddr_to_bram_controller/_n0306_inv1.
 
 
 The following Nets were partially guided.
 -----------------------------------------
  global_pixel_clock.
+ change_S.
  reset_btn_IBUF.
- u_input_to_ddr_controller/input_0.address_count<9>.
- u_input_to_ddr_controller/input_0.address_count<8>.
- u_input_to_ddr_controller/mux1041.
- u_input_to_ddr_controller/input_0.address_count<6>.
- DDR_p2_cmd_empty.
- u_input_to_ddr_controller/Mmux_GND_1409_o_input_0.count_num_I0[5]_mux_40_OUT61.
- u_input_to_ddr_controller/input_0.address_count<7>.
- u_input_to_ddr_controller/gearbox_I0_s_inv.
- simulator_active_video.
- u_input_to_ddr_controller/gearbox_I0_s.
- P0_BRAM_I_selector.
- DDR_p2_wr_empty.
+ global_pixel_clock_x2_b1.
+ u_ddr_to_bram_controller/run_I1.
+ u_ddr_to_bram_controller/change_S_1.
+ DDR_p4_rd_empty.
+ u_ddr_to_bram_controller/reset_1.
+ p0_h_count_out_I0<10>.
+ p0_h_count_out_I0<9>.
+ p0_h_count_out_I0<8>.
+ p0_h_count_out_I0<7>.
+ p0_h_count_out_I0<6>.
+ p0_h_count_out_I0<5>.
+ p0_h_count_out_I0<4>.
+ p0_h_count_out_I0<3>.
+ p0_h_count_out_I0<2>.
+ p0_h_count_out_I0<1>.
+ p0_h_count_out_I0<0>.
+ DDR_p4_cmd_byte_addr<15>.

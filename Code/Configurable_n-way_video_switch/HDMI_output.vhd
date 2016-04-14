@@ -188,9 +188,9 @@ begin
 
    
     -- The output buffers/drivers
-OBUFDS_red   : OBUFDS port map ( O  => tmds_out_p(0), OB => tmds_out_n(0), I => red_s);
+OBUFDS_red   : OBUFDS port map ( O  => tmds_out_p(2), OB => tmds_out_n(2), I => red_s);
 OBUFDS_green : OBUFDS port map ( O  => tmds_out_p(1), OB => tmds_out_n(1), I => green_s);
-OBUFDS_blue  : OBUFDS port map ( O  => tmds_out_p(2), OB => tmds_out_n(2), I => blue_s);
+OBUFDS_blue  : OBUFDS port map ( O  => tmds_out_p(0), OB => tmds_out_n(0), I => blue_s);
 OBUFDS_clock : OBUFDS port map ( O  => tmds_out_p(3), OB => tmds_out_n(3), I => clock_s);
 
 

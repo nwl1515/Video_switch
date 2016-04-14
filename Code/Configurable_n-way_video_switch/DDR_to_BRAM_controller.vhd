@@ -122,6 +122,7 @@ begin
 		if rising_Edge(clk_in_x2) then
 			if change_S = '1' then
 				h_count_I1 <= (others => '0');
+				gearbox_I1_s <= '1';
 			
 			elsif run_I1 = '1' then
 			

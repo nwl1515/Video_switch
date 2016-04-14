@@ -19,6 +19,8 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
 
 library UNISIM;
 use UNISIM.VComponents.all;
@@ -33,24 +35,33 @@ entity HDMI_IN is
 			red_c				: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 			green_c			: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 			blue_c			: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-			pclk				: out STD_LOGIC  := '0'
+			v_count			: out STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+			active_video	: out STD_LOGIC := '0';		
+			new_frame		: out STD_LOGIC := '0';
+			ready				: out STD_LOGIC := '0';
+			pclk				: inout STD_LOGIC  := '1';
+			leds				: out STD_LOGIC_VECTOR(7 downto 0)
 			
 			);
 end HDMI_IN;
 
 architecture Behavioral of HDMI_IN is
 
-	COMPONENT Pixel_clock_multiplier
-	PORT(
-		pclk_in			: in STD_LOGIC;
-		pclk_o_x1		: out STD_LOGIC;
-		pclk_o_x2		: out STD_LOGIC;
-		pclk_o_x10		: out STD_LOGIC;
-		pll_locked		: out STD_LOGIC;
-		serdes_strobe	: out STD_LOGIC
-	);
-	END COMPONENT;
+	signal v_count_i			: std_logic_vector(11 downto 0) := (others => '0');
+	signal active_video_i 	: std_logic := '0';
+	signal new_frame_i		: std_logic := '0';
+	signal h_sync_i			: std_logic := '0';
+	signal v_sync_i			: std_logic := '0';
+	signal ready_rdy			: std_logic := '0';
+	signal ready_i				: std_logic := '0';		
+	signal rx_red_rdy			: std_logic := '0';
+	signal rx_green_rdy		: std_logic := '0';
+	signal rx_blue_rdy		: std_logic := '0';
+	signal pll_locked			: std_logic := '0';
 	
+	type FRAME_STATE_TYPES is (INIT, INIT_DONE, LINE, LINE_END, V_COUNT_STATE, NEW_FRAME_STATE); 
+	
+	signal FRAME_STATE 		: FRAME_STATE_TYPES := INIT;
 	COMPONENT edid_rom_0
 		port ( clk      	: in    std_logic;
           sclk_raw 		: in    std_logic;
@@ -58,96 +69,64 @@ architecture Behavioral of HDMI_IN is
           edid_debug 	: out std_logic_vector(2 downto 0) := (others => '0')
 		);
   END COMPONENT;
-
-	signal pclk_unbuffered 			: std_logic := '0';
-	signal pclk_buffered				: std_logic := '0';
-	signal serdes_strobe				: std_logic := '0';
-	signal pll_locked					: std_logic := '0';
-	signal pclk_x1						: std_logic := '0';
-	signal pclk_x2						: std_logic := '0';
-	signal pclk_x10					: std_logic := '0';
-	signal red_tmds					: std_logic := '0';
-	signal green_tmds					: std_logic := '0';
-	signal blue_tmds					: std_logic := '0';
-
-	begin
-	pclk <= pclk_buffered;
-
-------------------------------------
--- Input:	 Differential pixel clock
--- Output:	 Single-line pixel clock
-------------------------------------
-		p_clk_diff_input : IBUFDS
-			generic map(
-				DIFF_TERM 		=> FALSE,
-				IBUF_LOW_PWR	=> TRUE,
-				IOSTANDARD		=> "TMDS_33")
-			PORT map(
-				O 					=> pclk_unbuffered,
-				I					=> hdmi_in_p(3),
-				IB					=> hdmi_in_n(3)
+  
+  COMPONENT dvi_decoder 
+		port (
+			tmdsclk_p		: in 		std_logic;
+			tmdsclk_n		: in 		std_logic;
+			blue_p			: in 		std_logic;
+			green_p			: in 		std_logic;
+			red_p				: in 		std_logic; 
+			blue_n			: in 		std_logic;
+			green_n			: in 		std_logic;   
+			red_n				: in 		std_logic;
+			exrst				: in 		std_logic;
+			reset				: out 	std_logic;
+			pclk				: out 	std_logic;
+			pclkx2			: out 	std_logic;
+			pclkx10			: out 	std_logic;
+			pllclk0			: out 	std_logic;
+			pllclk1			: out 	std_logic;
+			pllclk2			: out		std_logic;
+			pll_lckd			: out		std_logic;
+			serdesstrobe	: out		std_logic;
+			tmdsclk			: out		std_logic;
+			hsync				: out 	std_logic;
+			vsync				: out		std_logic;
+			de					: out 	std_logic;
+			blue_vld			: out 	std_logic;
+			green_vld		: out		std_logic;
+			red_vld			: out 	std_logic;
+			blue_rdy			: out		std_logic;
+			green_rdy		: out 	std_logic;
+			red_rdy			: out 	std_logic;
+			psalgnerr		: out		std_logic;
+			sdout				: out		std_logic_vector(29 downto 0);
+			red				: out		std_logic_vector(7 downto 0);
+			green				: out		std_logic_vector(7 downto 0);    
+			blue				: out		std_logic_vector(7 downto 0)
 			);
-			
-------------------------------------
--- Input:	Unbuffered pixel clock
--- Output:	Buffered pixel clock
-------------------------------------
-		p_clk_buffer : BUFG
-			PORT map(
-				I					=> pclk_unbuffered,
-				O					=>	pclk_buffered
-			);
-			
-------------------------------------
--- Input: Differential TMDS RGB
--- Output: single-ended TMDS RGB
-------------------------------------
-		red_tmds_diff : IBUFDS
-			generic map(
-				DIFF_TERM 		=> FALSE,
-				IBUF_LOW_PWR	=> TRUE,
-				IOSTANDARD		=> "TMDS_33")
-			PORT map(
-				O 					=> red_tmds,
-				I					=> hdmi_in_p(0),
-				IB					=> hdmi_in_n(0)
-			);
+			END COMPONENT;
 
-		green_tmds_diff : IBUFDS
-			generic map(
-				DIFF_TERM 		=> FALSE,
-				IBUF_LOW_PWR	=> TRUE,
-				IOSTANDARD		=> "TMDS_33")
-			PORT map(
-				O 					=> green_tmds,
-				I					=> hdmi_in_p(1),
-				IB					=> hdmi_in_n(1)
-			);
+	
 
-		blue_tmds_diff : IBUFDS
-			generic map(
-				DIFF_TERM 		=> FALSE,
-				IBUF_LOW_PWR	=> TRUE,
-				IOSTANDARD		=> "TMDS_33")
-			PORT map(
-				O 					=> blue_tmds,
-				I					=> hdmi_in_p(2),
-				IB					=> hdmi_in_n(2)
-			);			
--------------------------------------
--- Component: 	pixel clock multiplier
--- Input: 		pixel clock
--- Outputs: 	Pclk_x1, pclk_x2, pclk_x3, strobe_serdes
--------------------------------------
-		input_clk_multiplier : Pixel_clock_multiplier
-		PORT map(
-			pclk_in			=> pclk_buffered,
-			pclk_o_x1		=> pclk_x1,
-			pclk_o_x2		=> pclk_x2,
-			pclk_o_x10		=> pclk_x10,
-			pll_locked		=> pll_locked,
-			serdes_strobe	=> serdes_strobe
-		);
+begin
+
+	v_count <= v_count_i when ready_i = '1' and not(FRAME_STATE = INIT) else (others => '0');
+	active_video <= active_video_i when ready_rdy = '1' else '0';
+	ready_rdy <= '1' when rx_red_rdy = '1' and rx_green_rdy = '1' and rx_blue_rdy = '1' else '0';
+	ready <= ready_i;
+	new_frame <= new_frame_i;
+	
+	leds(0) <= pll_locked;
+	leds(1) <= rx_red_rdy;
+	leds(2) <= rx_green_rdy;
+	leds(3) <= rx_blue_rdy;
+	leds(4) <= ready_rdy;
+	leds(5) <= ready_i;
+	leds(6) <= v_sync_i;
+	leds(7) <= active_video_i;
+
 		
 --------------------------------------
 -- Component:	EDID rom for input 0
@@ -161,6 +140,99 @@ architecture Behavioral of HDMI_IN is
 			sdat_raw 		=> ddc_sdat,
 			edid_debug 		=> open
 		);
+		
+		input_decoder : dvi_decoder 
+		port map (
+			tmdsclk_p		=> hdmi_in_p(3),
+			tmdsclk_n		=> hdmi_in_n(3),
+			blue_p			=> hdmi_in_p(0),
+			green_p			=> hdmi_in_p(1),
+			red_p				=> hdmi_in_p(2), 
+			blue_n			=> hdmi_in_n(0),
+			green_n			=> hdmi_in_n(1),  
+			red_n				=> hdmi_in_n(2),
+			exrst				=> '0',
+			reset				=> open,
+			pclk				=> pclk,
+			pclkx2			=> open,
+			pclkx10			=> open,
+			pllclk0			=> open,
+			pllclk1			=> open,
+			pllclk2			=> open,
+			pll_lckd			=> pll_locked,
+			serdesstrobe	=> open,
+			tmdsclk			=> open,
+			hsync				=> h_sync_i,
+			vsync				=> v_sync_i,
+			de					=> active_video_i,
+			blue_vld			=> open,
+			green_vld		=> open,
+			red_vld			=> open,
+			blue_rdy			=> rx_blue_rdy,
+			green_rdy		=> rx_green_rdy,
+			red_rdy			=> rx_red_rdy,
+			psalgnerr		=> open,
+			sdout				=> open,
+			red				=> red_c,
+			green				=> green_c,   
+			blue				=> blue_c
+			);
+			
+			--red_c <= "11111111";
+			--green_c <= "11111111";
+			--blue_c <= "11111111";
+	
+		v_counter : PROCESS(pclk)
+		begin
+			if rising_edge(pclk) then
+				if pll_locked = '0' then
+					FRAME_STATE <= INIT;
+				else
+					case FRAME_STATE is
+					when INIT =>
+						if ready_rdy = '1' and v_sync_i = '1' and active_video_i = '0' then
+							FRAME_STATE <= INIT_DONE;
+						end if;
+						
+					when INIT_DONE =>
+						ready_i <= '1';
+						if active_video_i = '1' then
+							FRAME_STATE <= LINE;
+						end if;
+						
+					when LINE =>
+						new_frame_i <= '0';
+						if active_video_i = '0' then
+							FRAME_STATE <= LINE_END;
+						end if;
+						
+					when LINE_END =>
+						if h_sync_i = '1' then
+							FRAME_STATE <= V_COUNT_STATE;
+							v_count_i <= v_count_i + 1;					
+						end if;
+						
+					when V_COUNT_STATE =>
+						if active_video_i = '1' then
+							FRAME_STATE <= LINE;
+						elsif v_sync_i = '1' then
+							FRAME_STATE <= NEW_FRAME_STATE;
+						end if;
+					
+					when NEW_FRAME_STATE =>
+						v_count_i <= (others => '0');
+						new_frame_i <= '1';
+						if active_video_i = '1' then
+							FRAME_STATE <= LINE;
+						end if;
+					
+					when others =>
+						FRAME_STATE <= INIT;
+					end case;
+				
+				end if;
+			end if;
+		end process v_counter;
 			
 end Behavioral;
 
