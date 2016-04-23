@@ -153,6 +153,7 @@ begin
 		if rising_Edge(clk_in_x2) then
 			if change_S = '1' then
 				h_count_I0 <= (others => '0');
+				gearbox_I0_s <= '1';
 			
 			elsif run_I0 = '1' then
 			
@@ -179,55 +180,7 @@ begin
 	
 	called_I0 <= c3_p4_cmd_en or (not c3_p4_cmd_empty);
 	
---	I1_proc : process(clk_in, change_S)
---		variable out_count_I1 : integer :=0;
---	begin
---			
---		if rising_edge(clk_in) then
---			c3_p5_cmd_en <= cmd_en_I1_p1;
---			cmd_en_I1_p1 <= '0';
---			
---			if change_S = '1' then
---			run_I1 <= '1';
---			inload_done <= '0';
---			h_count_I1 <= (others => '0');
---			out_count_I1 := 0;
---			bank_col_I1 <= conv_std_logic_vector(64, 16);
---			--bank_col_I1 <= (others => '0');
---			end if;
---			
---			if reset = '1' then
---				c3_p5_cmd_en <= '0';
---				cmd_en_I1_p1 <= '0';
---				run_I1 <= '0';
---				h_count_I1 <= (others => '0');
---				bank_col_I1 <= conv_std_logic_vector(64,16);
---				--bank_col_I1 <= (others => '0');
---				out_count_I1 := 0;	
---				inload_done <= '0';
---			else
---				if run_I1 = '1' then
---					if c3_p5_rd_en = '1' then
---						out_count_I1 := out_count_I1 - 1;
---						h_count_I1 <= h_count_I1 + 1;					
---					end if;
---					
---					if bank_col_I1(12 downto 2) < (1279+16) then
---						if (c3_p5_rd_empty = '1' or out_count_I1 < 9) and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
---							cmd_en_I1_p1 <= '1';
---							c3_p5_cmd_byte_addr <= "001" & internal_v_count & bank_col_I1;
---							out_count_I1 := out_count_I1 + 16;
---							bank_col_I1 <= bank_col_I1 + 64;
---							c3_p5_cmd_bl <= "001111"; -- means 16	
---						end if;
---					elsif bank_col_I1(12 downto 2) >= (1279+16) and c3_p5_rd_empty = '1' then
---						run_I1 <= '0'; -- stop!
---						inload_done <= '1';
---					end if;
---				end if;
---			end if;
---		end if;				
---	end process I1_proc;
+
 
 	c3_p5_cmd_bl <= "011111"; -- means 32
 	

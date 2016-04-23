@@ -50,8 +50,8 @@ entity Video_Switch is
 			hdmi_port_1_sdat		: inout STD_LOGIC;
 			
 			-- Outputs TMDS
-			hdmi_port_0_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
-			hdmi_port_0_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
+			--hdmi_port_0_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
+			--hdmi_port_0_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_1_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_1_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_2_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
@@ -97,12 +97,13 @@ end Video_Switch;
 architecture Structural of Video_Switch is
 
 	signal global_pixel_clock					: std_logic := '0';
+	signal global_pixel_clock_I0				: std_logic := '0';
 	signal global_pixel_clock_x1_b0			: std_logic := '0';
 	signal global_pixel_clock_x2_b0			: std_logic := '0';
 	signal global_pixel_clock_x10_b0			: std_logic := '0';
-	signal global_pixel_clock_x1_b1			: std_logic := '0';
-	signal global_pixel_clock_x2_b1			: std_logic := '0';
-	signal global_pixel_clock_x10_b1			: std_logic := '0';
+	signal global_pixel_clock_x1_b2			: std_logic := '0';
+	signal global_pixel_clock_x2_b2			: std_logic := '0';
+	signal global_pixel_clock_x10_b2			: std_logic := '0';
 	signal global_output_h_sync 				: std_logic := '0';
 	signal global_output_h_sync_controller : std_logic := '0';
 	signal global_output_v_sync 				: std_logic := '0';
@@ -118,8 +119,8 @@ architecture Structural of Video_Switch is
 	signal global_pll_locked					: std_logic := '0';
 	signal global_pll_locked_b0				: std_logic := '0';
 	signal global_serdes_strobe_b0			: std_logic := '0';
-	signal global_pll_locked_b1				: std_logic := '0';
-	signal global_serdes_strobe_b1			: std_logic := '0';
+	signal global_pll_locked_b2				: std_logic := '0';
+	signal global_serdes_strobe_b2			: std_logic := '0';
 	signal global_h_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
 	signal global_v_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
 	
@@ -134,6 +135,9 @@ architecture Structural of Video_Switch is
 	
 	signal active_video_I1						: std_logic := '0';
 	signal active_video_I0						: std_logic := '0';
+	
+	signal new_frame_I0							: std_logic := '0';
+	signal new_frame_I1							: std_logic := '0';
 	
 	signal BRAM_clock_out_enable				: std_logic := '0';
 	signal P0_BRAM_enable						: std_logic := '0';
@@ -489,6 +493,21 @@ architecture Structural of Video_Switch is
 		serdes_strobe	: out STD_LOGIC);
 	END COMPONENT;
 	
+	COMPONENT Dual_Pixel_clock_multiplier is
+	PORT(
+		pclk_in			: in STD_LOGIC := '0';
+		pclk_o_x1_b0		: out STD_LOGIC := '0';
+		pclk_o_x2_b0		: out STD_LOGIC := '0';
+		pclk_o_x10_b0		: out STD_LOGIC := '0';	
+		serdes_strobe_b0	: out STD_LOGIC := '0';
+		pclk_o_x1_b1		: out STD_LOGIC := '0';
+		pclk_o_x2_b1		: out STD_LOGIC := '0';
+		pclk_o_x10_b1		: out STD_LOGIC := '0';	
+		serdes_strobe_b1	: out STD_LOGIC := '0';
+		pll_locked		: out STD_LOGIC := '0');
+	END COMPONENT;
+	
+	
 	component DDR_Memory_Interface
  generic(
     C3_P0_MASK_SIZE           : integer;
@@ -641,10 +660,10 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 			blue_c			=> colors_I1(7 downto 0),
 			v_count			=> v_count_I1,
 			active_video	=> active_video_I1,
-			new_frame		=> open,
+			new_frame		=> new_frame_I1,
 			ready				=> ready_I1,		
 			pclk				=> global_pixel_clock,
-			leds				=> leds
+			leds				=> open
 
 	);
 	
@@ -657,44 +676,47 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 	PORT map(
 			hdmi_in_p		=> hdmi_port_0_in_p,
 			hdmi_in_n		=> hdmi_port_0_in_n,
-			ddc_sclk			=> 'Z',
+			ddc_sclk			=> '0',
 			ddc_sdat			=> Open,
 			gclk				=> GCLK_i,
-			red_c				=> open,
-			green_c			=> open,
-			blue_c			=> open,
-			v_count			=> open,
-			active_video	=> open,	
-			new_frame		=> open,
-			ready				=> open,
-			pclk				=> Open,
-			leds				=> open
+			red_c				=> colors_I0(23 downto 16),
+			green_c			=> colors_I0(15 downto 8),
+			blue_c			=> colors_I0(7 downto 0),
+			v_count			=> v_count_I0,
+			active_video	=> active_video_I0,	
+			new_frame		=> new_frame_I0,
+			ready				=> ready_I0,
+			pclk				=> global_pixel_clock_I0,
+			--pclk				=> global_pixel_clock_I0_buf,
+			leds				=> leds
 			);
+			
+	
 	
 ------------------------------
 -- HDMI output 0
 -- Input: 	RGB, clocks, sync
 -- Output: 	TMDS signals
 ------------------------------
-hdmi_output_0 : HDMI_OUT
-		PORT MAP(
-			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b0,
-			clk_x2			=> global_pixel_clock_x2_b0,
-			clk_x10			=> global_pixel_clock_x10_b0,
-			serdes_strobe 	=> global_serdes_strobe_b0,
-			red_p      => P0_data_out(23 downto 16),
-			green_p    => P0_data_out(15 downto 8),
-			blue_p     => P0_data_out(7 downto 0),
+--hdmi_output_0 : HDMI_OUT
+		--PORT MAP(
+			--Pixel_clock => global_pixel_clock,
+			--clk_x1			=> global_pixel_clock_x1_b0,
+			--clk_x2			=> global_pixel_clock_x2_b0,
+			--clk_x10			=> global_pixel_clock_x10_b0,
+			--serdes_strobe 	=> global_serdes_strobe_b0,
+			--red_p      => P0_data_out(23 downto 16),
+			--green_p    => P0_data_out(15 downto 8),
+			--blue_p     => P0_data_out(7 downto 0),
 			--red_p			 => "11111111",
 			--green_p		 => "11111111",
 			--blue_p		 => "00000000",
-			active_video      => global_output_active_video_controller,
-			hsync      => global_output_h_sync_controller,
-			vsync      => global_output_v_sync_controller,
-			tmds_out_p => hdmi_port_0_out_p,
-			tmds_out_n => hdmi_port_0_out_n
-		);
+			--active_video      => global_output_active_video_controller,
+			--hsync      => global_output_h_sync_controller,
+			--vsync      => global_output_v_sync_controller,
+			--tmds_out_p => hdmi_port_0_out_p,
+			--tmds_out_n => hdmi_port_0_out_n
+		--);
 		
 		--hdmi_output_0 : dvi_encoder_top
 	--port map(
@@ -716,10 +738,10 @@ hdmi_output_0 : HDMI_OUT
 hdmi_output_1 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b1,
-			clk_x2			=> global_pixel_clock_x2_b1,
-			clk_x10			=> global_pixel_clock_x10_b1,
-			serdes_strobe 	=> global_serdes_strobe_b1,
+			clk_x1			=> global_pixel_clock_x1_b2,
+			clk_x2			=> global_pixel_clock_x2_b2,
+			clk_x10			=> global_pixel_clock_x10_b2,
+			serdes_strobe 	=> global_serdes_strobe_b2,
 			red_p      => g_color_red,
 			green_p    => g_color_green,
 			blue_p     => g_color_blue,
@@ -733,16 +755,16 @@ hdmi_output_1 : HDMI_OUT
 hdmi_output_2 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b1,
-			clk_x2			=> global_pixel_clock_x2_b1,
-			clk_x10			=> global_pixel_clock_x10_b1,
-			serdes_strobe 	=> global_serdes_strobe_b1,
-			red_p      => g_color_red,
-			green_p    => g_color_green,
-			blue_p     => g_color_blue,
-			active_video      => global_output_active_video,
-			hsync      => global_output_h_sync,
-			vsync      => global_output_v_sync,
+			clk_x1			=> global_pixel_clock_x1_b2,
+			clk_x2			=> global_pixel_clock_x2_b2,
+			clk_x10			=> global_pixel_clock_x10_b2,
+			serdes_strobe 	=> global_serdes_strobe_b2,
+			red_p      => P0_data_out(23 downto 16),
+			green_p    => P0_data_out(15 downto 8),
+			blue_p     => P0_data_out(7 downto 0),
+			active_video      => global_output_active_video_controller,
+			hsync      => global_output_h_sync_controller,
+			vsync      => global_output_v_sync_controller,
 			tmds_out_p => hdmi_port_2_out_p,
 			tmds_out_n => hdmi_port_2_out_n
 		);
@@ -752,10 +774,10 @@ hdmi_output_2 : HDMI_OUT
 hdmi_output_3 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b1,
-			clk_x2			=> global_pixel_clock_x2_b1,
-			clk_x10			=> global_pixel_clock_x10_b1,
-			serdes_strobe 	=> global_serdes_strobe_b1,
+			clk_x1			=> global_pixel_clock_x1_b2,
+			clk_x2			=> global_pixel_clock_x2_b2,
+			clk_x10			=> global_pixel_clock_x10_b2,
+			serdes_strobe 	=> global_serdes_strobe_b2,
 			red_p      => g_color_red,
 			green_p    => g_color_green,
 			blue_p     => g_color_blue,
@@ -769,10 +791,10 @@ hdmi_output_3 : HDMI_OUT
 hdmi_output_4 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b1,
-			clk_x2			=> global_pixel_clock_x2_b1,
-			clk_x10			=> global_pixel_clock_x10_b1,
-			serdes_strobe 	=> global_serdes_strobe_b1,
+			clk_x1			=> global_pixel_clock_x1_b2,
+			clk_x2			=> global_pixel_clock_x2_b2,
+			clk_x10			=> global_pixel_clock_x10_b2,
+			serdes_strobe 	=> global_serdes_strobe_b2,
 			red_p      => g_color_red,
 			green_p    => g_color_green,
 			blue_p     => g_color_blue,
@@ -786,10 +808,10 @@ hdmi_output_4 : HDMI_OUT
 hdmi_output_5 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b1,
-			clk_x2			=> global_pixel_clock_x2_b1,
-			clk_x10			=> global_pixel_clock_x10_b1,
-			serdes_strobe 	=> global_serdes_strobe_b1,
+			clk_x1			=> global_pixel_clock_x1_b2,
+			clk_x2			=> global_pixel_clock_x2_b2,
+			clk_x10			=> global_pixel_clock_x10_b2,
+			serdes_strobe 	=> global_serdes_strobe_b2,
 			red_p      => g_color_red,
 			green_p    => g_color_green,
 			blue_p     => g_color_blue,
@@ -844,68 +866,82 @@ hdmi_output_5 : HDMI_OUT
 			  Pll_locked 		=> global_pll_locked
 	);
 	
-	simulator_timing : Resolution_output_timing
-	generic map(
-				offset_h			=> 200,
-				offset_v			=> 100
-				)
-	Port map ( 
-		     pixel_clock    	=> global_pixel_clock,
-           red_p   			=> g_color_red,
-           green_p 			=> g_color_green,
-           blue_p  			=> g_color_blue,
-           active_video 	=> simulator_active_video,
-           hsync   			=> open,
-           vsync   			=> open,
-			  h_count_out 		=> simulator_h_count,
-			  v_count_out 		=> simulator_v_count,
-			  Pll_locked 		=> global_pll_locked
-	);
+	--simulator_timing : Resolution_output_timing
+	--generic map(
+				--offset_h			=> 200,
+				--offset_v			=> 100
+				--)
+	--Port map ( 
+		     --pixel_clock    	=> global_pixel_clock,
+           --red_p   			=> g_color_red,
+           --green_p 			=> g_color_green,
+           --blue_p  			=> g_color_blue,
+           --active_video 	=> simulator_active_video,
+           --hsync   			=> open,
+           --vsync   			=> open,
+			  --h_count_out 		=> simulator_h_count,
+			  --v_count_out 		=> simulator_v_count,
+			  --Pll_locked 		=> global_pll_locked
+	--);
 	
-	simulator_timing_2 : Resolution_output_timing
-	generic map(
-				offset_h			=> 200,
-				offset_v			=> 100
-				)
-	Port map ( 
-		     pixel_clock    	=> global_pixel_clock,
-           red_p   			=> open,
-           green_p 			=> color_in_2(7 downto 0),
-           blue_p  			=> color_in_2(23 downto 16),
-           active_video 	=> simulator_active_video_2,
-           hsync   			=> open,
-           vsync   			=> open,
-			  h_count_out 		=> simulator_h_count_2,
-			  v_count_out 		=> simulator_v_count_2,
-			  Pll_locked 		=> global_pll_locked
-	);
+	--simulator_timing_2 : Resolution_output_timing
+	--generic map(
+				--offset_h			=> 200,
+				--offset_v			=> 100
+				--)
+	--Port map ( 
+		     --pixel_clock    	=> global_pixel_clock,
+           --red_p   			=> open,
+           --green_p 			=> color_in_2(7 downto 0),
+           --blue_p  			=> color_in_2(23 downto 16),
+           --active_video 	=> simulator_active_video_2,
+           --hsync   			=> open,
+           --vsync   			=> open,
+			  --h_count_out 		=> simulator_h_count_2,
+			  --v_count_out 		=> simulator_v_count_2,
+			  --Pll_locked 		=> global_pll_locked
+	--);
 color_in_2(15 downto 8) <= "11111111";
 reset <= not global_pll_locked;
-global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calibration; 
+--global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calibration; 
+global_pll_locked <= global_pll_locked_b2;
 ------------------------------
 -- Global output clock multiplier
 -- Input: 	Pixel Clock
 -- Output: 	Multiplied clocks, x1, x2 and x10
 ------------------------------	
-	global_clock_multiplier_b0 : Pixel_clock_multiplier
+	--global_clock_multiplier_b0 : Pixel_clock_multiplier
+	--PORT map(
+		--pclk_in				=> global_pixel_clock,
+		--pclk_o_x1			=> global_pixel_clock_x1_b0,
+		--pclk_o_x2			=> global_pixel_clock_x2_b0,
+		--pclk_o_x10			=> global_pixel_clock_x10_b0,
+		--pll_locked			=> global_pll_locked_b0,
+		--serdes_strobe		=> global_serdes_strobe_b0
+	--);
+	
+	global_clock_multiplier_b2 : Pixel_clock_multiplier
 	PORT map(
 		pclk_in				=> global_pixel_clock,
-		pclk_o_x1			=> global_pixel_clock_x1_b0,
-		pclk_o_x2			=> global_pixel_clock_x2_b0,
-		pclk_o_x10			=> global_pixel_clock_x10_b0,
-		pll_locked			=> global_pll_locked_b0,
-		serdes_strobe		=> global_serdes_strobe_b0
+		pclk_o_x1			=> global_pixel_clock_x1_b2,
+		pclk_o_x2			=> global_pixel_clock_x2_b2,
+		pclk_o_x10			=> global_pixel_clock_x10_b2,
+		pll_locked			=> global_pll_locked_b2,
+		serdes_strobe		=> global_serdes_strobe_b2
 	);
 	
-	global_clock_multiplier_b1 : Pixel_clock_multiplier
-	PORT map(
-		pclk_in				=> global_pixel_clock,
-		pclk_o_x1			=> global_pixel_clock_x1_b1,
-		pclk_o_x2			=> global_pixel_clock_x2_b1,
-		pclk_o_x10			=> global_pixel_clock_x10_b1,
-		pll_locked			=> global_pll_locked_b1,
-		serdes_strobe		=> global_serdes_strobe_b1
-	);
+	--global_clock_multiplier : Dual_Pixel_clock_multiplier
+	--PORT map(
+		--pclk_in				=> global_pixel_clock,
+		--pclk_o_x1_b0		=> global_pixel_clock_x1_b0,
+		--pclk_o_x2_b0		=> global_pixel_clock_x2_b0,
+		--pclk_o_x10_b0		=> global_pixel_clock_x10_b0,
+		--serdes_strobe_b0	=> global_serdes_strobe_b0,
+		--pclk_o_x1_b1		=> global_pixel_clock_x1_b1,
+		--pclk_o_x2_b1		=> global_pixel_clock_x2_b1,
+		--pclk_o_x10_b1		=> global_pixel_clock_x10_b1,
+		--serdes_strobe_b1	=> global_serdes_strobe_b1,
+		--pll_locked			=> global_pll_locked);
 	
 -------------------------------
 -- DDR Memory Controller
@@ -959,14 +995,14 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
 		
      
 		-- Output port 2 control signals
-		c3_p2_cmd_clk                           =>  global_pixel_clock,
+		c3_p2_cmd_clk                           =>  global_pixel_clock_I0,
 		c3_p2_cmd_en                            =>  DDR_p2_cmd_en,
 		c3_p2_cmd_instr                         =>  "010",
 		c3_p2_cmd_bl                            =>  "011111",
 		c3_p2_cmd_byte_addr                     =>  DDR_p2_cmd_byte_addr,
 		c3_p2_cmd_empty                         =>  DDR_p2_cmd_empty,
 		c3_p2_cmd_full                          =>  DDR_p2_cmd_full,
-		c3_p2_wr_clk                            =>  global_pixel_clock,
+		c3_p2_wr_clk                            =>  global_pixel_clock_I0,
 		c3_p2_wr_en                             =>  DDR_p2_wr_en,
 		c3_p2_wr_mask                           =>  "0000",
 		c3_p2_wr_data                           =>  DDR_p2_wr_data,
@@ -1039,7 +1075,7 @@ global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calib
     Port map(
 		BRAM_enable 		=> '1',
 		clk_out				=> global_pixel_clock,
-		clk_in				=> global_pixel_clock_x2_b1,
+		clk_in				=> global_pixel_clock_x2_b2,
 		--clk_in				=> global_pixel_clock,
 		clk_out_enable    => BRAM_clock_out_enable,
 		P0_enable			=> P0_BRAM_enable,
@@ -1140,26 +1176,30 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		
 	u_input_to_ddr_controller : Input_to_DDR_controller
     Port map ( 
-				pixel_clock_I0 									=> global_pixel_clock,
+				--pixel_clock_I0 									=> global_pixel_clock,
+				pixel_clock_I0										=> global_pixel_clock_I0,
 				pixel_clock_I1										=> global_pixel_clock,
 				h_count_I0											=> simulator_h_count(10 downto 0),
 				--h_count_I1											=> simulator_h_count_2(10 downto 0),
 				h_count_I1											=> (others => '0'),
-				v_count_I0											=> simulator_v_count(10 downto 0),
+				--v_count_I0											=> simulator_v_count(10 downto 0),
+				v_count_I0											=> v_count_I0(10 downto 0),
 				--v_count_I1											=> simulator_v_count_2(10 downto 0),
 				v_count_I1											=> v_count_I1(10 downto 0),
-				active_video_I0									=> simulator_active_video,
+				--active_video_I0									=> simulator_active_video,
+				active_video_I0									=> active_video_I0,
 				--active_video_I0									=> '0',
 				--active_video_I1									=> simulator_active_video_2,
 				active_video_I1									=> active_video_I1,
-				video_in_I0											=> color_in,
+				--video_in_I0											=> color_in,
+				video_in_I0											=> colors_I0,
 				--video_in_I1											=> color_in_2,
 				video_in_I1											=> colors_I1,
 				reset													=> reset_btn,
-				ready_I0												=> '1',
+				ready_I0												=> ready_I0,
 				ready_I1												=> ready_I1,
-				new_frame_I0										=> '0',
-				new_frame_I1										=> '0',
+				new_frame_I0										=> new_frame_I0,
+				new_frame_I1										=> new_frame_I1,
 				DDR_p2_cmd_en                            	=> DDR_p2_cmd_en,
 				DDR_p2_cmd_byte_addr                     	=> DDR_p2_cmd_byte_addr,
 				DDR_p2_cmd_full                          	=> DDR_p2_cmd_full,
@@ -1182,7 +1222,7 @@ color_in <= g_color_red & g_color_green & g_color_blue;
     Port map ( 
 		--clk_in 						=> global_pixel_clock_x2_b1,
 		clk_in						=> global_pixel_clock,
-		clk_in_x2						=> global_pixel_clock_X2_b1,
+		clk_in_x2						=> global_pixel_clock_X2_b2,
 		global_v_count				=> global_v_count_pixel_out,
 		reset							=> reset_btn,
 		P0_conf						=> "0001",

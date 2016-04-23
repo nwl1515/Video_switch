@@ -38,7 +38,7 @@
 //              limitation shall apply not-withstanding the failure ofthe
 //              essential purpose of any limited remedies herein.
 //
-//  Copyright © 2004 Xilinx, Inc.
+//  Copyright  2004 Xilinx, Inc.
 //  All rights reserved
 //
 //////////////////////////////////////////////////////////////////////////////

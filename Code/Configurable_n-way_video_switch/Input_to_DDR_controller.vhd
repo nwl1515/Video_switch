@@ -113,7 +113,7 @@ begin
 				DDR_p3_wr_en <= DDR_p3_wr_en_I1_p1;
 			
 				if new_frame_I1 = '1' then
-					gearbox_I1_s <= '1';
+					gearbox_I1_s <= '0';
 				elsif gearbox_I1_s = '0' then
 					gearbox_I1(31 downto 16) <= video_in_I1(23 downto 19) & video_in_I1(15 downto 10) & video_in_I1(7 downto 3);
 					gearbox_I1_s <= not gearbox_I1_s;
@@ -174,7 +174,9 @@ begin
 				end if;
 				DDR_p2_wr_en <= DDR_p2_wr_en_I0_p1;
 			
-				if gearbox_I0_s = '0' then
+				if new_frame_I0 = '1' then
+					gearbox_I0_s <= '0';
+				elsif gearbox_I0_s = '0' then
 					gearbox_I0(31 downto 16) <= video_in_I0(23 downto 19) & video_in_I0(15 downto 10) & video_in_I0(7 downto 3);
 					gearbox_I0_s <= not gearbox_I0_s;
 				else

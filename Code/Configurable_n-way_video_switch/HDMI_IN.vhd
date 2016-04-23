@@ -59,6 +59,8 @@ architecture Behavioral of HDMI_IN is
 	signal rx_blue_rdy		: std_logic := '0';
 	signal pll_locked			: std_logic := '0';
 	
+	signal active_video_i_p1 : std_logic := '0';
+	
 	type FRAME_STATE_TYPES is (INIT, INIT_DONE, LINE, LINE_END, V_COUNT_STATE, NEW_FRAME_STATE); 
 	
 	signal FRAME_STATE 		: FRAME_STATE_TYPES := INIT;
@@ -113,12 +115,15 @@ architecture Behavioral of HDMI_IN is
 begin
 
 	v_count <= v_count_i when ready_i = '1' and not(FRAME_STATE = INIT) else (others => '0');
-	active_video <= active_video_i when ready_rdy = '1' else '0';
+	active_video <= active_video_i_p1 when ready_rdy = '1' else '0';
 	ready_rdy <= '1' when rx_red_rdy = '1' and rx_green_rdy = '1' and rx_blue_rdy = '1' else '0';
 	ready <= ready_i;
 	new_frame <= new_frame_i;
 	
-	leds(0) <= pll_locked;
+	
+	
+	--leds(0) <= pll_locked;
+	leds(0) <= pclk;
 	leds(1) <= rx_red_rdy;
 	leds(2) <= rx_green_rdy;
 	leds(3) <= rx_blue_rdy;
@@ -181,6 +186,13 @@ begin
 			--red_c <= "11111111";
 			--green_c <= "11111111";
 			--blue_c <= "11111111";
+			
+		pipeline : PROCESS(pclk)
+		begin
+			if rising_edge(pclk) then
+				active_video_i_p1 <= active_video_i;
+			end if;
+		end process pipeline;
 	
 		v_counter : PROCESS(pclk)
 		begin
@@ -221,9 +233,10 @@ begin
 					
 					when NEW_FRAME_STATE =>
 						v_count_i <= (others => '0');
-						new_frame_i <= '1';
+						
 						if active_video_i = '1' then
 							FRAME_STATE <= LINE;
+							new_frame_i <= '1';
 						end if;
 					
 					when others =>

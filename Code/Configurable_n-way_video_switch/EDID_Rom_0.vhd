@@ -69,7 +69,7 @@ architecture Behavioral of edid_rom_0 is
       -- Basic display parameters 
 		------------------------------------
       -- Digital Video input,
-      x"80", 
+      x"81", 
       -- Max horizontal image size - 129 cm
       x"60", 
 		-- Max vertical image size - 96 cm
@@ -161,7 +161,7 @@ architecture Behavioral of edid_rom_0 is
       -- Extension flag - 1 extension CEA/EDID extension block
       x"01", 
 		-- Checksum
-		x"C5",
+		x"C4",
       --------------------------
 		-- END of Block 0
 		--------------------------
