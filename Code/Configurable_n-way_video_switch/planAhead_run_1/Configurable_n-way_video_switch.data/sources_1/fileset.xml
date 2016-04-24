@@ -14,6 +14,12 @@
         <Attr Name="UsedInImplementation" Val="1"/>
       </FileInfo>
     </File>
+    <File Path="$PPRDIR/../ipcore_dir/mcs_0.ngc">
+      <FileInfo>
+        <Attr Name="UsedInSynthesis" Val="1"/>
+        <Attr Name="UsedInImplementation" Val="1"/>
+      </FileInfo>
+    </File>
     <Config>
       <Option Name="DesignMode" Val="GateLvl"/>
       <Option Name="GateLvlMode" Val="EDIF"/>

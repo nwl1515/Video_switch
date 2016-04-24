@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (lin64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Thu Apr 21 22:13:07 2016
+Sun Apr 24 04:43:51 2016
 
   SmartGuide Results
   ------------------
@@ -9,121 +9,36 @@ Thu Apr 21 22:13:07 2016
   report accurately reflects the differences between the input design
   and the guide design.
 
-  Number of Components in the input design    |   1431
-    Number of guided Components               |   1423 out of   1431  99.4%
-    Number of re-implemented Components       |      0 out of   1431   0.0%
-    Number of new/changed Components          |      8 out of   1431   0.6%
-  Number of Nets in the input design          |   4287
-    Number of guided Nets                     |   4206 out of   4287  98.1%
-    Number of partially guided Nets           |     47 out of   4287   1.1%
-    Number of re-routed Nets                  |     23 out of   4287   0.5%
-    Number of new/changed Nets                |     11 out of   4287   0.3%
+  Number of Components in the input design    |   1742
+    Number of guided Components               |   1740 out of   1742  99.9%
+    Number of re-implemented Components       |      2 out of   1742   0.1%
+    Number of new/changed Components          |      0 out of   1742   0.0%
+  Number of Nets in the input design          |   5471
+    Number of guided Nets                     |   5469 out of   5471  99.9%
+    Number of partially guided Nets           |      0 out of   5471   0.0%
+    Number of re-routed Nets                  |      2 out of   5471   0.1%
+    Number of new/changed Nets                |      0 out of   5471   0.0%
 
 
 The following Components were re-implemented.
 ---------------------------------------------
+ uart_rx : PAD46.
+ uart_tx : PAD45.
 
 
 The following Components are new/changed.
 -----------------------------------------
- u_ddr_to_bram_controller/_n0251_inv : SLICE_X6Y43.
- u_ddr_to_bram_controller/_n0261_inv : SLICE_X12Y64.
- u_ddr_to_bram_controller/I1_proc.address_count<9> : SLICE_X6Y44.
- u_ddr_to_bram_controller/_n0241_inv : SLICE_X7Y39.
- u_ddr_to_bram_controller/_n0293_inv : SLICE_X8Y45.
- u_ddr_to_bram_controller/_n0299_inv1 : SLICE_X9Y45.
- u_ddr_to_bram_controller/_n0303_inv1 : SLICE_X16Y52.
- u_ddr_to_bram_controller/_n0269_inv : SLICE_X17Y53.
 
 
 The following Nets were re-routed.
 ----------------------------------
- u_ddr_to_bram_controller/_n0244_inv.
- u_ddr_to_bram_controller/_n0245_inv.
- u_ddr_to_bram_controller/change_S_1.
- u_ddr_to_bram_controller/run_I0.
- u_ddr_to_bram_controller/I1_proc.address_count[31]_GND_1549_o_add_31_OUT<7>.
- u_ddr_to_bram_controller/I1_proc.address_count[31]_GND_1549_o_add_31_OUT<8>.
- u_ddr_to_bram_controller/I1_proc.address_count<7>.
- u_ddr_to_bram_controller/I1_proc.address_count<8>.
- u_ddr_to_bram_controller/I1_proc.address_count[31]_GND_1549_o_mux_40_OUT<9>.
- u_ddr_to_bram_controller/I1_proc.address_count[31]_GND_1549_o_add_31_OUT<5>.
- u_ddr_to_bram_controller/I1_proc.address_count[31]_GND_1549_o_add_31_OUT<6>.
- u_ddr_to_bram_controller/I1_proc.address_count<5>.
- u_ddr_to_bram_controller/I1_proc.address_count<6>.
- u_ddr_to_bram_controller/run_I1.
- u_ddr_to_bram_controller/I1_proc.address_count<9>.
- u_ddr_to_bram_controller/N2.
- u_ddr_to_bram_controller/I1_proc.count_buffer[31]_GND_1549_o_add_32_OUT<7>.
- u_ddr_to_bram_controller/I1_proc.count_buffer[31]_GND_1549_o_add_32_OUT<8>.
- u_ddr_to_bram_controller/I1_proc.count_buffer[31]_GND_1549_o_add_32_OUT<9>.
- u_ddr_to_bram_controller/I0_proc.count_buffer[31]_GND_1549_o_add_54_OUT<13>.
- u_ddr_to_bram_controller/I0_proc.count_buffer[31]_GND_1549_o_add_54_OUT<16>.
- u_ddr_to_bram_controller/I0_proc.count_buffer[31]_GND_1549_o_add_54_OUT<18>.
- u_ddr_to_bram_controller/I0_proc.count_buffer[31]_GND_1549_o_add_54_OUT<22>.
+ uart_rx_IBUF.
+ uart_tx_OBUF.
 
 
 The following Nets are new/changed.
 -----------------------------------
- u_ddr_to_bram_controller/_n0269_inv.
- u_ddr_to_bram_controller/_n0303_inv2.
- u_ddr_to_bram_controller/_n0251_inv.
- u_ddr_to_bram_controller/_n0240_inv.
- u_ddr_to_bram_controller/_n0261_inv.
- u_ddr_to_bram_controller/_n0241_inv.
- u_ddr_to_bram_controller/_n0293_inv.
- u_ddr_to_bram_controller/_n0299_inv2.
- u_ddr_to_bram_controller/_n0255_inv1_rstpot.
- u_ddr_to_bram_controller/_n0299_inv1.
- u_ddr_to_bram_controller/_n0303_inv1.
 
 
 The following Nets were partially guided.
 -----------------------------------------
- global_pixel_clock.
- change_S.
- u_ddr_to_bram_controller/Mcompar_GND_1549_o_I0_proc.address_count[31]_LessThan_52_o_cy<4>.
- u_ddr_to_bram_controller/GND_1549_o_I0_proc.count_buffer[31]_LessThan_53_o.
- DDR_p4_cmd_empty.
- reset_btn_IBUF.
- DDR_p4_rd_empty.
- u_ddr_to_bram_controller/reset_1.
- p0_h_count_out_I1<10>.
- global_v_count_pixel_out<4>.
- u_ddr_to_bram_controller/n0224<2>.
- u_ddr_to_bram_controller/n0224<1>.
- u_ddr_to_bram_controller/N6.
- u_ddr_to_bram_controller/Mcompar_GND_1549_o_I1_proc.address_count[31]_LessThan_30_o_cy<4>.
- u_ddr_to_bram_controller/GND_1549_o_I1_proc.count_buffer[31]_LessThan_31_o.
- p0_h_count_out_I0<10>.
- global_v_count_pixel_out<11>.
- DDR_p5_cmd_byte_addr<11>.
- u_ddr_to_bram_controller/Mmux_internal_v_count31.
- u_ddr_to_bram_controller/internal_v_count<1>.
- DDR_p5_cmd_empty.
- DDR_p5_cmd_en.
- p0_h_count_out_I0<9>.
- p0_h_count_out_I0<8>.
- p0_h_count_out_I0<7>.
- p0_h_count_out_I0<6>.
- p0_h_count_out_I0<5>.
- p0_h_count_out_I0<4>.
- p0_h_count_out_I0<3>.
- p0_h_count_out_I0<2>.
- p0_h_count_out_I0<1>.
- p0_h_count_out_I0<0>.
- p0_h_count_out_I1<9>.
- p0_h_count_out_I1<8>.
- p0_h_count_out_I1<7>.
- p0_h_count_out_I1<6>.
- p0_h_count_out_I1<5>.
- p0_h_count_out_I1<4>.
- p0_h_count_out_I1<3>.
- p0_h_count_out_I1<2>.
- p0_h_count_out_I1<1>.
- p0_h_count_out_I1<0>.
- u_ddr_to_bram_controller/n0224<8>.
- DDR_p5_rd_empty.
- u_ddr_to_bram_controller/n0228<13>.
- u_ddr_to_bram_controller/n0228<16>.
- u_ddr_to_bram_controller/internal_v_count<5>.

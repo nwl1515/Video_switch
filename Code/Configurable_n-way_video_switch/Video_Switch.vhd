@@ -50,8 +50,8 @@ entity Video_Switch is
 			hdmi_port_1_sdat		: inout STD_LOGIC;
 			
 			-- Outputs TMDS
-			--hdmi_port_0_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
-			--hdmi_port_0_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_0_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
+			hdmi_port_0_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_1_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_1_out_n		: out STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_2_out_p		: out STD_LOGIC_VECTOR(3 downto 0);
@@ -82,7 +82,11 @@ entity Video_Switch is
 			mcb3_dram_udqs_n                        : inout  std_logic;
 			mcb3_dram_we_n                          : out std_logic;
 			mcb3_rzq                                : inout  std_logic;
-			mcb3_zio                                : inout  std_logic
+			mcb3_zio                                : inout  std_logic;
+			
+			-- UART
+			uart_tx											 : out std_logic;
+			uart_rx											 : in std_logic
 			
 			
 			);
@@ -210,6 +214,8 @@ architecture Structural of Video_Switch is
 	signal conf_O0									: std_logic_vector(3 downto 0) := (others => '0');
 	signal set_1_O0								: std_logic_vector(11 downto 0) := (others => '0');
 	
+	signal leds_big								: std_logic_vector(31 downto 0) := (others => '0');
+	
 	-----------
 	-- Memory signals
 	-----------
@@ -236,6 +242,18 @@ architecture Structural of Video_Switch is
 	 signal 	 leds_out						: STD_LOGIC_VECTOR (7 downto 0) := "10101010";
 	 signal 	 out_data						: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 	 signal	 in_data							: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+	 
+	COMPONENT mcs_0
+  PORT (
+    Clk : IN STD_LOGIC;
+    Reset : IN STD_LOGIC;
+    UART_Rx : IN STD_LOGIC;
+    UART_Tx : OUT STD_LOGIC;
+    GPO1 : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+    GPO2 : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
+    GPO3 : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
+  );
+END COMPONENT;
 	 
 	COMPONENT Input_to_DDR_controller
     Port ( 
@@ -439,6 +457,9 @@ architecture Structural of Video_Switch is
 			new_frame		: out STD_LOGIC;
 			ready				: out STD_LOGIC;
 			pclk				: inout STD_LOGIC;
+			pclk_x2			: out STD_LOGIC;
+			pclk_x10			: out STD_LOGIC;
+			serdes_strobe  : out STD_LOGIC;
 			leds				: out STD_LOGIC_VECTOR(7 downto 0)
 			);
 	END COMPONENT;
@@ -663,6 +684,9 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 			new_frame		=> new_frame_I1,
 			ready				=> ready_I1,		
 			pclk				=> global_pixel_clock,
+			pclk_x2			=> open,
+			pclk_x10			=> open,
+			serdes_strobe  => open,
 			leds				=> open
 
 	);
@@ -688,7 +712,10 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 			ready				=> ready_I0,
 			pclk				=> global_pixel_clock_I0,
 			--pclk				=> global_pixel_clock_I0_buf,
-			leds				=> leds
+			pclk_x2			=> global_pixel_clock_x2_b0,
+			pclk_x10			=> global_pixel_clock_X10_b0,
+			serdes_strobe	=> global_serdes_strobe_b0,
+			leds				=> open
 			);
 			
 	
@@ -698,25 +725,25 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 -- Input: 	RGB, clocks, sync
 -- Output: 	TMDS signals
 ------------------------------
---hdmi_output_0 : HDMI_OUT
-		--PORT MAP(
-			--Pixel_clock => global_pixel_clock,
-			--clk_x1			=> global_pixel_clock_x1_b0,
-			--clk_x2			=> global_pixel_clock_x2_b0,
-			--clk_x10			=> global_pixel_clock_x10_b0,
-			--serdes_strobe 	=> global_serdes_strobe_b0,
-			--red_p      => P0_data_out(23 downto 16),
-			--green_p    => P0_data_out(15 downto 8),
-			--blue_p     => P0_data_out(7 downto 0),
+hdmi_output_0 : HDMI_OUT
+		PORT MAP(
+			Pixel_clock => global_pixel_clock_I0,
+			clk_x1			=> global_pixel_clock_I0,		
+			clk_x2			=> global_pixel_clock_x2_b0,
+			clk_x10			=> global_pixel_clock_x10_b0,
+			serdes_strobe 	=> global_serdes_strobe_b0,
+			red_p      => P0_data_out(23 downto 16),
+			green_p    => P0_data_out(15 downto 8),
+			blue_p     => P0_data_out(7 downto 0),
 			--red_p			 => "11111111",
 			--green_p		 => "11111111",
 			--blue_p		 => "00000000",
-			--active_video      => global_output_active_video_controller,
-			--hsync      => global_output_h_sync_controller,
-			--vsync      => global_output_v_sync_controller,
-			--tmds_out_p => hdmi_port_0_out_p,
-			--tmds_out_n => hdmi_port_0_out_n
-		--);
+			active_video      => global_output_active_video_controller,
+			hsync      => global_output_h_sync_controller,
+			vsync      => global_output_v_sync_controller,
+			tmds_out_p => hdmi_port_0_out_p,
+			tmds_out_n => hdmi_port_0_out_n
+		);
 		
 		--hdmi_output_0 : dvi_encoder_top
 	--port map(
@@ -1254,8 +1281,19 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		c3_p5_rd_empty          => DDR_p5_rd_empty,
 		leds_out						=> test_leds
 	 );
-		
-
+	 
+	microblaze_mcs : mcs_0
+  PORT MAP (
+    Clk => gclk_i,
+    Reset => '0',
+    UART_Rx => uart_rx,
+    UART_Tx => uart_tx,
+    GPO1 => leds_big,
+    GPO2 => open,
+    GPO3 => open
+  );
+	
+	leds <= leds_big(7 downto 0);
 	
 	
 	

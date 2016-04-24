@@ -33,9 +33,15 @@ NET "leds<5>" CLOCK_DEDICATED_ROUTE = FALSE;
 NET "global_pixel_clock" PERIOD = 74250 kHz;
 NET "global_pixel_clock_I0" PERIOD = 74250 kHz;
 #NET "global_pixel_clock_x1_b0" PERIOD = 74250 kHz;
-#NET "global_pixel_clock_x2_b0" PERIOD = 148500 kHz;
+NET "global_pixel_clock_x2_b0" PERIOD = 148500 kHz;
 NET "global_pixel_clock_x1_b2" PERIOD = 74250 kHz;
 NET "global_pixel_clock_x2_b2" PERIOD = 148500 kHz;
+
+# UART
+NET "uart_tx" LOC = B16;
+NET "uart_tx" IOSTANDARD = LVCMOS33;
+NET "uart_rx" LOC = A16;
+NET "uart_rx" IOSTANDARD = LVCMOS33;
 
 
 # LEDS
@@ -131,24 +137,24 @@ NET "hdmi_port_1_in_n[3]" IOSTANDARD = TMDS_33;
 NET "hdmi_port_1_in_n[3]" PERIOD = 74250 kHz;
 
 # TMDS outputs
-#NET "hdmi_port_0_out_p[0]" LOC = D8;
-#NET "hdmi_port_0_out_p[0]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_n[0]" LOC = C8;
-#NET "hdmi_port_0_out_n[0]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_p[1]" LOC = C7;
-#NET "hdmi_port_0_out_p[1]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_n[1]" LOC = A7;
-#NET "hdmi_port_0_out_n[1]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_p[2]" LOC = B8;
-#NET "hdmi_port_0_out_p[2]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_n[2]" LOC = A8;
-#NET "hdmi_port_0_out_n[2]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_p[3]" LOC = B6;
-#NET "hdmi_port_0_out_p[3]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_p[3]" PERIOD = 74250 kHz;
-#NET "hdmi_port_0_out_n[3]" LOC = A6;
-#NET "hdmi_port_0_out_n[3]" IOSTANDARD = TMDS_33;
-#NET "hdmi_port_0_out_n[3]" PERIOD = 74250 kHz;
+NET "hdmi_port_0_out_p[0]" LOC = D8;
+NET "hdmi_port_0_out_p[0]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_n[0]" LOC = C8;
+NET "hdmi_port_0_out_n[0]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_p[1]" LOC = C7;
+NET "hdmi_port_0_out_p[1]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_n[1]" LOC = A7;
+NET "hdmi_port_0_out_n[1]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_p[2]" LOC = B8;
+NET "hdmi_port_0_out_p[2]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_n[2]" LOC = A8;
+NET "hdmi_port_0_out_n[2]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_p[3]" LOC = B6;
+NET "hdmi_port_0_out_p[3]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_p[3]" PERIOD = 74250 kHz;
+NET "hdmi_port_0_out_n[3]" LOC = A6;
+NET "hdmi_port_0_out_n[3]" IOSTANDARD = TMDS_33;
+NET "hdmi_port_0_out_n[3]" PERIOD = 74250 kHz;
 
 NET "hdmi_port_1_out_p[0]" LOC = R3;
 NET "hdmi_port_1_out_p[0]" IOSTANDARD = TMDS_33;

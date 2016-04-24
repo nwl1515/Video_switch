@@ -1,4 +1,5 @@
 vhdl work "ipcore_dir/BRAM_5x9kb.vhd"
+vhdl work "ipcore_dir/mcs_0.vhd"
 vhdl work "ipcore_dir/DDR_Memory_Interface/user_design/rtl/iodrp_mcb_controller.vhd"
 vhdl work "ipcore_dir/DDR_Memory_Interface/user_design/rtl/iodrp_controller.vhd"
 vhdl work "ipcore_dir/DDR_Memory_Interface/user_design/rtl/mcb_soft_calibration.vhd"

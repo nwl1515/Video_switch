@@ -40,6 +40,9 @@ entity HDMI_IN is
 			new_frame		: out STD_LOGIC := '0';
 			ready				: out STD_LOGIC := '0';
 			pclk				: inout STD_LOGIC  := '1';
+			pclk_x2			: out STD_LOGIC := '0';
+			pclk_x10			: out STD_LOGIC := '0';
+			serdes_strobe  : out STD_LOGIC := '0';
 			leds				: out STD_LOGIC_VECTOR(7 downto 0)
 			
 			);
@@ -159,13 +162,13 @@ begin
 			exrst				=> '0',
 			reset				=> open,
 			pclk				=> pclk,
-			pclkx2			=> open,
-			pclkx10			=> open,
+			pclkx2			=> pclk_x2,
+			pclkx10			=> pclk_x10,
 			pllclk0			=> open,
 			pllclk1			=> open,
 			pllclk2			=> open,
 			pll_lckd			=> pll_locked,
-			serdesstrobe	=> open,
+			serdesstrobe	=> serdes_strobe,
 			tmdsclk			=> open,
 			hsync				=> h_sync_i,
 			vsync				=> v_sync_i,
