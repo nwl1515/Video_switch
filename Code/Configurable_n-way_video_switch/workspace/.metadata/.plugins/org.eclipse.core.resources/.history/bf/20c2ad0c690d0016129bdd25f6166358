@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include "platform.h"
+#include "xparameters.h"
+#include "xiomodule.h"
+
+void print(char *str);
+
+int main()
+{
+    init_platform();
+    u32 data;
+    XIOModule gpo;
+
+    print("Init GPO\n");
+    data = XIOModule_Initialize(&gpo, XPAR_IOMODULE_0_DEVICE_ID);
+    data = XIOModule_Start(&gpo);
+
+    print("GPO init done\n");
+    print("Set data 10011111 on GPO1/LED\n");
+
+    data = 0b00000000000000000000000010011111;
+    XIOModule_DiscreteWrite(&gpo, 1, data);
+
+
+
+    cleanup_platform();
+    return 0;
+}

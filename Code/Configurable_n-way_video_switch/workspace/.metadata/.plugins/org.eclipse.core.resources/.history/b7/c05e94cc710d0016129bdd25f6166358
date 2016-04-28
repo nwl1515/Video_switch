@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include "platform.h"
+#include "xparameters.h"
+#include "xiomodule.h"
+
+void print(char *str);
+
+int main()
+{
+    init_platform();
+    u32 data;
+    u8 i;
+    u8 rx_buf_sel[1];
+    u8 rx_buf_conf[2];
+    u8 rx_buf_set[12];
+    XIOModule gpo;
+    XIOModule iomodule;
+
+    print("Init GPO\n\r");
+    data = XIOModule_Initialize(&gpo, XPAR_IOMODULE_0_DEVICE_ID);
+    data = XIOModule_Start(&gpo);
+    print("GPO init done\n\r");
+
+    print("Init UART recv\n\r");
+    data = XIOModule_CfgInitialize(&iomodule, NULL, 1);
+    print("UART init done\n\r");
+
+
+    //XIOModule_DiscreteWrite(&gpo, 1, data);
+    print("Send configuration in the following format:\n\r");
+    print("String 1: Screen select (0-5)\n\r");
+    print("String 2: Configuration (00-15)\n\r");
+    print("String 3: Set_1 [12[bytes]\n\r");
+    print("String 4: Set_2 [12[bytes]\n\r");
+    print("String 5: Set_3 [12[bytes]\n\r");
+    print("String 6: Set_4 [12[bytes]\n\r");
+
+
+    print("Receiving string 1:\n\r");
+    rx_buf_sel[0] = inbyte();
+
+    print("Receiving string 2:\n\r");
+    for(i = 0; i<2;i++)
+    	rx_buf_conf[i] = inbyte();
+
+
+
+    //print("Receiving string 2:\n\r");
+
+
+
+
+    //xil_printf("The number of bytes received was %d\n\r", data);
+    //xil_printf("Recv[0]: The received char was %c\n\r", rx_buf_conf[0]);
+
+
+    print("Data set");
+
+
+
+    cleanup_platform();
+    return 0;
+}

@@ -211,8 +211,18 @@ architecture Structural of Video_Switch is
 	
 	signal test_leds								: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	
-	signal conf_O0									: std_logic_vector(3 downto 0) := (others => '0');
-	signal set_1_O0								: std_logic_vector(11 downto 0) := (others => '0');
+	--signal conf_O0									: std_logic_vector(3 downto 0) := (others => '0');
+	--signal set_1_O0								: std_logic_vector(11 downto 0) := (others => '0');
+	
+	signal P0_conf									: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal P0_set_1								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P0_set_2								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P0_set_3								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P0_set_4								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	
+	signal GPI_1									: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+	signal GPI_2									: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal GPI_3									: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 	
 	signal leds_big								: std_logic_vector(31 downto 0) := (others => '0');
 	
@@ -253,6 +263,20 @@ architecture Structural of Video_Switch is
     GPO2 : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
     GPO3 : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
   );
+END COMPONENT;
+
+	COMPONENT Conf_Manager
+    Port ( 
+		Gclk 			: in  STD_LOGIC;
+		GPI_1_in		: in 	STD_LOGIC_VECTOR(31 downto 0);
+		GPI_2_in		: in 	STD_LOGIC_VECTOR(23 downto 0);
+		GPI_3_in		: in	STD_LOGIC_VECTOR(23 downto 0);
+		P0_conf		: out STD_LOGIC_VECTOR(3 downto 0);
+		P0_set_1		: out STD_LOGIC_VECTOR(11 downto 0);
+		P0_set_2		: out STD_LOGIC_VECTOR(11 downto 0);
+		P0_set_3		: out STD_LOGIC_VECTOR(11 downto 0);
+		P0_set_4		: out STD_LOGIC_VECTOR(11 downto 0)	
+		);
 END COMPONENT;
 	 
 	COMPONENT Input_to_DDR_controller
@@ -656,8 +680,8 @@ begin
 --leds(0) <= reset;
 --leds(7 downto 1) <= DDR_p3_cmd_byte_addr(29 downto 23);
 
-conf_O0 <= "0" & btn(1) & "0" & btn(0);
-set_1_O0 <= "00" & btn(7 downto 2) & "0000";
+--conf_O0 <= "0" & btn(1) & "0" & btn(0);
+--set_1_O0 <= "00" & btn(7 downto 2) & "0000";
 
 clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 
@@ -1184,11 +1208,11 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		global_active_v	=> global_output_active_video,
 		global_output_av	=> global_output_active_video_controller,
 		BRAM_clock_out_e	=> BRAM_clock_out_enable,
-		P0_conf				=> conf_O0,
-		P0_set_1 			=> set_1_O0,
-		P0_set_2 			=> (others => '0'),
-		P0_set_3 			=> (others => '0'),
-		P0_set_4 			=> (others => '0'),
+		P0_conf				=> P0_conf,
+		P0_set_1 			=> P0_set_1,
+		P0_set_2 			=> P0_set_2,
+		P0_set_3 			=> P0_set_3,
+		P0_set_4 			=> P0_set_4,
 		P0_h_count_out 	=> P0_BRAM_h_count,
 		P0_BRAM_in			=> P0_BRAM_data_out,
 		P0_video_out		=> P0_data_out,
@@ -1252,9 +1276,9 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		clk_in_x2						=> global_pixel_clock_X2_b2,
 		global_v_count				=> global_v_count_pixel_out,
 		reset							=> reset_btn,
-		P0_conf						=> "0001",
-		P0_set_1 					=> (others => '0'),
-		P0_set_2 					=> (others => '0'),
+		P0_conf						=> P0_conf,
+		P0_set_1 					=> P0_set_1,
+		P0_set_2 					=> P0_set_2,
 		P0_h_count_out_I0 		=> p0_h_count_out_I0,
 		P0_h_count_out_I1 		=> p0_h_count_out_I1,
 		P0_BRAM_out_I0				=> p0_BRAM_out_I0,
@@ -1288,12 +1312,26 @@ color_in <= g_color_red & g_color_green & g_color_blue;
     Reset => '0',
     UART_Rx => uart_rx,
     UART_Tx => uart_tx,
-    GPO1 => leds_big,
-    GPO2 => open,
-    GPO3 => open
+    GPO1 => GPI_1,
+    GPO2 => GPI_2,
+    GPO3 => GPI_3
   );
+  
+  Configuration_manager : Conf_Manager 
+    Port map ( 
+		Gclk 			=> GCLK_i,
+		GPI_1_in		=> GPI_1,
+		GPI_2_in		=> GPI_2,
+		GPI_3_in		=> GPI_3,
+		P0_conf		=> P0_conf,
+		P0_set_1		=> P0_set_1,
+		P0_set_2		=> P0_set_2,
+		P0_set_3		=> P0_set_3,
+		P0_set_4		=> P0_set_4
+		);
+
 	
-	leds <= leds_big(7 downto 0);
+	leds <= GPI_1(7 downto 0);
 	
 	
 	
