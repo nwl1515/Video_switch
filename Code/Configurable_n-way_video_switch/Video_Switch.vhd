@@ -150,6 +150,36 @@ architecture Structural of Video_Switch is
 	signal P0_data_out							: std_logic_vector(23 downto 0) := (others => '0');
 	signal P0_BRAM_I_selector					: std_logic := '0';
 	signal P0_BRAM_S_selector					: std_logic := '0';
+	signal P1_BRAM_enable						: std_logic := '0';
+	signal P1_BRAM_h_count						: std_logic_vector(10 downto 0) := (others => '0');
+	signal P1_BRAM_data_out						: std_logic_vector(23 downto 0) := (others => '0');
+	signal P1_data_out							: std_logic_vector(23 downto 0) := (others => '0');
+	signal P1_BRAM_I_selector					: std_logic := '0';
+	signal P1_BRAM_S_selector					: std_logic := '0';
+	signal P2_BRAM_enable						: std_logic := '0';
+	signal P2_BRAM_h_count						: std_logic_vector(10 downto 0) := (others => '0');
+	signal P2_BRAM_data_out						: std_logic_vector(23 downto 0) := (others => '0');
+	signal P2_data_out							: std_logic_vector(23 downto 0) := (others => '0');
+	signal P2_BRAM_I_selector					: std_logic := '0';
+	signal P2_BRAM_S_selector					: std_logic := '0';
+	signal P3_BRAM_enable						: std_logic := '0';
+	signal P3_BRAM_h_count						: std_logic_vector(10 downto 0) := (others => '0');
+	signal P3_BRAM_data_out						: std_logic_vector(23 downto 0) := (others => '0');
+	signal P3_data_out							: std_logic_vector(23 downto 0) := (others => '0');
+	signal P3_BRAM_I_selector					: std_logic := '0';
+	signal P3_BRAM_S_selector					: std_logic := '0';
+	signal P4_BRAM_enable						: std_logic := '0';
+	signal P4_BRAM_h_count						: std_logic_vector(10 downto 0) := (others => '0');
+	signal P4_BRAM_data_out						: std_logic_vector(23 downto 0) := (others => '0');
+	signal P4_data_out							: std_logic_vector(23 downto 0) := (others => '0');
+	signal P4_BRAM_I_selector					: std_logic := '0';
+	signal P4_BRAM_S_selector					: std_logic := '0';
+	signal P5_BRAM_enable						: std_logic := '0';
+	signal P5_BRAM_h_count						: std_logic_vector(10 downto 0) := (others => '0');
+	signal P5_BRAM_data_out						: std_logic_vector(23 downto 0) := (others => '0');
+	signal P5_data_out							: std_logic_vector(23 downto 0) := (others => '0');
+	signal P5_BRAM_I_selector					: std_logic := '0';
+	signal P5_BRAM_S_selector					: std_logic := '0';
 	
 	 signal color_in							: std_logic_vector(23 downto 0) := (others => '0');
 	 signal color_in_2							: std_logic_vector(23 downto 0) := (others => '0');
@@ -182,6 +212,16 @@ architecture Structural of Video_Switch is
 	
 	signal p0_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
 	signal p0_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p1_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p1_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p2_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p2_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p3_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p3_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p4_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p4_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p5_h_count_out_I0					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p5_BRAM_out_I0						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 	signal DDR_p4_cmd_en							: STD_LOGIC := '0';
 	signal DDR_p4_cmd_bl							: STD_LOGIC_VECTOR(5 downto 0) := "011111";
 	signal DDR_p4_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
@@ -197,7 +237,21 @@ architecture Structural of Video_Switch is
 	signal p0_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
 	signal p0_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
 	signal p0_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0) := "00";
-	signal p0_inload_done						: STD_LOGIC := '0';
+	signal p1_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p1_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p1_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0) := "00";
+	signal p2_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p2_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p2_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0) := "00";
+	signal p3_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p3_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p3_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0) := "00";
+	signal p4_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p4_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p4_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0) := "00";
+	signal p5_h_count_out_I1					: STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+	signal p5_BRAM_out_I1						: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+	signal p5_data_sel_out						: STD_LOGIC_VECTOR(1 downto 0) := "00";
 	signal DDR_p5_cmd_en							: STD_LOGIC := '0';
 	signal DDR_p5_cmd_bl							: STD_LOGIC_VECTOR(5 downto 0) := "011111";
 	signal DDR_p5_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
@@ -211,14 +265,37 @@ architecture Structural of Video_Switch is
 	
 	signal test_leds								: STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	
-	--signal conf_O0									: std_logic_vector(3 downto 0) := (others => '0');
-	--signal set_1_O0								: std_logic_vector(11 downto 0) := (others => '0');
 	
 	signal P0_conf									: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
 	signal P0_set_1								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
 	signal P0_set_2								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
 	signal P0_set_3								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
 	signal P0_set_4								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P1_conf									: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal P1_set_1								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P1_set_2								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P1_set_3								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P1_set_4								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P2_conf									: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal P2_set_1								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P2_set_2								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P2_set_3								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P2_set_4								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P3_conf									: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal P3_set_1								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P3_set_2								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P3_set_3								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P3_set_4								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P4_conf									: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal P4_set_1								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P4_set_2								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P4_set_3								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P4_set_4								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P5_conf									: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal P5_set_1								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P5_set_2								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P5_set_3								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+	signal P5_set_4								: STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
 	
 	signal GPI_1									: STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
 	signal GPI_2									: STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
@@ -275,7 +352,32 @@ END COMPONENT;
 		P0_set_1		: out STD_LOGIC_VECTOR(11 downto 0);
 		P0_set_2		: out STD_LOGIC_VECTOR(11 downto 0);
 		P0_set_3		: out STD_LOGIC_VECTOR(11 downto 0);
-		P0_set_4		: out STD_LOGIC_VECTOR(11 downto 0)	
+		P0_set_4		: out STD_LOGIC_VECTOR(11 downto 0);
+		P1_conf		: out STD_LOGIC_VECTOR(3 downto 0);
+		P1_set_1		: out STD_LOGIC_VECTOR(11 downto 0);
+		P1_set_2		: out STD_LOGIC_VECTOR(11 downto 0);
+		P1_set_3		: out STD_LOGIC_VECTOR(11 downto 0);
+		P1_set_4		: out STD_LOGIC_VECTOR(11 downto 0);
+		P2_conf		: out STD_LOGIC_VECTOR(3 downto 0);
+		P2_set_1		: out STD_LOGIC_VECTOR(11 downto 0);
+		P2_set_2		: out STD_LOGIC_VECTOR(11 downto 0);
+		P2_set_3		: out STD_LOGIC_VECTOR(11 downto 0);
+		P2_set_4		: out STD_LOGIC_VECTOR(11 downto 0);
+		P3_conf		: out STD_LOGIC_VECTOR(3 downto 0);
+		P3_set_1		: out STD_LOGIC_VECTOR(11 downto 0);
+		P3_set_2		: out STD_LOGIC_VECTOR(11 downto 0);
+		P3_set_3		: out STD_LOGIC_VECTOR(11 downto 0);
+		P3_set_4		: out STD_LOGIC_VECTOR(11 downto 0);
+		P4_conf		: out STD_LOGIC_VECTOR(3 downto 0);
+		P4_set_1		: out STD_LOGIC_VECTOR(11 downto 0);
+		P4_set_2		: out STD_LOGIC_VECTOR(11 downto 0);
+		P4_set_3		: out STD_LOGIC_VECTOR(11 downto 0);
+		P4_set_4		: out STD_LOGIC_VECTOR(11 downto 0);
+		P5_conf		: out STD_LOGIC_VECTOR(3 downto 0);
+		P5_set_1		: out STD_LOGIC_VECTOR(11 downto 0);
+		P5_set_2		: out STD_LOGIC_VECTOR(11 downto 0);
+		P5_set_3		: out STD_LOGIC_VECTOR(11 downto 0);
+		P5_set_4		: out STD_LOGIC_VECTOR(11 downto 0)		
 		);
 END COMPONENT;
 	 
@@ -335,36 +437,86 @@ END COMPONENT;
 	
 	COMPONENT DDR_to_BRAM_controller is
     Port ( 
-		clk_in 				: in  STD_LOGIC; -- x2_pixel_clock!
-		clk_in_x2			: in STD_LOGIC;
-		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
-		reset					: in STD_LOGIC;
-		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0);
-		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0);
-		P0_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0);
-		P0_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0);
-		P0_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0);
-		P0_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0);
-		P0_S_selector		: in STD_LOGIC;
-		P0_inload_done		: inout STD_LOGIC;
-		change_S				: in STD_LOGIC;
-		c3_p4_cmd_en                          	 : inout std_logic;
-		c3_p4_cmd_bl                            : out std_logic_vector(5 downto 0);
-		c3_p4_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-		c3_p4_cmd_empty                         : in std_logic;		
-		c3_p4_rd_en                             : inout std_logic;
-		c3_p4_rd_data                           : in std_logic_vector(31 downto 0);
-		c3_p4_rd_empty                          : in std_logic;
-		c3_p5_cmd_en                          	 : inout std_logic;
-		c3_p5_cmd_bl                            : out std_logic_vector(5 downto 0);
-		c3_p5_cmd_byte_addr                     : out std_logic_vector(29 downto 0);
-		c3_p5_cmd_empty                         : in std_logic;		
-		c3_p5_rd_en                             : inout std_logic;
-		c3_p5_rd_data                           : in std_logic_vector(31 downto 0);
-		c3_p5_rd_empty                          : in std_logic;
-		leds_out											 : inout std_logic_vector(7 downto 0)		
+		clk_in 				: in  STD_LOGIC := '0'; -- x2_pixel_clock!
+		clk_in_x2			: in STD_LOGIC := '0';
+		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
+		reset					: in STD_LOGIC := '0';
+		P0_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P0_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P0_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P0_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P0_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P0_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P0_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P0_S_selector		: in STD_LOGIC := '0';
+		P0_inload_done		: inout STD_LOGIC := '0';
+		P1_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P1_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P1_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P1_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P1_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P1_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P1_S_selector		: in STD_LOGIC := '0';
+		P1_inload_done		: inout STD_LOGIC := '0';
+		P2_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P2_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P2_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P2_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P2_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P2_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P2_S_selector		: in STD_LOGIC := '0';
+		P2_inload_done		: inout STD_LOGIC := '0';
+		P3_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P3_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P3_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P3_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P3_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P3_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P3_S_selector		: in STD_LOGIC := '0';
+		P3_inload_done		: inout STD_LOGIC := '0';
+		P4_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P4_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P4_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P4_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P4_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P4_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P4_S_selector		: in STD_LOGIC := '0';
+		P4_inload_done		: inout STD_LOGIC := '0';
+		P5_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P5_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P5_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P5_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P5_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P5_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P5_S_selector		: in STD_LOGIC := '0';
+		P5_inload_done		: inout STD_LOGIC := '0';
+		change_S				: in STD_LOGIC := '0';
+		c3_p4_cmd_en                          	 : inout std_logic := '0';
+		c3_p4_cmd_bl                            : out std_logic_vector(5 downto 0) := "011111";
+		c3_p4_cmd_byte_addr                     : out std_logic_vector(29 downto 0) := (others => '0');
+		c3_p4_cmd_empty                         : in std_logic := '1';		
+		c3_p4_rd_en                             : inout std_logic := '0';
+		c3_p4_rd_data                           : in std_logic_vector(31 downto 0) := (others => '0');
+		c3_p4_rd_empty                          : in std_logic := '1';
+		c3_p5_cmd_en                          	 : inout std_logic := '0';
+		c3_p5_cmd_bl                            : out std_logic_vector(5 downto 0) := "011111";
+		c3_p5_cmd_byte_addr                     : out std_logic_vector(29 downto 0) := (others => '0');
+		c3_p5_cmd_empty                         : in std_logic := '1';	
+		c3_p5_rd_en                             : inout std_logic := '0';
+		c3_p5_rd_data                           : in std_logic_vector(31 downto 0) := (others => '0');
+		c3_p5_rd_empty                          : in std_logic := '1';
+		leds_out											 : inout std_logic_vector(7 downto 0) := (others => '0')	 
 	 );
 	END COMPONENT;
 
@@ -439,7 +591,7 @@ END COMPONENT;
 
 	COMPONENT Output_Controller
     Port ( 
-		clk_in 				: in  STD_LOGIC; --- OBS x1 pixel clock
+		clk_in 				: in  STD_LOGIC := '0'; --- OBS x1 pixel clock
 		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0);
 		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
 		global_h_sync		: in STD_LOGIC;
@@ -454,15 +606,85 @@ END COMPONENT;
 		P0_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
 		P0_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
 		P0_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
-		P0_h_count_out 	: out STD_LOGIC_VECTOR(10 downto 0);
+		P0_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0);
 		P0_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
 		P0_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
 		P0_I_selector		: out STD_LOGIC;
-		P0_S_selector		: out STD_LOGIC;
+		P0_S_selector		: inout STD_LOGIC;
 		P0_enable			: out STD_LOGIC;
 		P0_inload_done		: in STD_LOGIC;
-		P0_unload_done		: inout STD_LOGIC;
-		P0_change_s			: out STD_LOGIC
+		P0_unload_done 	: inout STD_LOGIC;
+		P0_change_s			: out STD_LOGIC;
+		P1_conf				: in STD_LOGIC_VECTOR(3 downto 0);
+		P1_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P1_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P1_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P1_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P1_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0);
+		P1_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		P1_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
+		P1_I_selector		: out STD_LOGIC;
+		P1_S_selector		: inout STD_LOGIC;
+		P1_enable			: out STD_LOGIC;
+		P1_inload_done		: in STD_LOGIC;
+		P1_unload_done 	: inout STD_LOGIC;
+		P1_change_s			: out STD_LOGIC;
+		P2_conf				: in STD_LOGIC_VECTOR(3 downto 0);
+		P2_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P2_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P2_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P2_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P2_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0);
+		P2_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		P2_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
+		P2_I_selector		: out STD_LOGIC;
+		P2_S_selector		: inout STD_LOGIC;
+		P2_enable			: out STD_LOGIC;
+		P2_inload_done		: in STD_LOGIC;
+		P2_unload_done 	: inout STD_LOGIC;
+		P2_change_s			: out STD_LOGIC;
+		P3_conf				: in STD_LOGIC_VECTOR(3 downto 0);
+		P3_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P3_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P3_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P3_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P3_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0);
+		P3_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		P3_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
+		P3_I_selector		: out STD_LOGIC;
+		P3_S_selector		: inout STD_LOGIC;
+		P3_enable			: out STD_LOGIC;
+		P3_inload_done		: in STD_LOGIC;
+		P3_unload_done 	: inout STD_LOGIC;
+		P3_change_s			: out STD_LOGIC;
+		P4_conf				: in STD_LOGIC_VECTOR(3 downto 0);
+		P4_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P4_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P4_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P4_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P4_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0);
+		P4_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		P4_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
+		P4_I_selector		: out STD_LOGIC;
+		P4_S_selector		: inout STD_LOGIC;
+		P4_enable			: out STD_LOGIC;
+		P4_inload_done		: in STD_LOGIC;
+		P4_unload_done 	: inout STD_LOGIC;
+		P4_change_s			: out STD_LOGIC;
+		P5_conf				: in STD_LOGIC_VECTOR(3 downto 0);
+		P5_set_1 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P5_set_2 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P5_set_3 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P5_set_4 			: in STD_LOGIC_VECTOR(11 downto 0);
+		P5_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0);
+		P5_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0);
+		P5_video_out		: out STD_LOGIC_VECTOR(23 downto 0);
+		P5_I_selector		: out STD_LOGIC;
+		P5_S_selector		: inout STD_LOGIC;
+		P5_enable			: out STD_LOGIC;
+		P5_inload_done		: in STD_LOGIC;
+		P5_unload_done 	: inout STD_LOGIC;
+		P5_change_s			: out STD_LOGIC
 		);
 		END COMPONENT;	
 
@@ -680,8 +902,6 @@ begin
 --leds(0) <= reset;
 --leds(7 downto 1) <= DDR_p3_cmd_byte_addr(29 downto 23);
 
---conf_O0 <= "0" & btn(1) & "0" & btn(0);
---set_1_O0 <= "00" & btn(7 downto 2) & "0000";
 
 clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 
@@ -751,144 +971,108 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 ------------------------------
 hdmi_output_0 : HDMI_OUT
 		PORT MAP(
-			Pixel_clock => global_pixel_clock_I0,
-			clk_x1			=> global_pixel_clock_I0,		
-			clk_x2			=> global_pixel_clock_x2_b0,
-			clk_x10			=> global_pixel_clock_x10_b0,
-			serdes_strobe 	=> global_serdes_strobe_b0,
-			red_p      => P0_data_out(23 downto 16),
-			green_p    => P0_data_out(15 downto 8),
-			blue_p     => P0_data_out(7 downto 0),
-			--red_p			 => "11111111",
-			--green_p		 => "11111111",
-			--blue_p		 => "00000000",
+			Pixel_clock 		=> global_pixel_clock_I0,
+			clk_x1				=> global_pixel_clock_I0,		
+			clk_x2				=> global_pixel_clock_x2_b0,
+			clk_x10				=> global_pixel_clock_x10_b0,
+			serdes_strobe 		=> global_serdes_strobe_b0,
+			red_p      			=> P0_data_out(23 downto 16),
+			green_p    			=> P0_data_out(15 downto 8),
+			blue_p     			=> P0_data_out(7 downto 0),
 			active_video      => global_output_active_video_controller,
-			hsync      => global_output_h_sync_controller,
-			vsync      => global_output_v_sync_controller,
-			tmds_out_p => hdmi_port_0_out_p,
-			tmds_out_n => hdmi_port_0_out_n
+			hsync      			=> global_output_h_sync_controller,
+			vsync      			=> global_output_v_sync_controller,
+			tmds_out_p 			=> hdmi_port_0_out_p,
+			tmds_out_n 			=> hdmi_port_0_out_n
 		);
 		
-		--hdmi_output_0 : dvi_encoder_top
-	--port map(
-        --pclk => global_pixel_clock_x1_b0,        
-        --pclkx2 => global_pixel_clock_x2_b0,       
-        --pclkx10 => global_pixel_clock_x10_b0,      
-       --serdesstrobe => global_serdes_strobe_b0, 
-        --rstin => '0',         
-  --blue_din => P0_data_out(7 downto 0),    
-  --green_din => P0_data_out(15 downto 8),   
-   --red_din => P0_data_out(23 downto 16),       
-       --hsync => global_output_h_sync_controller,         
-  --vsync => global_output_v_sync_controller,         
-	--DE	=> global_output_active_video_controller,            
-  --TMDS => hdmi_port_0_out_p,
-   --TMDSB => hdmi_port_0_out_n
-  --);
 		
 hdmi_output_1 : HDMI_OUT
 		PORT MAP(
-			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b2,
-			clk_x2			=> global_pixel_clock_x2_b2,
-			clk_x10			=> global_pixel_clock_x10_b2,
-			serdes_strobe 	=> global_serdes_strobe_b2,
-			red_p      => g_color_red,
-			green_p    => g_color_green,
-			blue_p     => g_color_blue,
+			Pixel_clock 		=> global_pixel_clock,
+			clk_x1				=> global_pixel_clock_x1_b2,
+			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x10				=> global_pixel_clock_x10_b2,
+			serdes_strobe 		=> global_serdes_strobe_b2,
+			red_p      			=> P1_data_out(23 downto 16),
+			green_p    			=> P1_data_out(15 downto 8),
+			blue_p     			=> P1_data_out(7 downto 0),
 			active_video      => global_output_active_video_controller,
-			hsync      => global_output_h_sync_controller,
-			vsync      => global_output_v_sync_controller,
-			tmds_out_p => hdmi_port_1_out_p,
-			tmds_out_n => hdmi_port_1_out_n
+			hsync      			=> global_output_h_sync_controller,
+			vsync      			=> global_output_v_sync_controller,
+			tmds_out_p 			=> hdmi_port_1_out_p,
+			tmds_out_n 			=> hdmi_port_1_out_n
 		);
 		
 hdmi_output_2 : HDMI_OUT
 		PORT MAP(
-			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b2,
-			clk_x2			=> global_pixel_clock_x2_b2,
-			clk_x10			=> global_pixel_clock_x10_b2,
-			serdes_strobe 	=> global_serdes_strobe_b2,
-			red_p      => P0_data_out(23 downto 16),
-			green_p    => P0_data_out(15 downto 8),
-			blue_p     => P0_data_out(7 downto 0),
+			Pixel_clock 		=> global_pixel_clock,
+			clk_x1				=> global_pixel_clock_x1_b2,
+			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x10				=> global_pixel_clock_x10_b2,
+			serdes_strobe 		=> global_serdes_strobe_b2,
+			red_p      			=> P2_data_out(23 downto 16),
+			green_p    			=> P2_data_out(15 downto 8),
+			blue_p     			=> P2_data_out(7 downto 0),
 			active_video      => global_output_active_video_controller,
-			hsync      => global_output_h_sync_controller,
-			vsync      => global_output_v_sync_controller,
-			tmds_out_p => hdmi_port_2_out_p,
-			tmds_out_n => hdmi_port_2_out_n
+			hsync      			=> global_output_h_sync_controller,
+			vsync      			=> global_output_v_sync_controller,
+			tmds_out_p 			=> hdmi_port_2_out_p,
+			tmds_out_n 			=> hdmi_port_2_out_n
 		);
-		
-		
 		
 hdmi_output_3 : HDMI_OUT
 		PORT MAP(
-			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b2,
-			clk_x2			=> global_pixel_clock_x2_b2,
-			clk_x10			=> global_pixel_clock_x10_b2,
-			serdes_strobe 	=> global_serdes_strobe_b2,
-			red_p      => g_color_red,
-			green_p    => g_color_green,
-			blue_p     => g_color_blue,
-			active_video      => global_output_active_video,
-			hsync      => global_output_h_sync,
-			vsync      => global_output_v_sync,
-			tmds_out_p => hdmi_port_3_out_p,
-			tmds_out_n => hdmi_port_3_out_n
+			Pixel_clock 		=> global_pixel_clock,
+			clk_x1				=> global_pixel_clock_x1_b2,
+			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x10				=> global_pixel_clock_x10_b2,
+			serdes_strobe 		=> global_serdes_strobe_b2,
+			red_p      			=> P3_data_out(23 downto 16),
+			green_p    			=> P3_data_out(15 downto 8),
+			blue_p     			=> P3_data_out(7 downto 0),
+			active_video      => global_output_active_video_controller,
+			hsync      			=> global_output_h_sync_controller,
+			vsync      			=> global_output_v_sync_controller,
+			tmds_out_p 			=> hdmi_port_3_out_p,
+			tmds_out_n 			=> hdmi_port_3_out_n
 		);
 		
 hdmi_output_4 : HDMI_OUT
 		PORT MAP(
-			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b2,
-			clk_x2			=> global_pixel_clock_x2_b2,
-			clk_x10			=> global_pixel_clock_x10_b2,
-			serdes_strobe 	=> global_serdes_strobe_b2,
-			red_p      => g_color_red,
-			green_p    => g_color_green,
-			blue_p     => g_color_blue,
-			active_video      => global_output_active_video,
-			hsync      => global_output_h_sync,
-			vsync      => global_output_v_sync,
-			tmds_out_p => hdmi_port_4_out_p,
-			tmds_out_n => hdmi_port_4_out_n
+			Pixel_clock 		=> global_pixel_clock,
+			clk_x1				=> global_pixel_clock_x1_b2,
+			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x10				=> global_pixel_clock_x10_b2,
+			serdes_strobe 		=> global_serdes_strobe_b2,
+			red_p      			=> P4_data_out(23 downto 16),
+			green_p    			=> P4_data_out(15 downto 8),
+			blue_p     			=> P4_data_out(7 downto 0),
+			active_video      => global_output_active_video_controller,
+			hsync      			=> global_output_h_sync_controller,
+			vsync      			=> global_output_v_sync_controller,
+			tmds_out_p 			=> hdmi_port_4_out_p,
+			tmds_out_n 			=> hdmi_port_4_out_n
 		);
 		
 hdmi_output_5 : HDMI_OUT
 		PORT MAP(
-			Pixel_clock => global_pixel_clock,
-			clk_x1			=> global_pixel_clock_x1_b2,
-			clk_x2			=> global_pixel_clock_x2_b2,
-			clk_x10			=> global_pixel_clock_x10_b2,
-			serdes_strobe 	=> global_serdes_strobe_b2,
-			red_p      => g_color_red,
-			green_p    => g_color_green,
-			blue_p     => g_color_blue,
-			active_video      => global_output_active_video,
-			hsync      => global_output_h_sync,
-			vsync      => global_output_v_sync,
-			tmds_out_p => hdmi_port_5_out_p,
-			tmds_out_n => hdmi_port_5_out_n
+			Pixel_clock 		=> global_pixel_clock,
+			clk_x1				=> global_pixel_clock_x1_b2,
+			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x10				=> global_pixel_clock_x10_b2,
+			serdes_strobe 		=> global_serdes_strobe_b2,
+			red_p      			=> P5_data_out(23 downto 16),
+			green_p    			=> P5_data_out(15 downto 8),
+			blue_p     			=> P5_data_out(7 downto 0),
+			active_video      => global_output_active_video_controller,
+			hsync      			=> global_output_h_sync_controller,
+			vsync      			=> global_output_v_sync_controller,
+			tmds_out_p 			=> hdmi_port_5_out_p,
+			tmds_out_n 			=> hdmi_port_5_out_n
 		);
 		
-		--hdmi_output_5 : dvi_encoder_top
-	--port map(
-        --pclk => global_pixel_clock_x1_b1,        
-        --pclkx2 => global_pixel_clock_x2_b1,       
-        --pclkx10 => global_pixel_clock_x10_b1,      
-       --serdesstrobe => global_serdes_strobe_b1, 
-        --rstin => '0',         
-  --blue_din => g_color_blue,    
-  --green_din => g_color_green,   
-   --red_din => g_color_red,       
-       --hsync => global_output_h_sync,         
-  --vsync => global_output_v_sync,         
-	--DE	=> global_output_active_video,            
-  --TMDS => hdmi_port_5_out_p,
-   --TMDSB => hdmi_port_5_out_n
-	--);
+	
 
 
 ------------------------------
@@ -952,9 +1136,8 @@ hdmi_output_5 : HDMI_OUT
 			  --v_count_out 		=> simulator_v_count_2,
 			  --Pll_locked 		=> global_pll_locked
 	--);
-color_in_2(15 downto 8) <= "11111111";
+	
 reset <= not global_pll_locked;
---global_pll_locked <= global_pll_locked_b0 and global_pll_locked_b1 and ddr_calibration; 
 global_pll_locked <= global_pll_locked_b2;
 ------------------------------
 -- Global output clock multiplier
@@ -1127,71 +1310,67 @@ global_pll_locked <= global_pll_locked_b2;
 		BRAM_enable 		=> '1',
 		clk_out				=> global_pixel_clock,
 		clk_in				=> global_pixel_clock_x2_b2,
-		--clk_in				=> global_pixel_clock,
 		clk_out_enable    => BRAM_clock_out_enable,
 		P0_enable			=> P0_BRAM_enable,
 		P0_data_in_I0		=> p0_BRAM_out_I0,
 		P0_data_in_I1		=> p0_BRAM_out_I1,
-		--P0_data_in_I1		=> color_in,
 		P0_data_out			=> P0_BRAM_data_out,
 		P0_h_count_in_I0	=> P0_h_count_out_I0,
 		P0_h_count_in_I1	=> p0_h_count_out_I1,
-		--P0_h_count_in_I1	=> P0_BRAM_h_count,
 		P0_h_count_out		=> P0_BRAM_h_count,
 		P0_data_select_in => p0_data_sel_out,
-		--P0_data_select_in => "11",
 		P0_I_select_out	=> P0_BRAM_I_selector,
 		P0_S_select			=> P0_BRAM_S_selector,
-		P1_enable			=> '0',
-		P1_data_in_I0		=> (others => '0'),
-		P1_data_in_I1		=> (others => '0'),
-		P1_data_out			=> open,
-		P1_h_count_in_I0	=> (others => '0'),
-		P1_h_count_in_I1	=> (others => '0'),
-		P1_h_count_out		=> (others => '0'),
-		P1_data_select_in => (others => '0'),
-		P1_I_select_out	=> '0',
-		P1_S_select			=> '0',
-		P2_enable			=> '0',
-		P2_data_in_I0		=> (others => '0'),
-		P2_data_in_I1		=> (others => '0'),
-		P2_data_out			=> open,
-		P2_h_count_in_I0	=> (others => '0'),
-		P2_h_count_in_I1	=> (others => '0'),
-		P2_h_count_out		=> (others => '0'),
-		P2_data_select_in => (others => '0'),
-		P2_I_select_out	=> '0',
-		P2_S_select			=> '0',
-		P3_enable			=> '0',
-		P3_data_in_I0		=> (others => '0'),
-		P3_data_in_I1		=> (others => '0'),
-		P3_data_out			=> open,
-		P3_h_count_in_I0	=> (others => '0'),
-		P3_h_count_in_I1	=> (others => '0'),
-		P3_h_count_out		=> (others => '0'),
-		P3_data_select_in => (others => '0'),
-		P3_I_select_out	=> '0',
-		P3_S_select			=> '0',
-		P4_enable			=> '0',
-		P4_data_in_I0		=> (others => '0'),
-		P4_data_in_I1		=> (others => '0'),
-		P4_data_out			=> open,
-		P4_h_count_in_I0	=> (others => '0'),
-		P4_h_count_in_I1	=> (others => '0'),
-		P4_h_count_out		=> (others => '0'),
-		P4_data_select_in => (others => '0'),
-		P4_I_select_out	=> '0',
-		P4_S_select			=> '0',
-		P5_enable			=> '0',
-		P5_data_in_I0		=> (others => '0'),
-		P5_data_in_I1		=> (others => '0'),
-		P5_data_out			=>  Open,
-		P5_h_count_in_I0	=> (others => '0'),
-		P5_h_count_in_I1	=> (others => '0'),
-		P5_h_count_out		=> (others => '0'),
-		P5_data_select_in => (others => '0'),
-		P5_I_select_out	=> '0',
-		P5_S_select			=> '0'
+		P1_enable			=> P1_BRAM_enable,
+		P1_data_in_I0		=> p1_BRAM_out_I0,
+		P1_data_in_I1		=> p1_BRAM_out_I1,
+		P1_data_out			=> P1_BRAM_data_out,
+		P1_h_count_in_I0	=> P1_h_count_out_I0,
+		P1_h_count_in_I1	=> p1_h_count_out_I1,
+		P1_h_count_out		=> P1_BRAM_h_count,
+		P1_data_select_in => p1_data_sel_out,
+		P1_I_select_out	=> P1_BRAM_I_selector,
+		P1_S_select			=> P1_BRAM_S_selector,
+		P2_enable			=> P2_BRAM_enable,
+		P2_data_in_I0		=> p2_BRAM_out_I0,
+		P2_data_in_I1		=> p2_BRAM_out_I1,
+		P2_data_out			=> P2_BRAM_data_out,
+		P2_h_count_in_I0	=> P2_h_count_out_I0,
+		P2_h_count_in_I1	=> p2_h_count_out_I1,
+		P2_h_count_out		=> P2_BRAM_h_count,
+		P2_data_select_in => p2_data_sel_out,
+		P2_I_select_out	=> P2_BRAM_I_selector,
+		P2_S_select			=> P2_BRAM_S_selector,
+		P3_enable			=> P3_BRAM_enable,
+		P3_data_in_I0		=> p3_BRAM_out_I0,
+		P3_data_in_I1		=> p3_BRAM_out_I1,
+		P3_data_out			=> P3_BRAM_data_out,
+		P3_h_count_in_I0	=> P3_h_count_out_I0,
+		P3_h_count_in_I1	=> p3_h_count_out_I1,
+		P3_h_count_out		=> P3_BRAM_h_count,
+		P3_data_select_in => p3_data_sel_out,
+		P3_I_select_out	=> P3_BRAM_I_selector,
+		P3_S_select			=> P3_BRAM_S_selector,
+		P4_enable			=> P4_BRAM_enable,
+		P4_data_in_I0		=> p4_BRAM_out_I0,
+		P4_data_in_I1		=> p4_BRAM_out_I1,
+		P4_data_out			=> P4_BRAM_data_out,
+		P4_h_count_in_I0	=> P4_h_count_out_I0,
+		P4_h_count_in_I1	=> p4_h_count_out_I1,
+		P4_h_count_out		=> P4_BRAM_h_count,
+		P4_data_select_in => p4_data_sel_out,
+		P4_I_select_out	=> P4_BRAM_I_selector,
+		P4_S_select			=> P4_BRAM_S_selector,
+		P5_enable			=> P5_BRAM_enable,
+		P5_data_in_I0		=> p5_BRAM_out_I0,
+		P5_data_in_I1		=> p5_BRAM_out_I1,
+		P5_data_out			=> P5_BRAM_data_out,
+		P5_h_count_in_I0	=> P5_h_count_out_I0,
+		P5_h_count_in_I1	=> p5_h_count_out_I1,
+		P5_h_count_out		=> P5_BRAM_h_count,
+		P5_data_select_in => p5_data_sel_out,
+		P5_I_select_out	=> P5_BRAM_I_selector,
+		P5_S_select			=> P5_BRAM_S_selector
 	 );
 	 
 color_in <= g_color_red & g_color_green & g_color_blue;
@@ -1219,10 +1398,79 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		P0_I_selector		=> P0_BRAM_I_selector,
 		P0_S_selector		=> P0_BRAM_S_selector,
 		P0_enable			=> P0_BRAM_enable,
-		P0_inload_done		=> p0_inload_done,
-		--P0_inload_done		=> '1',
+		P0_inload_done		=> '0',
 		P0_unload_done		=> open,
-		P0_change_s			=> change_S
+		P0_change_s			=> change_S,
+		P1_conf				=> P1_conf,
+		P1_set_1 			=> P1_set_1,
+		P1_set_2 			=> P1_set_2,
+		P1_set_3 			=> P1_set_3,
+		P1_set_4 			=> P1_set_4,
+		P1_h_count_out 	=> P1_BRAM_h_count,
+		P1_BRAM_in			=> P1_BRAM_data_out,
+		P1_video_out		=> P1_data_out,
+		P1_I_selector		=> P1_BRAM_I_selector,
+		P1_S_selector		=> P1_BRAM_S_selector,
+		P1_enable			=> P1_BRAM_enable,
+		P1_inload_done		=> '0',
+		P1_unload_done		=> open,
+		P1_change_s			=> open,
+		P2_conf				=> P2_conf,
+		P2_set_1 			=> P2_set_1,
+		P2_set_2 			=> P2_set_2,
+		P2_set_3 			=> P2_set_3,
+		P2_set_4 			=> P2_set_4,
+		P2_h_count_out 	=> P2_BRAM_h_count,
+		P2_BRAM_in			=> P2_BRAM_data_out,
+		P2_video_out		=> P2_data_out,
+		P2_I_selector		=> P2_BRAM_I_selector,
+		P2_S_selector		=> P2_BRAM_S_selector,
+		P2_enable			=> P2_BRAM_enable,
+		P2_inload_done		=> '0',
+		P2_unload_done		=> open,
+		P3_change_s			=> open,
+		P3_conf				=> P3_conf,
+		P3_set_1 			=> P3_set_1,
+		P3_set_2 			=> P3_set_2,
+		P3_set_3 			=> P3_set_3,
+		P3_set_4 			=> P3_set_4,
+		P3_h_count_out 	=> P3_BRAM_h_count,
+		P3_BRAM_in			=> P3_BRAM_data_out,
+		P3_video_out		=> P3_data_out,
+		P3_I_selector		=> P3_BRAM_I_selector,
+		P3_S_selector		=> P3_BRAM_S_selector,
+		P3_enable			=> P3_BRAM_enable,
+		P3_inload_done		=> '0',
+		P3_unload_done		=> open,
+		P3_change_s			=> open,
+		P4_conf				=> P4_conf,
+		P4_set_1 			=> P4_set_1,
+		P4_set_2 			=> P4_set_2,
+		P4_set_3 			=> P4_set_3,
+		P4_set_4 			=> P4_set_4,
+		P4_h_count_out 	=> P4_BRAM_h_count,
+		P4_BRAM_in			=> P4_BRAM_data_out,
+		P4_video_out		=> P4_data_out,
+		P4_I_selector		=> P4_BRAM_I_selector,
+		P4_S_selector		=> P4_BRAM_S_selector,
+		P4_enable			=> P4_BRAM_enable,
+		P4_inload_done		=> '0',
+		P4_unload_done		=> open,
+		P4_change_s			=> open,
+		P5_conf				=> P5_conf,
+		P5_set_1 			=> P5_set_1,
+		P5_set_2 			=> P5_set_2,
+		P5_set_3 			=> P5_set_3,
+		P5_set_4 			=> P5_set_4,
+		P5_h_count_out 	=> P5_BRAM_h_count,
+		P5_BRAM_in			=> P5_BRAM_data_out,
+		P5_video_out		=> P5_data_out,
+		P5_I_selector		=> P5_BRAM_I_selector,
+		P5_S_selector		=> P5_BRAM_S_selector,
+		P5_enable			=> P5_BRAM_enable,
+		P5_inload_done		=> '0',
+		P5_unload_done		=> open,
+		P5_change_s			=> open
 		);
 		
 	u_input_to_ddr_controller : Input_to_DDR_controller
@@ -1285,7 +1533,57 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		P0_BRAM_out_I1				=> p0_BRAM_out_I1,
 		P0_data_out_sel			=> p0_data_sel_out,
 		P0_S_selector				=> P0_BRAM_S_selector,
-		P0_inload_done				=> p0_inload_done,	
+		P0_inload_done				=> open,
+		P1_conf						=> P1_conf,
+		P1_set_1 					=> P1_set_1,
+		P1_set_2 					=> P1_set_2,
+		P1_h_count_out_I0 		=> p1_h_count_out_I0,
+		P1_h_count_out_I1 		=> p1_h_count_out_I1,
+		P1_BRAM_out_I0				=> p1_BRAM_out_I0,
+		P1_BRAM_out_I1				=> p1_BRAM_out_I1,
+		P1_data_out_sel			=> p1_data_sel_out,
+		P1_S_selector				=> P1_BRAM_S_selector,
+		P1_inload_done				=> open,	
+		P2_conf						=> P2_conf,
+		P2_set_1 					=> P2_set_1,
+		P2_set_2 					=> P2_set_2,
+		P2_h_count_out_I0 		=> p2_h_count_out_I0,
+		P2_h_count_out_I1 		=> p2_h_count_out_I1,
+		P2_BRAM_out_I0				=> p2_BRAM_out_I0,
+		P2_BRAM_out_I1				=> p2_BRAM_out_I1,
+		P2_data_out_sel			=> p2_data_sel_out,
+		P2_S_selector				=> P2_BRAM_S_selector,
+		P2_inload_done				=> open,	
+		P3_conf						=> P3_conf,
+		P3_set_1 					=> P3_set_1,
+		P3_set_2 					=> P3_set_2,
+		P3_h_count_out_I0 		=> p3_h_count_out_I0,
+		P3_h_count_out_I1 		=> p3_h_count_out_I1,
+		P3_BRAM_out_I0				=> p3_BRAM_out_I0,
+		P3_BRAM_out_I1				=> p3_BRAM_out_I1,
+		P3_data_out_sel			=> p3_data_sel_out,
+		P3_S_selector				=> P3_BRAM_S_selector,
+		P3_inload_done				=> open,	
+		P4_conf						=> P4_conf,
+		P4_set_1 					=> P4_set_1,
+		P4_set_2 					=> P4_set_2,
+		P4_h_count_out_I0 		=> p4_h_count_out_I0,
+		P4_h_count_out_I1 		=> p4_h_count_out_I1,
+		P4_BRAM_out_I0				=> p4_BRAM_out_I0,
+		P4_BRAM_out_I1				=> p4_BRAM_out_I1,
+		P4_data_out_sel			=> p4_data_sel_out,
+		P4_S_selector				=> P4_BRAM_S_selector,
+		P4_inload_done				=> open,	
+		P5_conf						=> P5_conf,
+		P5_set_1 					=> P5_set_1,
+		P5_set_2 					=> P5_set_2,
+		P5_h_count_out_I0 		=> p5_h_count_out_I0,
+		P5_h_count_out_I1 		=> p5_h_count_out_I1,
+		P5_BRAM_out_I0				=> p5_BRAM_out_I0,
+		P5_BRAM_out_I1				=> p5_BRAM_out_I1,
+		P5_data_out_sel			=> p5_data_sel_out,
+		P5_S_selector				=> P5_BRAM_S_selector,
+		P5_inload_done				=> open,			
 		change_S						=> change_S,
 		c3_p4_cmd_en            => DDR_p4_cmd_en,
 		--c3_p4_cmd_en				=> open,
@@ -1327,7 +1625,32 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		P0_set_1		=> P0_set_1,
 		P0_set_2		=> P0_set_2,
 		P0_set_3		=> P0_set_3,
-		P0_set_4		=> P0_set_4
+		P0_set_4		=> P0_set_4,
+		P1_conf		=> P1_conf,
+		P1_set_1		=> P1_set_1,
+		P1_set_2		=> P1_set_2,
+		P1_set_3		=> P1_set_3,
+		P1_set_4		=> P1_set_4,
+		P2_conf		=> P2_conf,
+		P2_set_1		=> P2_set_1,
+		P2_set_2		=> P2_set_2,
+		P2_set_3		=> P2_set_3,
+		P2_set_4		=> P2_set_4,
+		P3_conf		=> P3_conf,
+		P3_set_1		=> P3_set_1,
+		P3_set_2		=> P3_set_2,
+		P3_set_3		=> P3_set_3,
+		P3_set_4		=> P3_set_4,
+		P4_conf		=> P4_conf,
+		P4_set_1		=> P4_set_1,
+		P4_set_2		=> P4_set_2,
+		P4_set_3		=> P4_set_3,
+		P4_set_4		=> P4_set_4,
+		P5_conf		=> P5_conf,
+		P5_set_1		=> P5_set_1,
+		P5_set_2		=> P5_set_2,
+		P5_set_3		=> P5_set_3,
+		P5_set_4		=> P5_set_4
 		);
 
 	

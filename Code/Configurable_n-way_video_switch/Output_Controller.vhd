@@ -54,7 +54,77 @@ entity Output_Controller is
 		P0_enable			: out STD_LOGIC := '0';
 		P0_inload_done		: in STD_LOGIC := '0';
 		P0_unload_done 	: inout STD_LOGIC := '0';
-		P0_change_s			: out STD_LOGIC := '0'
+		P0_change_s			: out STD_LOGIC := '0';
+		P1_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P1_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_set_3 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_set_4 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P1_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P1_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P1_I_selector		: out STD_LOGIC := '0';
+		P1_S_selector		: inout STD_LOGIC := '0';
+		P1_enable			: out STD_LOGIC := '0';
+		P1_inload_done		: in STD_LOGIC := '0';
+		P1_unload_done 	: inout STD_LOGIC := '0';
+		P1_change_s			: out STD_LOGIC := '0';
+		P2_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P2_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_set_3 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_set_4 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P2_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P2_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P2_I_selector		: out STD_LOGIC := '0';
+		P2_S_selector		: inout STD_LOGIC := '0';
+		P2_enable			: out STD_LOGIC := '0';
+		P2_inload_done		: in STD_LOGIC := '0';
+		P2_unload_done 	: inout STD_LOGIC := '0';
+		P2_change_s			: out STD_LOGIC := '0';
+		P3_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P3_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_set_3 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_set_4 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P3_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P3_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P3_I_selector		: out STD_LOGIC := '0';
+		P3_S_selector		: inout STD_LOGIC := '0';
+		P3_enable			: out STD_LOGIC := '0';
+		P3_inload_done		: in STD_LOGIC := '0';
+		P3_unload_done 	: inout STD_LOGIC := '0';
+		P3_change_s			: out STD_LOGIC := '0';
+		P4_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P4_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_set_3 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_set_4 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P4_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P4_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P4_I_selector		: out STD_LOGIC := '0';
+		P4_S_selector		: inout STD_LOGIC := '0';
+		P4_enable			: out STD_LOGIC := '0';
+		P4_inload_done		: in STD_LOGIC := '0';
+		P4_unload_done 	: inout STD_LOGIC := '0';
+		P4_change_s			: out STD_LOGIC := '0';
+		P5_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P5_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_set_3 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_set_4 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_h_count_out 	: inout STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P5_BRAM_in			: in STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P5_video_out		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P5_I_selector		: out STD_LOGIC := '0';
+		P5_S_selector		: inout STD_LOGIC := '0';
+		P5_enable			: out STD_LOGIC := '0';
+		P5_inload_done		: in STD_LOGIC := '0';
+		P5_unload_done 	: inout STD_LOGIC := '0';
+		P5_change_s			: out STD_LOGIC := '0'
 		);
 		
 		-- Px_conf settings:
@@ -139,14 +209,6 @@ architecture Structural of Output_Controller is
 begin
 
  BRAM_clock_out_e <= '1' when active_video_p2 = '1' or active_video_p3 = '1' else '0';
- --BRAM_clock_out_e <= '1' when active_video_p3 = '1' else '0';
- --BRAM_clock_out_e <= '1' when global_active_v = '1' else '0';
- 
- --global_output_av <= global_active_v;
- --global_output_h <= global_h_sync;
- --global_output_v <= global_v_sync;
- 
- --BRAM_clock_out_e <=  global_active_v;
 ----------------------
 -- Pipeline signals for synchonization
 ----------------------
@@ -187,9 +249,7 @@ begin
 		Px_set_4 			=> P0_set_4,
 		Px_h_count_out 	=> P0_h_count_out,
 		Px_BRAM_in			=> P0_BRAM_in,
-		--Px_BRAM_in			=> "111111111111111100000000",
 		Px_video_out		=> P0_video_out,
-		--Px_video_out		=> open,
 		Px_I_selector		=> P0_I_selector,
 		Px_S_selector		=> P0_S_selector,
 		Px_enable			=> P0_enable,
@@ -198,7 +258,116 @@ begin
 		Px_change_s			=> p0_change_s		
 	 );
 	 
-	 --P0_video_out <= "111111111111111100000000";
+	 Port_1_controller : Px_output_controller
+    Port map ( 
+		clk_in 				=> clk_in,
+		global_h_count		=> global_h_count,
+		global_v_count		=> global_v_count,
+		global_active_v	=> global_active_v,
+		Px_conf				=> P1_conf,
+		Px_set_1 			=> P1_set_1,
+		Px_set_2 			=> P1_set_2,
+		Px_set_3 			=> P1_set_3,
+		Px_set_4 			=> P1_set_4,
+		Px_h_count_out 	=> P1_h_count_out,
+		Px_BRAM_in			=> P1_BRAM_in,
+		Px_video_out		=> P1_video_out,
+		Px_I_selector		=> P1_I_selector,
+		Px_S_selector		=> P1_S_selector,
+		Px_enable			=> P1_enable,
+		Px_inload_done		=> P1_inload_done,
+		Px_unload_done		=> P1_unload_done,
+		Px_change_s			=> p1_change_s		
+	 );
+	 
+	 Port_2_controller : Px_output_controller
+    Port map ( 
+		clk_in 				=> clk_in,
+		global_h_count		=> global_h_count,
+		global_v_count		=> global_v_count,
+		global_active_v	=> global_active_v,
+		Px_conf				=> P2_conf,
+		Px_set_1 			=> P2_set_1,
+		Px_set_2 			=> P2_set_2,
+		Px_set_3 			=> P2_set_3,
+		Px_set_4 			=> P2_set_4,
+		Px_h_count_out 	=> P2_h_count_out,
+		Px_BRAM_in			=> P2_BRAM_in,
+		Px_video_out		=> P2_video_out,
+		Px_I_selector		=> P2_I_selector,
+		Px_S_selector		=> P2_S_selector,
+		Px_enable			=> P2_enable,
+		Px_inload_done		=> P2_inload_done,
+		Px_unload_done		=> P2_unload_done,
+		Px_change_s			=> p2_change_s		
+	 );
+	 
+	 Port_3_controller : Px_output_controller
+    Port map ( 
+		clk_in 				=> clk_in,
+		global_h_count		=> global_h_count,
+		global_v_count		=> global_v_count,
+		global_active_v	=> global_active_v,
+		Px_conf				=> P3_conf,
+		Px_set_1 			=> P3_set_1,
+		Px_set_2 			=> P3_set_2,
+		Px_set_3 			=> P3_set_3,
+		Px_set_4 			=> P3_set_4,
+		Px_h_count_out 	=> P3_h_count_out,
+		Px_BRAM_in			=> P3_BRAM_in,
+		Px_video_out		=> P3_video_out,
+		Px_I_selector		=> P3_I_selector,
+		Px_S_selector		=> P3_S_selector,
+		Px_enable			=> P3_enable,
+		Px_inload_done		=> P3_inload_done,
+		Px_unload_done		=> P3_unload_done,
+		Px_change_s			=> p3_change_s		
+	 );
+	 
+	 Port_4_controller : Px_output_controller
+    Port map ( 
+		clk_in 				=> clk_in,
+		global_h_count		=> global_h_count,
+		global_v_count		=> global_v_count,
+		global_active_v	=> global_active_v,
+		Px_conf				=> P4_conf,
+		Px_set_1 			=> P4_set_1,
+		Px_set_2 			=> P4_set_2,
+		Px_set_3 			=> P4_set_3,
+		Px_set_4 			=> P4_set_4,
+		Px_h_count_out 	=> P4_h_count_out,
+		Px_BRAM_in			=> P4_BRAM_in,
+		Px_video_out		=> P4_video_out,
+		Px_I_selector		=> P4_I_selector,
+		Px_S_selector		=> P4_S_selector,
+		Px_enable			=> P4_enable,
+		Px_inload_done		=> P4_inload_done,
+		Px_unload_done		=> P4_unload_done,
+		Px_change_s			=> p4_change_s		
+	 );
+	 
+	 Port_5_controller : Px_output_controller
+    Port map ( 
+		clk_in 				=> clk_in,
+		global_h_count		=> global_h_count,
+		global_v_count		=> global_v_count,
+		global_active_v	=> global_active_v,
+		Px_conf				=> P5_conf,
+		Px_set_1 			=> P5_set_1,
+		Px_set_2 			=> P5_set_2,
+		Px_set_3 			=> P5_set_3,
+		Px_set_4 			=> P5_set_4,
+		Px_h_count_out 	=> P5_h_count_out,
+		Px_BRAM_in			=> P5_BRAM_in,
+		Px_video_out		=> P5_video_out,
+		Px_I_selector		=> P5_I_selector,
+		Px_S_selector		=> P5_S_selector,
+		Px_enable			=> P5_enable,
+		Px_inload_done		=> P5_inload_done,
+		Px_unload_done		=> P5_unload_done,
+		Px_change_s			=> p5_change_s		
+	 );
+
 
 end Structural;
 

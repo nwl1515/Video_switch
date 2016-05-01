@@ -47,6 +47,56 @@ entity DDR_to_BRAM_controller is
 		P0_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
 		P0_S_selector		: in STD_LOGIC := '0';
 		P0_inload_done		: inout STD_LOGIC := '0';
+		P1_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P1_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P1_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P1_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P1_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P1_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P1_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P1_S_selector		: in STD_LOGIC := '0';
+		P1_inload_done		: inout STD_LOGIC := '0';
+		P2_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P2_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P2_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P2_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P2_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P2_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P2_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P2_S_selector		: in STD_LOGIC := '0';
+		P2_inload_done		: inout STD_LOGIC := '0';
+		P3_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P3_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P3_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P3_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P3_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P3_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P3_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P3_S_selector		: in STD_LOGIC := '0';
+		P3_inload_done		: inout STD_LOGIC := '0';
+		P4_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P4_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P4_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P4_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P4_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P4_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P4_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P4_S_selector		: in STD_LOGIC := '0';
+		P4_inload_done		: inout STD_LOGIC := '0';
+		P5_conf				: in STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+		P5_set_1 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_set_2 			: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
+		P5_h_count_out_I0 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P5_h_count_out_I1 : out STD_LOGIC_VECTOR(10 downto 0) := (others => '0');
+		P5_BRAM_out_I0		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P5_BRAM_out_I1		: out STD_LOGIC_VECTOR(23 downto 0) := (others => '0');
+		P5_data_out_sel	: inout STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+		P5_S_selector		: in STD_LOGIC := '0';
+		P5_inload_done		: inout STD_LOGIC := '0';
 		change_S				: in STD_LOGIC := '0';
 		c3_p4_cmd_en                          	 : inout std_logic := '0';
 		c3_p4_cmd_bl                            : out std_logic_vector(5 downto 0) := "011111";
@@ -111,10 +161,25 @@ begin
 	
 	
 	-- Data from DDR to BRAM, when something in buffer
+	c3_p5_rd_en <= '1' when c3_p5_rd_empty = '0' else '0';
 	p0_BRAM_out_I1 <= gearbox_I1;
-	p0_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';
-	c3_p5_rd_en <= '1' when c3_p5_rd_empty = '0' else '0';	
+	p0_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';		
 	p0_h_count_out_I1 <= h_count_I1;
+	p1_BRAM_out_I1 <= gearbox_I1;
+	p1_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';		
+	p1_h_count_out_I1 <= h_count_I1;
+	p2_BRAM_out_I1 <= gearbox_I1;
+	p2_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';		
+	p2_h_count_out_I1 <= h_count_I1;
+	p3_BRAM_out_I1 <= gearbox_I1;
+	p3_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';		
+	p3_h_count_out_I1 <= h_count_I1;
+	p4_BRAM_out_I1 <= gearbox_I1;
+	p4_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';		
+	p4_h_count_out_I1 <= h_count_I1;
+	p5_BRAM_out_I1 <= gearbox_I1;
+	p5_data_out_sel(1) <= '1' when c3_p5_rd_empty = '0' else '0';		
+	p5_h_count_out_I1 <= h_count_I1;
 	
 	
 	gearbox_proc_i1 : process(clk_in_x2)
@@ -142,10 +207,25 @@ begin
 	end process gearbox_proc_i1;
 	
 	
+	c3_p4_rd_en <= '1' when c3_p4_rd_empty = '0' else '0';
 	p0_BRAM_out_I0 <= gearbox_I0;
-	p0_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';
-	c3_p4_rd_en <= '1' when c3_p4_rd_empty = '0' else '0';	
+	p0_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';	
 	p0_h_count_out_I0 <= h_count_I0;
+	p1_BRAM_out_I0 <= gearbox_I0;
+	p1_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';	
+	p1_h_count_out_I0 <= h_count_I0;
+	p2_BRAM_out_I0 <= gearbox_I0;
+	p2_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';	
+	p2_h_count_out_I0 <= h_count_I0;
+	p3_BRAM_out_I0 <= gearbox_I0;
+	p3_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';	
+	p3_h_count_out_I0 <= h_count_I0;
+	p4_BRAM_out_I0 <= gearbox_I0;
+	p4_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';	
+	p4_h_count_out_I0 <= h_count_I0;
+	p5_BRAM_out_I0 <= gearbox_I0;
+	p5_data_out_sel(0) <= '1' when c3_p4_rd_empty = '0' else '0';	
+	p5_h_count_out_I0 <= h_count_I0;
 	
 	
 	gearbox_proc_i0 : process(clk_in_x2)
