@@ -32,7 +32,8 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 --use UNISIM.VComponents.all;
 
 entity Px_output_controller is
-    Port ( 
+    Port (
+		device_set			: in STD_LOGIC_vector(2 downto 0) := "000";
 		clk_in 				: in  STD_LOGIC := '0'; --- OBS x1 pixel clock
 		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
 		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
@@ -65,9 +66,25 @@ begin
 
 	Px_enable <= '1' when Px_conf < "1111" else '0';
 	
-	Px_video_out <= Px_BRAM_in when Px_conf = "0000" or Px_conf = "0001" or Px_conf = "0100" or Px_conf = "0101" or Px_conf = "0110" or Px_conf = "0111" or Px_conf = "1000" or Px_conf = "1001" else  (others => '0');
-	Px_h_count_out <= global_h_count(10 downto 0) when (Px_conf = "0000" or Px_conf = "0001" or Px_conf = "0100" or Px_conf = "0101" or Px_conf = "0110" or Px_conf = "0111" or Px_conf = "1000" or Px_conf = "1001") and not(global_v_count = "111111111111") else (others => '0');
-	Px_v_count_out <= global_v_count(10 downto 0) when (Px_conf = "0000" or Px_conf = "0001" or Px_conf = "0100" or Px_conf = "0101" or Px_conf = "0110" or Px_conf = "0111" or Px_conf = "1000" or Px_conf = "1001") and not(global_v_count = "111111111111") else (others => '0');
+	Px_video_out <= Px_BRAM_in when Px_conf = "0000" or Px_conf = "0001" or 
+						Px_conf = "0100" or Px_conf = "0101" or Px_conf = "0110" or 
+						Px_conf = "0111" or Px_conf = "1000" or Px_conf = "1001" or 
+						(Px_conf = "0010" and device_set > 0) or 
+						(Px_conf = "0011" and device_set > 0) 
+						else  (others => '0');
+	
+	Px_h_count_out <= global_h_count(10 downto 0) when (Px_conf = "0000" or 
+							Px_conf = "0001" or Px_conf = "0100" or Px_conf = "0101" or 
+							Px_conf = "0110" or Px_conf = "0111" or Px_conf = "1000" or 
+							Px_conf = "1001") and not(global_v_count = "111111111111") 
+							else global_h_count(11 downto 1) when ((Px_conf = "0010" or Px_conf = "0011") and (device_set = "001" or device_set = "011")) and not(global_v_count = "111111111111")
+							else global_h_count(11 downto 1)+640 when ((Px_conf = "0010" or Px_conf = "0011") and (device_set = "10" or device_set = "100")) and not(global_v_count = "111111111111")
+							else (others => '0');
+							
+	Px_v_count_out <= global_v_count(10 downto 0) when (Px_conf = "0000" or 
+							Px_conf = "0001" or Px_conf = "0100" or Px_conf = "0101" or 
+							Px_conf = "0110" or Px_conf = "0111" or Px_conf = "1000" or 
+							Px_conf = "1001" or Px_conf = "0010" or Px_conf = "0011") and not(global_v_count = "111111111111") else (others => '0');
 	controller : process(clk_in)
 	begin
 		if rising_edge(clk_in) then
@@ -75,30 +92,26 @@ begin
 			Px_I_selector_p1 <= Px_I_selector_p2;
 			case Px_conf is
 				when "0000" =>
-									Px_I_selector_p2 <= '0';
-									Px_change_s <= '0';
-								
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
-									end if;
+									Px_I_selector_p2 <= '0';								
 									
 																	
 				when "0001" =>
 									Px_I_selector_p2 <= '1';
-									Px_change_s <= '0';
 								
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
+				
+
+				when "0010" =>
+									if device_set = "001" or device_set = "010" then
+										Px_I_selector_p2 <= '0';
+									else
+										Px_I_selector_p2 <= '1';
+									end if;
+									
+				when "0011" =>
+									if device_set = "001" or device_set = "010" then
+										Px_I_selector_p2 <= '0';
+									else
+										Px_I_selector_p2 <= '1';
 									end if;
 						
 									
@@ -108,16 +121,7 @@ begin
 									else
 										Px_I_selector_p2 <= '0';
 									end if;
-									Px_change_s <= '0';
-								
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
-									end if;
+						
 									
 				when "0101" =>
 									if Px_h_count_out < Px_set_1 then
@@ -125,16 +129,7 @@ begin
 									else
 										Px_I_selector_p2 <= '1';
 									end if;
-									Px_change_s <= '0';
-								
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
-									end if;
+						
 				
 				when "0110" =>
 									if Px_v_count_out < Px_set_1 then
@@ -142,16 +137,7 @@ begin
 									else
 										Px_I_selector_p2 <= '1';
 									end if;
-									Px_change_s <= '0';
-									
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
-									end if;
+						
 									
 				when "0111" =>
 									if Px_v_count_out < Px_set_1 then
@@ -159,16 +145,7 @@ begin
 									else
 										Px_I_selector_p2 <= '0';
 									end if;
-									Px_change_s <= '0';
-									
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
-									end if;	
+					
 									
 				when "1000" => 
 									if (Px_v_count_out < Px_set_2) or (Px_v_count_out > Px_set_2+Px_set_4) then
@@ -178,16 +155,8 @@ begin
 									else
 										Px_I_selector_p2 <= '1';
 									end if;
-									Px_change_s <= '0';
+								
 									
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
-									end if;
 
 				when "1001" => 
 									if (Px_v_count_out < Px_set_2) or (Px_v_count_out > Px_set_2+Px_set_4) then
@@ -197,20 +166,22 @@ begin
 									else
 										Px_I_selector_p2 <= '0';
 									end if;
-									Px_change_s <= '0';
 									
-									if Px_h_count_out >= 1279 and global_active_v = '1' then
-										Px_unload_done <= '1';
-										
-									elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
-										Px_S_selector <= not Px_S_selector;
-										Px_unload_done <= '0';
-										Px_change_s <= '1';
-									end if;
 									
 				when others =>
 									
 			end case;
+			
+			Px_change_s <= '0';
+			
+			if global_h_count >= 1279 and global_active_v = '1' then
+				Px_unload_done <= '1';
+										
+			elsif Px_unload_done = '1' and not(global_v_count = "111111111111") then
+				Px_S_selector <= not Px_S_selector;
+				Px_unload_done <= '0';
+				Px_change_s <= '1';
+			end if;
 		end if;
 	end process controller;
 

@@ -179,6 +179,7 @@ architecture Structural of Output_Controller is
 
 	COMPONENT Px_output_controller
     Port ( 
+		device_set			: in STD_LOGIC_VECTOR(2 downto 0);
 		clk_in 				: in  STD_LOGIC; --- OBS x1 pixel clock
 		global_h_count		: in STD_LOGIC_VECTOR(11 downto 0);
 		global_v_count		: in STD_LOGIC_VECTOR(11 downto 0);
@@ -238,6 +239,7 @@ begin
 
 	Port_0_controller : Px_output_controller
     Port map ( 
+		device_set			=> "000",
 		clk_in 				=> clk_in,
 		global_h_count		=> global_h_count,
 		global_v_count		=> global_v_count,
@@ -260,6 +262,7 @@ begin
 	 
 	 Port_1_controller : Px_output_controller
     Port map ( 
+		device_set			=> "000",
 		clk_in 				=> clk_in,
 		global_h_count		=> global_h_count,
 		global_v_count		=> global_v_count,
@@ -282,6 +285,7 @@ begin
 	 
 	 Port_2_controller : Px_output_controller
     Port map ( 
+		device_set			=> "001",
 		clk_in 				=> clk_in,
 		global_h_count		=> global_h_count,
 		global_v_count		=> global_v_count,
@@ -304,6 +308,7 @@ begin
 	 
 	 Port_3_controller : Px_output_controller
     Port map ( 
+		device_set			=> "010",
 		clk_in 				=> clk_in,
 		global_h_count		=> global_h_count,
 		global_v_count		=> global_v_count,
@@ -326,6 +331,7 @@ begin
 	 
 	 Port_4_controller : Px_output_controller
     Port map ( 
+		device_set			=> "011",
 		clk_in 				=> clk_in,
 		global_h_count		=> global_h_count,
 		global_v_count		=> global_v_count,
@@ -348,6 +354,7 @@ begin
 	 
 	 Port_5_controller : Px_output_controller
     Port map ( 
+		device_set			=> "100",
 		clk_in 				=> clk_in,
 		global_h_count		=> global_h_count,
 		global_v_count		=> global_v_count,
