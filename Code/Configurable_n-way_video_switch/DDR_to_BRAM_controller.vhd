@@ -143,6 +143,9 @@ architecture Structural of DDR_to_BRAM_controller is
 	signal gearbox_I1				: std_logic_Vector(23 downto 0) := (others => '0');
 	signal gearbox_I0_s			: std_logic := '0';
 	signal gearbox_I1_s			: std_logic := '0';
+	
+	signal scaling					: std_logic := '0';
+	
 
 begin
 
@@ -159,6 +162,10 @@ begin
 	
 	internal_v_count <= (others => '0') when global_v_count >= 719 else global_v_count(10 downto 0) + 1;
 	
+	scaling <= '1' when P2_conf = "0010" or P2_conf = "0011" or 
+						P3_conf = "0010" or P3_conf = "0011" or P4_conf = "0010" or
+						P4_conf = "0011" or P5_conf = "0010" or P5_conf = "0011"
+						else '0';
 	
 	-- Data from DDR to BRAM, when something in buffer
 	c3_p5_rd_en <= '1' when c3_p5_rd_empty = '0' else '0';
@@ -269,6 +276,7 @@ begin
 	I1_proc : process(clk_in,change_S)
 		variable address_count : integer := 0;
 		variable count_buffer : integer := 0;
+		variable scaling_done	: integer := 0;
 	begin			
 		if rising_edge(clk_in) then
 			c3_p5_cmd_en <= '0';
@@ -283,8 +291,13 @@ begin
 				
 			elsif change_S = '1' then
 				run_I1 <= '1';
-				address_count := 0;
+				if scaling = '1' then
+					address_count := conv_integer(P4_set_1(11 downto 1));
+				else
+					address_count := 0;
+				end if;
 				count_buffer := 0;
+				scaling_done := 0;
 				
 			else
 				if run_I1 = '1' then
@@ -293,12 +306,39 @@ begin
 							count_buffer := count_buffer - 1;						
 						end if;
 						
-						if address_count < 640 and count_buffer <= 32 and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
-							c3_p5_cmd_en <= '1';
-							c3_p5_cmd_byte_addr <= "000100" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
-							address_count := address_count + 32;
-							count_buffer := count_buffer +32;
+						if scaling = '1' then
+							if address_count < conv_integer(P4_set_1(11 downto 1))+320 and count_buffer <= 32 and Called_I1 = '0' and scaling_done = 0 then
+								c3_p5_cmd_en <= '1';
+								if P4_conf = "0010" then
+									c3_p5_cmd_byte_addr <= "000000" & "0" & (internal_v_count(10 downto 1)+P4_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								else
+									c3_p5_cmd_byte_addr <= "000100" & "0" & (internal_v_count(10 downto 1)+P4_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								end if;
+								address_count := address_count + 32;
+								count_buffer := count_buffer +32;
+								if address_count >= conv_integer(P4_set_1(11 downto 1))+320 then
+									scaling_done := 1;
+									address_count := conv_integer(P5_set_1(11 downto 1));
+								end if;
 								
+							elsif address_count < conv_integer(P5_set_1(11 downto 1))+320 and count_buffer <= 32 and Called_I1 = '0' and scaling_done = 1 then
+								c3_p5_cmd_en <= '1';
+								if P5_conf = "0010" then
+									c3_p5_cmd_byte_addr <= "000000" & "0" & (internal_v_count(10 downto 1)+P5_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								else
+									c3_p5_cmd_byte_addr <= "000100" & "0" & (internal_v_count(10 downto 1)+P5_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								end if;								
+								address_count := address_count + 32;
+								count_buffer := count_buffer +32;
+							end if;
+							
+						else
+							if address_count < 640 and count_buffer <= 32 and called_I1 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+								c3_p5_cmd_en <= '1';
+								c3_p5_cmd_byte_addr <= "000100" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
+								address_count := address_count + 32;
+								count_buffer := count_buffer +32;		
+							end if;
 						end if;
 						
 						
@@ -316,6 +356,7 @@ begin
 	I0_proc : process(clk_in,change_S)
 		variable address_count : integer := 0;
 		variable count_buffer : integer := 0;
+		variable scaling_done : integer := 0;
 	begin			
 		if rising_edge(clk_in) then
 			c3_p4_cmd_en <= '0';
@@ -330,8 +371,13 @@ begin
 				
 			elsif change_S = '1' then
 				run_I0 <= '1';
-				address_count := 0;
+				if scaling = '1' then
+					address_count := conv_integer(P2_set_1(11 downto 1));
+				else
+					address_count := 0;
+				end if;
 				count_buffer := 0;
+				scaling_done := 0;
 				
 			else
 				if run_I0 = '1' then
@@ -340,12 +386,43 @@ begin
 							count_buffer := count_buffer - 1;						
 						end if;
 						
-						if address_count < 640 and count_buffer <= 32 and called_I0 = '0' then -- call for 16 new pixels if buffer empty or less than 8
-							c3_p4_cmd_en <= '1';
-							c3_p4_cmd_byte_addr <= "000000" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
-							address_count := address_count + 32;
-							count_buffer := count_buffer +32;
+						
+						
+						if scaling = '1' then
+							if address_count < conv_integer(P2_set_1(11 downto 1))+320 and count_buffer <= 32 and Called_I0 = '0' and scaling_done = 0 then
+								c3_p4_cmd_en <= '1';
+								if P2_conf = "0010" then
+									c3_p4_cmd_byte_addr <= "000000" & "0" & (internal_v_count(10 downto 1)+P2_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								else
+									c3_p4_cmd_byte_addr <= "000100" & "0" & (internal_v_count(10 downto 1)+P2_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								end if;
+								address_count := address_count + 32;
+								count_buffer := count_buffer +32;
+								if address_count >= conv_integer(P2_set_1(11 downto 1))+320 then
+									scaling_done := 1;
+									address_count := conv_integer(P3_set_1(11 downto 1));
+								end if;
 								
+							elsif address_count < conv_integer(P3_set_1(11 downto 1))+320 and count_buffer <= 32 and Called_I0 = '0' and scaling_done = 1 then
+								c3_p4_cmd_en <= '1';
+								if P3_conf = "0010" then
+									c3_p4_cmd_byte_addr <= "000000" & "0" & (internal_v_count(10 downto 1)+P3_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								else
+									c3_p4_cmd_byte_addr <= "000100" & "0" & (internal_v_count(10 downto 1)+P3_set_2(9 downto 0)) & conv_std_logic_vector(address_count, 11) & "00";
+								end if;								
+								address_count := address_count + 32;
+								count_buffer := count_buffer +32;
+							end if;
+							
+						else
+						
+							if address_count < 640 and count_buffer <= 32 and called_I0 = '0' then -- call for 16 new pixels if buffer empty or less than 8
+								c3_p4_cmd_en <= '1';
+								c3_p4_cmd_byte_addr <= "000000" & internal_v_count & conv_std_logic_vector(address_count, 11) & "00";
+								address_count := address_count + 32;
+								count_buffer := count_buffer +32;
+									
+							end if;
 						end if;
 						
 						
