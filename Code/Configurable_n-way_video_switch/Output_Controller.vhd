@@ -154,20 +154,7 @@ entity Output_Controller is
 			-- set 2 = y cord foreground
 			-- set 3 = x size foreground
 			-- set 4 = y size foreground
-		-- 1010 -> output = 1 background, 0 foreground upscaled
-			-- set 1 = x cord foreground
-			-- set 2 = y cord foreground
-		-- 1011 -> output = 0 background, 1 foreground upscaled
-			-- set 1 = x cord foreground
-			-- set 2 = y cord foreground
-		-- 1100 -> output = 0 background, 0 foreground upscaled
-			-- set 1 = x cord foreground
-			-- set 2 = y cord foreground
-		-- 1101 -> output = 1 foreground, 1 foreground upscaled
-			-- set 1 = x cord fogreground
-			-- set 2 = y cord foreground
-			
-		-- 1111 -> off
+		-- others -> off
 		
 		
 		

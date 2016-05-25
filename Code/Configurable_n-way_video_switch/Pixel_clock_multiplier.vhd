@@ -29,9 +29,11 @@ entity Pixel_clock_multiplier is
 		pclk_in			: in STD_LOGIC := '0';
 		pclk_o_x1		: out STD_LOGIC := '0';
 		pclk_o_x2		: out STD_LOGIC := '0';
-		pclk_o_x10		: out STD_LOGIC := '0';
+		pclk_o_x10_b0	: out STD_LOGIC := '0';
+		pclk_o_x10_b2  : out STD_LOGIC := '0';
 		pll_locked		: out STD_LOGIC := '0';
-		serdes_strobe	: out STD_LOGIC := '0'
+		serdes_strobe_b0	: out STD_LOGIC := '0';
+		serdes_strobe_b2 : out STD_LOGIC := '0'
 	);
 end Pixel_clock_multiplier;
 
@@ -93,7 +95,7 @@ architecture Behavioral of Pixel_clock_multiplier is
 			O						=> pclk_x2_b
 		);
 		
-		buffer_pclk_x10_PLL_buff: BUFPLL
+		buffer_pclk_x10_PLL_buff_b0: BUFPLL
 		generic map(
 			DIVIDE				=> 5
 		)
@@ -101,8 +103,21 @@ architecture Behavioral of Pixel_clock_multiplier is
 			PLLIN					=> pclk_x10,
 			GCLK					=> pclk_x2_b,
 			LOCKED				=> pll_locked_i,
-			IOCLK					=> pclk_o_x10,
-			SERDESSTROBE		=> serdes_strobe,
+			IOCLK					=> pclk_o_x10_b0,
+			SERDESSTROBE		=> serdes_strobe_b0,
+			LOCK					=> open
+		);
+		
+		buffer_pclk_x10_PLL_buff_b2: BUFPLL
+		generic map(
+			DIVIDE				=> 5
+		)
+		PORT map(
+			PLLIN					=> pclk_x10,
+			GCLK					=> pclk_x2_b,
+			LOCKED				=> pll_locked_i,
+			IOCLK					=> pclk_o_x10_b2,
+			SERDESSTROBE		=> serdes_strobe_b2,
 			LOCK					=> open
 		);
 			

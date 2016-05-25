@@ -36,8 +36,6 @@ entity Video_Switch is
 			-- LEDS
 			leds						: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 			
-			btn						: in std_logic_vector(7 downto 0);
-			
 			-- Inputs TMDS
 			hdmi_port_0_in_p		: in STD_LOGIC_VECTOR(3 downto 0);
 			hdmi_port_0_in_n		: in STD_LOGIC_VECTOR(3 downto 0);
@@ -86,9 +84,7 @@ entity Video_Switch is
 			
 			-- UART
 			uart_tx											 : out std_logic;
-			uart_rx											 : in std_logic
-			
-			
+			uart_rx											 : in std_logic			
 			);
 			
 	
@@ -102,11 +98,9 @@ architecture Structural of Video_Switch is
 
 	signal global_pixel_clock					: std_logic := '0';
 	signal global_pixel_clock_I0				: std_logic := '0';
-	signal global_pixel_clock_x1_b0			: std_logic := '0';
-	signal global_pixel_clock_x2_b0			: std_logic := '0';
+	signal global_pixel_clock_x1				: std_logic := '0';
+	signal global_pixel_clock_x2				: std_logic := '0';
 	signal global_pixel_clock_x10_b0			: std_logic := '0';
-	signal global_pixel_clock_x1_b2			: std_logic := '0';
-	signal global_pixel_clock_x2_b2			: std_logic := '0';
 	signal global_pixel_clock_x10_b2			: std_logic := '0';
 	signal global_output_h_sync 				: std_logic := '0';
 	signal global_output_h_sync_controller : std_logic := '0';
@@ -114,16 +108,8 @@ architecture Structural of Video_Switch is
 	signal global_output_v_sync_controller : std_logic := '0';
 	signal global_output_active_video 		: std_logic := '0';
 	signal global_output_active_video_controller : std_logic := '0';
-	signal simulator_active_video				: std_logic := '0';
-	signal simulator_h_count					: std_logic_vector(11 downto 0) := (others => '0');
-	signal simulator_v_count					: std_logic_vector(11 downto 0) := (others => '0');
-	signal simulator_active_video_2				: std_logic := '0';
-	signal simulator_h_count_2					: std_logic_vector(11 downto 0) := (others => '0');
-	signal simulator_v_count_2					: std_logic_vector(11 downto 0) := (others => '0');
 	signal global_pll_locked					: std_logic := '0';
-	signal global_pll_locked_b0				: std_logic := '0';
 	signal global_serdes_strobe_b0			: std_logic := '0';
-	signal global_pll_locked_b2				: std_logic := '0';
 	signal global_serdes_strobe_b2			: std_logic := '0';
 	signal global_h_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
 	signal global_v_count_pixel_out			: std_logic_vector(11 downto 0) := (others => '0');
@@ -181,14 +167,15 @@ architecture Structural of Video_Switch is
 	signal P5_BRAM_I_selector					: std_logic := '0';
 	signal P5_BRAM_S_selector					: std_logic := '0';
 	
-	 signal color_in							: std_logic_vector(23 downto 0) := (others => '0');
+	 signal color_in								: std_logic_vector(23 downto 0) := (others => '0');
 	 signal color_in_2							: std_logic_vector(23 downto 0) := (others => '0');
 	 
 	signal reset									: std_logic := '0';
 	
-	signal color_red, color_blue, color_green : std_logic_vector(7 downto 0) := (others => '0');
-	signal g_color_red, g_color_green, g_color_blue : std_logic_vector(7 downto 0) := (others => '0');
-	signal GCLK_i								: std_logic := '0';
+	signal color_red, color_blue, color_green 				: std_logic_vector(7 downto 0) := (others => '0');
+	signal g_color_red, g_color_green, g_color_blue 		: std_logic_vector(7 downto 0) := (others => '0');
+	
+	signal GCLK_i									: std_logic := '0';
 	
 	signal DDR_p2_cmd_en							: STD_LOGIC := '0';
 	signal DDR_p2_cmd_byte_addr				: STD_LOGIC_VECTOR(29 downto 0) := (others => '0');
@@ -417,23 +404,6 @@ END COMPONENT;
 			);
 	END COMPONENT;
 	
-	COMPONENT dvi_encoder_top is
-	port (
-        pclk : in std_logic;           
-        pclkx2 : in std_logic;       
-        pclkx10 : in std_logic;      
-       serdesstrobe : in std_logic;   
-        rstin : in std_logic;         
-  blue_din : in std_logic_Vector(7 downto 0);     
-  green_din : in std_logic_vector(7 downto 0);    
-   red_din : in std_logic_Vector(7 downto 0);       
-       hsync : in std_logic;          
-  vsync : in std_logic;          
-	DE	:	in std_logic;             
-  TMDS : out std_logic_vector;
-   TMDSB : out std_logic_vector
-  );
-  END COMPONENT;
 	
 	COMPONENT DDR_to_BRAM_controller is
     Port ( 
@@ -755,24 +725,13 @@ END COMPONENT;
 		pclk_in			: in STD_LOGIC;
 		pclk_o_x1		: out STD_LOGIC;
 		pclk_o_x2		: out STD_LOGIC;
-		pclk_o_x10		: out STD_LOGIC;
+		pclk_o_x10_b0		: out STD_LOGIC;
+		pclk_o_x10_b2  : out STD_LOGIC;
 		pll_locked		: out STD_LOGIC;
-		serdes_strobe	: out STD_LOGIC);
+		serdes_strobe_b0	: out STD_LOGIC;
+		serdes_strobe_b2 : out STD_LOGIC);
 	END COMPONENT;
 	
-	COMPONENT Dual_Pixel_clock_multiplier is
-	PORT(
-		pclk_in			: in STD_LOGIC := '0';
-		pclk_o_x1_b0		: out STD_LOGIC := '0';
-		pclk_o_x2_b0		: out STD_LOGIC := '0';
-		pclk_o_x10_b0		: out STD_LOGIC := '0';	
-		serdes_strobe_b0	: out STD_LOGIC := '0';
-		pclk_o_x1_b1		: out STD_LOGIC := '0';
-		pclk_o_x2_b1		: out STD_LOGIC := '0';
-		pclk_o_x10_b1		: out STD_LOGIC := '0';	
-		serdes_strobe_b1	: out STD_LOGIC := '0';
-		pll_locked		: out STD_LOGIC := '0');
-	END COMPONENT;
 	
 	
 	component DDR_Memory_Interface
@@ -886,24 +845,10 @@ end component;
 
 begin
 
---leds(0) <= ddr_calibration;
---leds(7 downto 4) <= leds_out(4 downto 1);
---leds(0) <= DDR_p3_cmd_en;
---leds(4) <= DDR_p2_cmd_full;
---leds(5) <= DDR_p2_wr_full;
---leds(6) <= DDR_p3_cmd_full;
---leds(7) <= DDR_p3_wr_full;
---leds(3) <= DDR_p3_wr_empty;
---leds(7 downto 0) <= test_leds(7 downto 0);
---leds(4) <= DDR_p5_cmd_en;
---leds(5) <= DDR_p5_cmd_full;
---leds(6) <= DDR_p5_rd_full;
---leds(7) <= DDR_p5_rd_empty;
---leds(0) <= reset;
---leds(7 downto 1) <= DDR_p3_cmd_byte_addr(29 downto 23);
-
 
 clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
+
+reset <= not global_pll_locked;
 
 
 
@@ -955,10 +900,9 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 			new_frame		=> new_frame_I0,
 			ready				=> ready_I0,
 			pclk				=> global_pixel_clock_I0,
-			--pclk				=> global_pixel_clock_I0_buf,
-			pclk_x2			=> global_pixel_clock_x2_b0,
-			pclk_x10			=> global_pixel_clock_X10_b0,
-			serdes_strobe	=> global_serdes_strobe_b0,
+			pclk_x2			=> open,
+			pclk_x10			=> open,
+			serdes_strobe 	=> open,
 			leds				=> open
 			);
 			
@@ -971,11 +915,16 @@ clk_buf   : IBUFG port map ( O  => GCLK_i, I => GCLK);
 ------------------------------
 hdmi_output_0 : HDMI_OUT
 		PORT MAP(
-			Pixel_clock 		=> global_pixel_clock_I0,
-			clk_x1				=> global_pixel_clock_I0,		
-			clk_x2				=> global_pixel_clock_x2_b0,
+			--Pixel_clock 		=> global_pixel_clock_I0,
+			--clk_x1				=> global_pixel_clock_I0,		
+			--clk_x2				=> global_pixel_clock_x2_b0,
+			--clk_x10				=> global_pixel_clock_x10_b0,
+			--serdes_strobe 		=> global_serdes_strobe_b0,
+			Pixel_clock 		=> global_pixel_clock,
+			clk_x1				=> global_pixel_clock_x1,
+			clk_x2				=> global_pixel_clock_x2,
 			clk_x10				=> global_pixel_clock_x10_b0,
-			serdes_strobe 		=> global_serdes_strobe_b0,
+			serdes_strobe		=> global_Serdes_strobe_b0,
 			red_p      			=> P0_data_out(23 downto 16),
 			green_p    			=> P0_data_out(15 downto 8),
 			blue_p     			=> P0_data_out(7 downto 0),
@@ -990,8 +939,8 @@ hdmi_output_0 : HDMI_OUT
 hdmi_output_1 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock 		=> global_pixel_clock,
-			clk_x1				=> global_pixel_clock_x1_b2,
-			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x1				=> global_pixel_clock_x1,
+			clk_x2				=> global_pixel_clock_x2,
 			clk_x10				=> global_pixel_clock_x10_b2,
 			serdes_strobe 		=> global_serdes_strobe_b2,
 			red_p      			=> P1_data_out(23 downto 16),
@@ -1007,8 +956,8 @@ hdmi_output_1 : HDMI_OUT
 hdmi_output_2 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock 		=> global_pixel_clock,
-			clk_x1				=> global_pixel_clock_x1_b2,
-			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x1				=> global_pixel_clock_x1,
+			clk_x2				=> global_pixel_clock_x2,
 			clk_x10				=> global_pixel_clock_x10_b2,
 			serdes_strobe 		=> global_serdes_strobe_b2,
 			red_p      			=> P2_data_out(23 downto 16),
@@ -1024,8 +973,8 @@ hdmi_output_2 : HDMI_OUT
 hdmi_output_3 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock 		=> global_pixel_clock,
-			clk_x1				=> global_pixel_clock_x1_b2,
-			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x1				=> global_pixel_clock_x1,
+			clk_x2				=> global_pixel_clock_x2,
 			clk_x10				=> global_pixel_clock_x10_b2,
 			serdes_strobe 		=> global_serdes_strobe_b2,
 			red_p      			=> P3_data_out(23 downto 16),
@@ -1041,8 +990,8 @@ hdmi_output_3 : HDMI_OUT
 hdmi_output_4 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock 		=> global_pixel_clock,
-			clk_x1				=> global_pixel_clock_x1_b2,
-			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x1				=> global_pixel_clock_x1,
+			clk_x2				=> global_pixel_clock_x2,
 			clk_x10				=> global_pixel_clock_x10_b2,
 			serdes_strobe 		=> global_serdes_strobe_b2,
 			red_p      			=> P4_data_out(23 downto 16),
@@ -1058,8 +1007,8 @@ hdmi_output_4 : HDMI_OUT
 hdmi_output_5 : HDMI_OUT
 		PORT MAP(
 			Pixel_clock 		=> global_pixel_clock,
-			clk_x1				=> global_pixel_clock_x1_b2,
-			clk_x2				=> global_pixel_clock_x2_b2,
+			clk_x1				=> global_pixel_clock_x1,
+			clk_x2				=> global_pixel_clock_x2,
 			clk_x10				=> global_pixel_clock_x10_b2,
 			serdes_strobe 		=> global_serdes_strobe_b2,
 			red_p      			=> P5_data_out(23 downto 16),
@@ -1101,44 +1050,8 @@ hdmi_output_5 : HDMI_OUT
 			  Pll_locked 		=> global_pll_locked
 	);
 	
-	--simulator_timing : Resolution_output_timing
-	--generic map(
-				--offset_h			=> 200,
-				--offset_v			=> 100
-				--)
-	--Port map ( 
-		     --pixel_clock    	=> global_pixel_clock,
-           --red_p   			=> g_color_red,
-           --green_p 			=> g_color_green,
-           --blue_p  			=> g_color_blue,
-           --active_video 	=> simulator_active_video,
-           --hsync   			=> open,
-           --vsync   			=> open,
-			  --h_count_out 		=> simulator_h_count,
-			  --v_count_out 		=> simulator_v_count,
-			  --Pll_locked 		=> global_pll_locked
-	--);
-	
-	--simulator_timing_2 : Resolution_output_timing
-	--generic map(
-				--offset_h			=> 200,
-				--offset_v			=> 100
-				--)
-	--Port map ( 
-		     --pixel_clock    	=> global_pixel_clock,
-           --red_p   			=> open,
-           --green_p 			=> color_in_2(7 downto 0),
-           --blue_p  			=> color_in_2(23 downto 16),
-           --active_video 	=> simulator_active_video_2,
-           --hsync   			=> open,
-           --vsync   			=> open,
-			  --h_count_out 		=> simulator_h_count_2,
-			  --v_count_out 		=> simulator_v_count_2,
-			  --Pll_locked 		=> global_pll_locked
-	--);
-	
-reset <= not global_pll_locked;
-global_pll_locked <= global_pll_locked_b2;
+
+
 ------------------------------
 -- Global output clock multiplier
 -- Input: 	Pixel Clock
@@ -1157,25 +1070,15 @@ global_pll_locked <= global_pll_locked_b2;
 	global_clock_multiplier_b2 : Pixel_clock_multiplier
 	PORT map(
 		pclk_in				=> global_pixel_clock,
-		pclk_o_x1			=> global_pixel_clock_x1_b2,
-		pclk_o_x2			=> global_pixel_clock_x2_b2,
-		pclk_o_x10			=> global_pixel_clock_x10_b2,
-		pll_locked			=> global_pll_locked_b2,
-		serdes_strobe		=> global_serdes_strobe_b2
+		pclk_o_x1			=> global_pixel_clock_x1,
+		pclk_o_x2			=> global_pixel_clock_x2,
+		pclk_o_x10_b0		=> global_pixel_clock_x10_b0,
+		pclk_o_x10_b2		=> global_pixel_clock_x10_b2,
+		pll_locked			=> global_pll_locked,
+		serdes_strobe_b0	=> global_serdes_strobe_b0,
+		serdes_strobe_b2	=> global_serdes_Strobe_b2
 	);
 	
-	--global_clock_multiplier : Dual_Pixel_clock_multiplier
-	--PORT map(
-		--pclk_in				=> global_pixel_clock,
-		--pclk_o_x1_b0		=> global_pixel_clock_x1_b0,
-		--pclk_o_x2_b0		=> global_pixel_clock_x2_b0,
-		--pclk_o_x10_b0		=> global_pixel_clock_x10_b0,
-		--serdes_strobe_b0	=> global_serdes_strobe_b0,
-		--pclk_o_x1_b1		=> global_pixel_clock_x1_b1,
-		--pclk_o_x2_b1		=> global_pixel_clock_x2_b1,
-		--pclk_o_x10_b1		=> global_pixel_clock_x10_b1,
-		--serdes_strobe_b1	=> global_serdes_strobe_b1,
-		--pll_locked			=> global_pll_locked);
 	
 -------------------------------
 -- DDR Memory Controller
@@ -1241,7 +1144,6 @@ global_pll_locked <= global_pll_locked_b2;
 		c3_p2_wr_mask                           =>  "0000",
 		c3_p2_wr_data                           =>  DDR_p2_wr_data,
 		c3_p2_wr_full                           =>  DDR_p2_wr_full,
-		--c3_p2_wr_full									 => leds(4),
 		c3_p2_wr_empty                          =>  DDR_p2_wr_empty,
 		c3_p2_wr_count                          =>  Open,		-- Not used
 		c3_p2_wr_underrun                       =>  open,		-- Not used
@@ -1260,14 +1162,12 @@ global_pll_locked <= global_pll_locked_b2;
 		c3_p3_wr_mask                           =>  "0000",	-- Not used
 		c3_p3_wr_data                           =>  DDR_p3_wr_data,
 		c3_p3_wr_full                           =>  DDR_p3_wr_full,
-		--c3_p3_wr_full									 => leds(5),
 		c3_p3_wr_empty                          =>  DDR_p3_wr_empty,
 		c3_p3_wr_count                          =>  Open,		-- not used
 		c3_p3_wr_underrun                       =>  open,		-- Not used
 		c3_p3_wr_error                          =>  open,		-- Not used
 		
 		-- Input port 4
-		--c3_p4_cmd_clk                           =>  global_pixel_clock_x2_b1,
 		c3_p4_cmd_clk									 => global_pixel_clock,
 		c3_p4_cmd_en                            =>  DDR_p4_cmd_en,
 		c3_p4_cmd_instr                         =>  "011",
@@ -1275,7 +1175,6 @@ global_pll_locked <= global_pll_locked_b2;
 		c3_p4_cmd_byte_addr                     =>  DDR_p4_cmd_byte_addr,
 		c3_p4_cmd_empty                         =>  DDR_p4_cmd_empty,
 		c3_p4_cmd_full                          =>  DDR_p4_cmd_full,
-		--c3_p4_rd_clk                            =>  global_pixel_clock_x2_b1,
 		c3_p4_rd_clk									 => global_pixel_clock,
 		c3_p4_rd_en                             =>  DDR_p4_rd_en,
 		c3_p4_rd_data                           =>  DDR_p4_rd_data,
@@ -1286,7 +1185,6 @@ global_pll_locked <= global_pll_locked_b2;
 		c3_p4_rd_error                          =>  open,
 		
 		-- Input port 5
-		--c3_p5_cmd_clk                           =>  global_pixel_clock_x2_b1,
 		c3_p5_cmd_clk									 => global_pixel_clock,
 		c3_p5_cmd_en                            =>  DDR_p5_cmd_en,
 		c3_p5_cmd_instr                         =>  "011",
@@ -1294,7 +1192,6 @@ global_pll_locked <= global_pll_locked_b2;
 		c3_p5_cmd_byte_addr                     =>  DDR_p5_cmd_byte_addr,
 		c3_p5_cmd_empty                         =>  DDR_p5_cmd_empty,
 		c3_p5_cmd_full                          =>  DDR_p5_cmd_full,
-		--c3_p5_rd_clk                            =>  global_pixel_clock_x2_b1,
 		c3_p5_rd_clk									 => global_pixel_clock,
 		c3_p5_rd_en                             =>  DDR_p5_rd_en,
 		c3_p5_rd_data                           =>  DDR_p5_rd_data,
@@ -1309,7 +1206,7 @@ global_pll_locked <= global_pll_locked_b2;
     Port map(
 		BRAM_enable 		=> '1',
 		clk_out				=> global_pixel_clock,
-		clk_in				=> global_pixel_clock_x2_b2,
+		clk_in				=> global_pixel_clock_x2,
 		clk_out_enable    => BRAM_clock_out_enable,
 		P0_enable			=> P0_BRAM_enable,
 		P0_data_in_I0		=> p0_BRAM_out_I0,
@@ -1475,24 +1372,15 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		
 	u_input_to_ddr_controller : Input_to_DDR_controller
     Port map ( 
-				--pixel_clock_I0 									=> global_pixel_clock,
 				pixel_clock_I0										=> global_pixel_clock_I0,
 				pixel_clock_I1										=> global_pixel_clock,
-				h_count_I0											=> simulator_h_count(10 downto 0),
-				--h_count_I1											=> simulator_h_count_2(10 downto 0),
+				h_count_I0											=> (others => '0'),
 				h_count_I1											=> (others => '0'),
-				--v_count_I0											=> simulator_v_count(10 downto 0),
 				v_count_I0											=> v_count_I0(10 downto 0),
-				--v_count_I1											=> simulator_v_count_2(10 downto 0),
 				v_count_I1											=> v_count_I1(10 downto 0),
-				--active_video_I0									=> simulator_active_video,
 				active_video_I0									=> active_video_I0,
-				--active_video_I0									=> '0',
-				--active_video_I1									=> simulator_active_video_2,
 				active_video_I1									=> active_video_I1,
-				--video_in_I0											=> color_in,
 				video_in_I0											=> colors_I0,
-				--video_in_I1											=> color_in_2,
 				video_in_I1											=> colors_I1,
 				reset													=> reset_btn,
 				ready_I0												=> ready_I0,
@@ -1519,9 +1407,8 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 			
 	u_ddr_to_bram_controller : DDR_to_BRAM_controller
     Port map ( 
-		--clk_in 						=> global_pixel_clock_x2_b1,
 		clk_in						=> global_pixel_clock,
-		clk_in_x2						=> global_pixel_clock_X2_b2,
+		clk_in_x2					=> global_pixel_clock_x2,
 		global_v_count				=> global_v_count_pixel_out,
 		reset							=> reset_btn,
 		P0_conf						=> P0_conf,
@@ -1586,12 +1473,10 @@ color_in <= g_color_red & g_color_green & g_color_blue;
 		P5_inload_done				=> open,			
 		change_S						=> change_S,
 		c3_p4_cmd_en            => DDR_p4_cmd_en,
-		--c3_p4_cmd_en				=> open,
 		c3_p4_cmd_bl            => DDR_p4_cmd_bl,
 		c3_p4_cmd_byte_addr     => DDR_p4_cmd_byte_addr,
 		c3_p4_cmd_empty         =>	DDR_p4_cmd_empty,	
 		c3_p4_rd_en             => DDR_p4_rd_en,
-		--c3_p4_rd_en					=> open,
 		c3_p4_rd_data           => DDR_p4_rd_data,
 		c3_p4_rd_empty          => DDR_p4_rd_empty,
 		c3_p5_cmd_en            => DDR_p5_cmd_en,
