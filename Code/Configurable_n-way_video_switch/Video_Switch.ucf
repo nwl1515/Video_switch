@@ -13,10 +13,6 @@ PIN "hdmi_input_0/input_decoder/pclkbufg.O" CLOCK_DEDICATED_ROUTE = FALSE;
 
 NET "global_pixel_clock" PERIOD = 74250 kHz;
 NET "global_pixel_clock_I0" PERIOD = 74250 kHz;
-#NET "global_pixel_clock_x1_b0" PERIOD = 74250 kHz;
-#NET "global_pixel_clock_x2_b0" PERIOD = 148500 kHz;
-#NET "global_pixel_clock_x1_b2" PERIOD = 74250 kHz;
-#NET "global_pixel_clock_x2_b2" PERIOD = 148500 kHz;
 NET "global_pixel_clock_x1" PERIOD = 74250 kHz;
 NET "global_pixel_clock_x2" PERIOD = 148500 kHz;
 

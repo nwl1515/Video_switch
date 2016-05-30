@@ -4,7 +4,7 @@
 -- 
 -- Create Date:    23:02:01 02/26/2016 
 -- Design Name: 
--- Module Name:    Gearbox_30_to_15 - Behavioral 
+-- Module Name:    Gearbox_10_to_5 - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 

@@ -125,7 +125,6 @@ begin
 	
 	
 	
-	--leds(0) <= pll_locked;
 	leds(0) <= pclk;
 	leds(1) <= rx_red_rdy;
 	leds(2) <= rx_green_rdy;
@@ -186,9 +185,6 @@ begin
 			blue				=> blue_c
 			);
 			
-			--red_c <= "11111111";
-			--green_c <= "11111111";
-			--blue_c <= "11111111";
 			
 		pipeline : PROCESS(pclk)
 		begin

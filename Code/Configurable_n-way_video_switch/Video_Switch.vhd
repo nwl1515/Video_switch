@@ -915,11 +915,6 @@ reset <= not global_pll_locked;
 ------------------------------
 hdmi_output_0 : HDMI_OUT
 		PORT MAP(
-			--Pixel_clock 		=> global_pixel_clock_I0,
-			--clk_x1				=> global_pixel_clock_I0,		
-			--clk_x2				=> global_pixel_clock_x2_b0,
-			--clk_x10				=> global_pixel_clock_x10_b0,
-			--serdes_strobe 		=> global_serdes_strobe_b0,
 			Pixel_clock 		=> global_pixel_clock,
 			clk_x1				=> global_pixel_clock_x1,
 			clk_x2				=> global_pixel_clock_x2,
@@ -1050,24 +1045,8 @@ hdmi_output_5 : HDMI_OUT
 			  Pll_locked 		=> global_pll_locked
 	);
 	
-
-
-------------------------------
--- Global output clock multiplier
--- Input: 	Pixel Clock
--- Output: 	Multiplied clocks, x1, x2 and x10
-------------------------------	
-	--global_clock_multiplier_b0 : Pixel_clock_multiplier
-	--PORT map(
-		--pclk_in				=> global_pixel_clock,
-		--pclk_o_x1			=> global_pixel_clock_x1_b0,
-		--pclk_o_x2			=> global_pixel_clock_x2_b0,
-		--pclk_o_x10			=> global_pixel_clock_x10_b0,
-		--pll_locked			=> global_pll_locked_b0,
-		--serdes_strobe		=> global_serdes_strobe_b0
-	--);
 	
-	global_clock_multiplier_b2 : Pixel_clock_multiplier
+	global_clock_multiplier : Pixel_clock_multiplier
 	PORT map(
 		pclk_in				=> global_pixel_clock,
 		pclk_o_x1			=> global_pixel_clock_x1,

@@ -50,7 +50,6 @@ architecture Behavioral of Dual_Pixel_clock_multiplier is
 	signal pclk_x2_b_b1		: std_logic := '0';
 	signal pll_locked_i_b0 	: std_logic := '0';
 	signal pll_locked_i_b1	: std_logic := '0';
-	--signal pll_locked_i_buf	: std_logic := '0';
 	signal pll_locked_i		: std_logic := '0';
 	signal clk_feedback 		: std_logic := '0';
 	
@@ -60,9 +59,6 @@ architecture Behavioral of Dual_Pixel_clock_multiplier is
 	pclk_o_x2_b0 <= pclk_x2_b_b0;
 	pclk_o_x2_b1 <= pclk_x2_b_b1;
 	pll_locked <= pll_locked_i_b0 and pll_locked_i_b1;
-	--pll_locked_i <= pll_locked_i_b0 and pll_locked_i_b1;
-	--pll_locked_i <= pll_locked_i_b0;
-	--pll_locked <= pll_locked_i_buf;
 -----------------------------------------
 -- PLL BASE
 -- Input: pclk

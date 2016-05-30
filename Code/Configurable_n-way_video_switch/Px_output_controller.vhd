@@ -77,8 +77,17 @@ begin
 							Px_conf = "0001" or Px_conf = "0100" or Px_conf = "0101" or 
 							Px_conf = "0110" or Px_conf = "0111" or Px_conf = "1000" or 
 							Px_conf = "1001") and not(global_v_count = "111111111111") 
-							else global_h_count(11 downto 1) when ((Px_conf = "0010" or Px_conf = "0011") and (device_set = "001" or device_set = "011")) and not(global_v_count = "111111111111")
-							else global_h_count(11 downto 1)+640 when ((Px_conf = "0010" or Px_conf = "0011") and (device_set = "10" or device_set = "100")) and not(global_v_count = "111111111111")
+							
+							else global_h_count(11 downto 1) 
+							when ((Px_conf = "0010" or Px_conf = "0011") 
+							     and (device_set = "001" or device_set = "011")) 
+								  and not(global_v_count = "111111111111")
+							
+							else global_h_count(11 downto 1)+640 
+							when ((Px_conf = "0010" or Px_conf = "0011") 
+							     and (device_set = "010" or device_set = "100")) 
+								  and not(global_v_count = "111111111111")
+							
 							else (others => '0');
 							
 	Px_v_count_out <= global_v_count(10 downto 0) when (Px_conf = "0000" or 
